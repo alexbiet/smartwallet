@@ -5,7 +5,7 @@ import { useWeb3Contract } from "react-moralis";
 import {abi} from "../constants/abi";
 
 
-
+// Test with local smart contract on hardhat (run separately)
 
 export default function Home() {
 
