@@ -1,11 +1,15 @@
 # Smart Wallet
 
-Features:
-- WalletConnect
-- Transak - Fiat to Crypto
-- Spheron - Deploy to IPFS
-- Aave (Polygon)
+Easily manage your DeFi Investments
 
+Features:
+- [WalletConnect](https://walletconnect.com) - Connect with Web3 Wallet
+- [Transak](https://transak.com) - Fiat to Crypto Gateway
+- [Aave v3 (Polygon)](https://app.aave.com) - Smart Yield Farming from Lending, Borrowing & Staking
+
+Deployment
+- [Spheron](https://spheron.network) - Deploy to Decentralized Cloud
+- [IPFS](https://ipfs.io) - In combination with Spheron
 
 
 ## Getting Started
@@ -15,7 +19,9 @@ Features:
 1. Install dependencies:
 
 ```bash
-npm install --dev && npm install --production
+npm install
+# or
+yarn install
 ```
 
 2. Run the development server:
