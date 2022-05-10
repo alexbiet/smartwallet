@@ -3,77 +3,17 @@ const serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 Moralis.start({ serverUrl, appId });
 
-/** Add from here down */
-// async function login() {
-//     let user = Moralis.User.current();
-//     if (!user) {
-//         try {
-//             user = await Moralis.authenticate({ signingMessage: "Hello World!" })
-//             console.log(user)
-//             console.log(user.get('ethAddress'))
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
-// }
-
-// async function logOut() {
-//     await Moralis.User.logOut();
-//     console.log("logged out");
-// }
-
-// document.getElementById("btn-login").onclick = login;
-// document.getElementById("btn-logout").onclick = logOut;
 
 
 
-// import WalletConnect from "@walletconnect/client";
-// import QRCodeModal from "@walletconnect/qrcode-modal";
-
-// // Create a connector
-// const connector = new WalletConnect({
-//   bridge: "https://bridge.walletconnect.org", // Required
-//   qrcodeModal: QRCodeModal,
-// });
-
-// // Check if connection is already established
-// if (!connector.connected) {
-//   // create new session
-//   connector.createSession();
-// }
-
-// // Subscribe to connection events
-// connector.on("connect", (error, payload) => {
-//   if (error) {
-//     throw error;
-//   }
-
-//   // Get provided accounts and chainId
-//   const { accounts, chainId } = payload.params[0];
-// });
-
-// connector.on("session_update", (error, payload) => {
-//   if (error) {
-//     throw error;
-//   }
-
-//   // Get updated accounts and chainId
-//   const { accounts, chainId } = payload.params[0];
-// });
-
-// connector.on("disconnect", (error, payload) => {
-//   if (error) {
-//     throw error;
-//   }
-
-//   // Delete connector
-// });
+// -----------------------
+// Wallet Connect       //
+// -----------------------
 
 
 // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
-const Fortmatic = window.Fortmatic;
 const evmChains = window.evmChains;
 
 // Web3modal instance
@@ -94,7 +34,6 @@ function init() {
 
   console.log("Initializing example");
   console.log("WalletConnectProvider is", WalletConnectProvider);
-  console.log("Fortmatic is", Fortmatic);
   console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
 
   // Check that the web page is run in a secure context,
@@ -114,16 +53,7 @@ function init() {
     walletconnect: {
       package: WalletConnectProvider,
       options: {
-        // Mikko's test key - don't copy as your mileage may vary
-        infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
-      }
-    },
-
-    fortmatic: {
-      package: Fortmatic,
-      options: {
-        // Mikko's TESTNET api key
-        key: "pk_test_391E26A3B43A3350"
+        infuraId: "27e484dcd9e3efcfd25a83a78777cdf1",
       }
     }
   };
@@ -286,3 +216,20 @@ window.addEventListener('load', async () => {
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
 });
+
+
+// -----------------------
+// Aave Connect         //
+// -----------------------
+
+
+
+
+
+
+
+
+
+// -----------------------
+// Transak              //
+// -----------------------
