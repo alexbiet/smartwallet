@@ -218,10 +218,71 @@ window.addEventListener('load', async () => {
 });
 
 
+
 // -----------------------
 // Aave Connect         //
 // -----------------------
 
+
+
+
+// const ethereumButton = document.querySelector('.enableEthereumButton');
+const sendEthButton = document.querySelector('.sendEthButton');
+
+// let accounts = ['0x64fAE5bD24F1CC1113725E781D1C828188313184'];
+
+//Sending Ethereum to an address
+sendEthButton.addEventListener('click', () => {
+  ethereum
+    .request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: '0x64fAE5bD24F1CC1113725E781D1C828188313184',
+          to: '0x2f318C334780961FB129D2a6c30D0763d9a5C970',
+          value: '0x29a2241af62c0000',
+        },
+      ],
+    })
+    .then((txHash) => console.log(txHash))
+    .catch((error) => console.error);
+});
+
+// ethereumButton.addEventListener('click', () => {
+//   getAccount();
+// });
+
+// async function getAccount() {
+//   accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+// }
+
+
+
+async function donate() {
+  let options = {
+    contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
+    functionName: "newDonation",
+    abi: [
+      {
+        inputs: [
+          { internalType: "string", name: "note", type: "string" },
+        ],
+        name: "newDonation",
+        outputs: [],
+        stateMutability: "payable",
+        type: "function",
+      },
+    ],
+    Params: {
+      Note: "Thanks for your work",
+    },
+    msgValue: provider.Units.ETH(0.01),
+  };
+  // await Moralis.User.logOut();
+  console.log("donated!");
+}
+
+document.getElementById("btn-donate").onclick = donate;
 
 
 
