@@ -45,8 +45,8 @@ document.getElementById("btn-logout").onclick = logOut;
 // Polygon Mumbai Donation //
 // --------------------------
 
-async function donate() {
 
+async function donate() {
   let options = {
     contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
     functionName: "newDonation",
@@ -64,6 +64,37 @@ async function donate() {
     },
     msgValue: Moralis.Units.ETH(0.01),
   };
+}
+
+// --------------------------
+// Aave Rinkeby Deposit //
+// --------------------------
+
+async function depositToAave() {
+
+  let user = Moralis.User.current();
+
+  let options = {
+    contractAddress: "0xbE8F1f1D3f063C88027CAb4C5315219eeCEa6930",
+    functionName: "depositETH",
+    abi: [{
+        "inputs": [
+          { "internalType": "address", "name": "lendingPool", "type": "address" },
+          { "internalType": "address", "name": "onBehalfOf", "type": "address" },
+          { "internalType": "uint16", "name": "referralCode", "type": "uint16" },
+        ],
+        "name": "depositETH",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+      }],
+    params: {
+      lendingPool: "0x3561c45840e2681495ACCa3c50Ef4dAe330c94F8",
+      onBehalfOf: user.get('ethAddress'),
+      referralCode: 0
+    },
+    msgValue: Moralis.Units.ETH(0.01),
+  };
 
 
   await Moralis.executeFunction(options);
@@ -73,11 +104,9 @@ async function donate() {
 }
 
 document.getElementById("btn-donate").onclick = donate;
+document.getElementById("btn-depositEth").onclick = depositToAave;
 
 
-// -----------------------
-// Aave Connect         //
-// -----------------------
 
 
 
