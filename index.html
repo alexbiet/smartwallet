@@ -24,8 +24,10 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Aave</a></li>
+              <li><a href="#" data-tab="view-1" class="nav-link px-2 text-white active">My Wallet</a></li>
+              <li><a href="#" data-tab="view-2" class="nav-link px-2 text-white">Aave Staking</a></li>
+              <li><a href="#" data-tab="view-3" class="nav-link px-2 text-white">Donate</a></li>
+              <li><a href="#" data-tab="view-4" class="nav-link px-2 text-white">Buy Crypto (Transak)</a></li>
             </ul>
     
             <div class="text-end">
@@ -39,26 +41,44 @@
         <div class="container">
           <div class="row">
             <div class="col-md-4">
+
               <br>
               <br>
               <br>
-              <div class="input-group">
-                <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
-                <span class="input-group-text">MATIC</span>
-                <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
+
+
+              <!-- MY WALLET -->
+              <div id="view-1" class="b-tab active">
+                My wallet - implement details...
               </div>
 
-              <br>
-              <br>
-              <br>
 
-              <button class="btn btn-primary" id="btn-depositEth">Deposit 0.01 Eth into Aave</button>
-              <br> <br>
+              <!-- STAKING AAVE -->
+              <div id="view-2" class="b-tab">
+                <button class="btn btn-primary" id="btn-depositEth">Deposit 0.01 Eth into Aave</button>
+              </div>
+
+
+              <!-- DONATE -->
+              <div id="view-3" class="b-tab ">
+                <div class="input-group">
+                  <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
+                  <span class="input-group-text">MATIC</span>
+                  <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
+                </div>
+              </div>
+
+
+              <!-- BUY CRYPTO (TRANSAK) -->
+              <div id="view-4" class="b-tab">
                 <iframe height="625" title="Transak On/Off Ramp Widget"
                     src="https://staging-global.transak.com?apiKey=[YOUR_STAGING_API_KEY]&[QUERY_PARAMETERS]" 
                     frameborder="no" allowtransparency="true" allowfullscreen="" 
                     style="display: block; width: 100%; max-height: 625px; max-width: 500px;">
                 </iframe>
+              </div>
+
+    
 
 
               </div>
