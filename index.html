@@ -13,19 +13,50 @@
     </head>
 
     <body>
-      
+
+      <header class="p-3 bg-dark text-white">
         <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-
-                <button class="btn btn-primary" id="btn-login">Moralis Metamask Login</button>
-                <button class="btn btn-primary" id="btn-logout">Logout</button>
-                <button class="btn btn-primary" id="btn-donate">Donate</button>
-                <button class="btn btn-primary" id="btn-depositEth">Deposit 0.01 Eth into Aave</button>
-
-              </div>
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
+              <b>Smart Wallet</b>
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="#" class="nav-link px-2 text-white">Aave</a></li>
+            </ul>
+    
+            <div class="text-end">
+              <button class="btn btn-warning" id="btn-login">Metamask Connect</button>
+                <button class="btn btn-outline-light me-2" id="btn-logout">Logout</button>
             </div>
           </div>
+        </div>
+      </header>
+      
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <br>
+              <br>
+              <br>
+              <div class="input-group">
+                <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
+                <span class="input-group-text">MATIC</span>
+                <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
+              </div>
+
+              <br>
+              <br>
+              <br>
+
+              <button class="btn btn-primary" id="btn-depositEth">Deposit 0.01 Eth into Aave</button>
+
+            </div>
+          </div>
+        </div>
 
 
           <!-- <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script> 

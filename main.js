@@ -45,8 +45,8 @@ document.getElementById("btn-logout").onclick = logOut;
 // Polygon Mumbai Donation //
 // --------------------------
 
+async function donate(val) {
 
-async function donate() {
   let options = {
     contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
     functionName: "newDonation",
@@ -62,9 +62,19 @@ async function donate() {
     params: {
       note: "Thanks for your work",
     },
-    msgValue: Moralis.Units.ETH(0.01),
+    msgValue: Moralis.Units.ETH(val),
   };
+  await Moralis.executeFunction(options);
 }
+
+
+
+
+document.getElementById("btn-donate").onclick = function () {
+  var donationValue =  document.getElementById("donation-value").value;
+  donate(donationValue);
+}
+
 
 // --------------------------
 // Aave Rinkeby Deposit //
@@ -103,12 +113,7 @@ async function depositToAave() {
   console.log("donated!");
 }
 
-document.getElementById("btn-donate").onclick = donate;
 document.getElementById("btn-depositEth").onclick = depositToAave;
-
-
-
-
 
 
 
