@@ -50,15 +50,7 @@ async function donate(val) {
   let options = {
     contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
     functionName: "newDonation",
-    abi: [{
-        "inputs": [
-          { "internalType": "string", "name": "note", "type": "string" },
-        ],
-        "name": "newDonation",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function",
-      }],
+    abi: abis.donate,
     params: {
       note: "Thanks for your work",
     },
@@ -80,6 +72,30 @@ document.getElementById("btn-donate").onclick = function () {
 // Aave Rinkeby Deposit //
 // --------------------------
 
+//First: gets the current pool contract address (sometimes it changes)
+async function getPoolContractAddress() {
+const options = {
+  chain: "rinkeby",
+  address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
+  function_name: "getPool",
+  abi: abis.poolAddressProvider,
+  params: { },
+};
+ const lendingPoolAddress = await Moralis.Web3API.native.runContractFunction(options);
+ console.log(`Current Rinkeby aave-pool-contract address: ${lendingPoolAddress}`);
+//Second: Instantiate pool contract to easily call functions
+// const lendingPoolInstance = new web3.eth.Contract(lendingPoolABI, lendingPoolAddress)
+//WIP - Mark
+////////////////////////////////
+}
+document.getElementById("btn-getPool").onclick = getPoolContractAddress;
+
+//Second: create lending pool instance
+
+// --------------------------
+// Aave Rinkeby Deposit to eth directly //
+// --------------------------
+
 async function depositToAave() {
 
   let user = Moralis.User.current();
@@ -87,17 +103,7 @@ async function depositToAave() {
   let options = {
     contractAddress: "0xbE8F1f1D3f063C88027CAb4C5315219eeCEa6930",
     functionName: "depositETH",
-    abi: [{
-        "inputs": [
-          { "internalType": "address", "name": "lendingPool", "type": "address" },
-          { "internalType": "address", "name": "onBehalfOf", "type": "address" },
-          { "internalType": "uint16", "name": "referralCode", "type": "uint16" },
-        ],
-        "name": "depositETH",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function",
-      }],
+    abi: abis.depositEth,
     params: {
       lendingPool: "0x3561c45840e2681495ACCa3c50Ef4dAe330c94F8",
       onBehalfOf: user.get('ethAddress'),
