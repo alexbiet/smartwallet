@@ -12,7 +12,6 @@
   "dependencies": {
     "@walletconnect/client": "^1.7.8",
     "@walletconnect/qrcode-modal": "^1.7.8",
-    "web3modal": "^1.9.7",
     "ws": "^8.6.0"
   },
   "devDependencies": {
