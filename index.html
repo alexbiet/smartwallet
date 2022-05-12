@@ -33,8 +33,35 @@
             </ul>
     
             <div class="text-end">
-              <button class="btn btn-warning" id="btn-login">Metamask Connect</button>
-                <button class="btn btn-outline-light me-2" id="btn-logout">Logout</button>
+              <!-- <button class="btn btn-warning" id="btn-login">Metamask Connect</button>
+              <button class="btn btn-outline-light me-2" id="btn-logout">Logout</button> -->
+
+              <div id="prepare">
+                <button class="btn btn-warning" id="btn-connect">
+                  Connect Wallet
+                </button>
+              </div>
+
+              <div id="connected" style="display: none">
+    
+    
+                <div id="network" style="display:inline-block;vertical-align:middle;">
+                  <small>
+
+                  <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
+
+                  <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
+                  <br>
+                  <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></span>
+
+                </small>
+                </div>
+                <span> &nbsp; </span> 
+                <button class="btn btn-outline-light" id="btn-disconnect">
+                  Disconnect
+                </button>
+    
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +104,7 @@
               <!-- BUY CRYPTO (TRANSAK) -->
               <div id="view-4" class="b-tab">
                 <iframe height="625" title="Transak On/Off Ramp Widget"
-                    src="https://staging-global.transak.com?apiKey=[YOUR_STAGING_API_KEY]&[QUERY_PARAMETERS]" 
+                    src="https://staging-global.transak.com?apiKey=7fc30c92-ef84-4d9d-b411-c2e12fe02677&cryptoCurrencyCode=DAI" 
                     frameborder="no" allowtransparency="true" allowfullscreen="" 
                     style="display: block; width: 100%; max-height: 625px; max-width: 500px;">
                 </iframe>
@@ -91,15 +118,13 @@
           </div>
         </div>
 
-
-          <!-- <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script> 
-          <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+          
+          <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.7/dist/index.js"></script>
           <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
-          <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>-->
+          <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.7.1/web3-provider.min.js"></script>
           
-          
-          <script type="text/javascript" src="/node_modules/@aave/contract-helpers/dist/cjs/index.js"></script>
-          <script type="text/javascript" src="/node_modules/@aave/math-utils/dist/cjs/index.js"></script>
+          <!-- <script type="text/javascript" src="/node_modules/@aave/contract-helpers/dist/cjs/index.js"></script>
+          <script type="text/javascript" src="/node_modules/@aave/math-utils/dist/cjs/index.js"></script> -->
 
 
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
