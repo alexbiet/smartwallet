@@ -10,6 +10,57 @@ var abis = {
         "stateMutability": "payable",
         "type": "function",
       }],
+    supply: [{
+      "inputs": [
+        {"internalType":"address","name":"asset","type":"address"},
+        {"internalType":"uint256","name":"amount","type":"uint256"},
+        {"internalType":"address","name":"onBehalfOf","type":"address"},
+        {"internalType":"uint16","name":"referralCode","type":"uint16"}
+      ],
+      "name":"supply",
+      "outputs":[],
+      "stateMutability":"nonpayable",
+      "type":"function"
+    }],
+    supplyWithPermit: [{
+      "inputs": [ 
+        {"internalType":"address","name":"asset","type":"address"},
+        {"internalType":"uint256","name":"amount","type":"uint256"},
+        {"internalType":"address","name":"onBehalfOf","type":"address"},
+        {"internalType":"uint16","name":"referralCode","type":"uint16"},
+        {"internalType":"uint256","name":"deadline","type":"uint256"},
+        {"internalType":"uint8","name":"permitV","type":"uint8"},
+        {"internalType":"bytes32","name":"permitR","type":"bytes32"},
+        {"internalType":"bytes32","name":"permitS","type":"bytes32"}
+      ],
+      "name":"supplyWithPermit",
+      "outputs":[],
+      "stateMutability":"nonpayable",
+      "type":"function"
+    }],
+    approve: [{
+      "constant": false,
+      "inputs": [
+          {
+              "name": "_spender",
+              "type": "address"
+          },
+          {
+              "name": "_value",
+              "type": "uint256"
+          }
+      ],
+      "name": "approve",
+      "outputs": [
+          {
+              "name": "",
+              "type": "bool"
+          }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }],
     donate: [{
       "inputs": [
         { "internalType": "string", "name": "note", "type": "string" },
