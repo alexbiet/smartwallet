@@ -8,27 +8,27 @@ Moralis.start({ serverUrl, appId });
 // Moralis Wallet       //
 // -----------------------
 
-// async function login() {
-//   let user = Moralis.User.current();
-//   if (!user) {
-//       try {
-//           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
-//           await Moralis.enableWeb3();
-//           console.log(user);
-//           console.log(user.get('ethAddress'));
-//       } catch (error) {
-//           console.log(error)
-//       }
-//   }
-// }
+async function login() {
+  let user = Moralis.User.current();
+  if (!user) {
+      try {
+          user = await Moralis.authenticate({ signingMessage: "Hello World!" });
+          await Moralis.enableWeb3();
+          console.log(user);
+          console.log(user.get('ethAddress'));
+      } catch (error) {
+          console.log(error)
+      }
+  }
+}
 
-// async function logOut() {
-//   await Moralis.User.logOut();
-//   console.log("logged out");
-// }
+async function logOut() {
+  await Moralis.User.logOut();
+  console.log("logged out");
+}
 
-// document.getElementById("btn-login").onclick = login;
-// document.getElementById("btn-logout").onclick = logOut;
+document.getElementById("btn-login").onclick = login;
+document.getElementById("btn-logout").onclick = logOut;
 
 
 
@@ -93,15 +93,15 @@ async function supplyToPool(_poolAddress){
  let supplyOptions = {
    contractAddress: _poolAddress,
    functionName: "supply",
-   abi: abis.supply,
+   abi: abis.poolContract,
    params: {
      asset: DAI,
      amount: 150,
      onBehalfOf: user.get('ethAddress'),
-     referralCode: 0
+     referralCode: 0,
    }
    };
- 
+   console.log(supplyOptions);
    await console.log(Moralis.executeFunction(supplyOptions));
  
  
@@ -240,121 +240,121 @@ var connectTabs = new Tabs();
 // WALLET CONNECT + METAMASK   //
 // ------------------------------
 
-const Web3Modal = window.Web3Modal.default;
-const WalletConnectProvider = window.WalletConnectProvider.default;
-const Fortmatic = window.Fortmatic;
-const evmChains = window.evmChains;
+// const Web3Modal = window.Web3Modal.default;
+// const WalletConnectProvider = window.WalletConnectProvider.default;
+// const Fortmatic = window.Fortmatic;
+// const evmChains = window.evmChains;
 
-let web3Modal;
-let provider;
-let selectedAccount;
+// let web3Modal;
+// let provider;
+// let selectedAccount;
 
-function init() {
+// function init() {
 
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
-      }
-    }
-  };
+//   const providerOptions = {
+//     walletconnect: {
+//       package: WalletConnectProvider,
+//       options: {
+//         infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
+//       }
+//     }
+//   };
 
-  web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
-    providerOptions, // required
-    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
-  });
+//   web3Modal = new Web3Modal({
+//     cacheProvider: false, // optional
+//     providerOptions, // required
+//     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+//   });
 
-  console.log("Web3Modal instance is", web3Modal);
-}
-
-
-
-async function fetchAccountData() {
-
-  const web3 = new Web3(provider);
-
-  console.log("Web3 instance is", web3);
-
-  const chainId = await web3.eth.getChainId();
-  const chainData = evmChains.getChain(chainId);
-  document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
-
-  const accounts = await web3.eth.getAccounts();
-  console.log("Got accounts", accounts);
-  selectedAccount = accounts[0];
-  const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
-  const selectedEthBalance = web3.utils.fromWei(selectedAccountBalance, "ether");
-  const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
-  const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
-
-  document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
-  document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
-
-  // Display fully loaded UI for wallet data
-  document.querySelector("#prepare").style.display = "none";
-  document.querySelector("#connected").style.display = "inline-block";
-}
+//   console.log("Web3Modal instance is", web3Modal);
+// }
 
 
-async function refreshAccountData() {
-  document.querySelector("#connected").style.display = "none";
-  document.querySelector("#prepare").style.display = "block";
-  document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
-  await fetchAccountData(provider);
-  document.querySelector("#btn-connect").removeAttribute("disabled")
-}
+
+// async function fetchAccountData() {
+
+//   const web3 = new Web3(provider);
+
+//   console.log("Web3 instance is", web3);
+
+//   const chainId = await web3.eth.getChainId();
+//   const chainData = evmChains.getChain(chainId);
+//   document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
+
+//   const accounts = await web3.eth.getAccounts();
+//   console.log("Got accounts", accounts);
+//   selectedAccount = accounts[0];
+//   const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
+//   const selectedEthBalance = web3.utils.fromWei(selectedAccountBalance, "ether");
+//   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
+//   const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
+
+//   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
+//   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
+
+//   // Display fully loaded UI for wallet data
+//   document.querySelector("#prepare").style.display = "none";
+//   document.querySelector("#connected").style.display = "inline-block";
+// }
 
 
-async function onConnect() {
-
-  console.log("Opening a dialog", web3Modal);
-  try {
-    provider = await web3Modal.connect();
-  } catch(e) {
-    console.log("Could not get a wallet connection", e);
-    return;
-  }
-
-  // Subscribe to accounts change
-  provider.on("accountsChanged", (accounts) => {
-    fetchAccountData();
-  });
-
-  // Subscribe to chainId change
-  provider.on("chainChanged", (chainId) => {
-    fetchAccountData();
-  });
-
-  // Subscribe to networkId change
-  provider.on("networkChanged", (networkId) => {
-    fetchAccountData();
-  });
-
-  await refreshAccountData();
-}
+// async function refreshAccountData() {
+//   document.querySelector("#connected").style.display = "none";
+//   document.querySelector("#prepare").style.display = "block";
+//   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+//   await fetchAccountData(provider);
+//   document.querySelector("#btn-connect").removeAttribute("disabled")
+// }
 
 
-async function onDisconnect() {
+// async function onConnect() {
 
-  console.log("Killing the wallet connection", provider);
+//   console.log("Opening a dialog", web3Modal);
+//   try {
+//     provider = await web3Modal.connect();
+//   } catch(e) {
+//     console.log("Could not get a wallet connection", e);
+//     return;
+//   }
 
-  if(provider.close) {
-    await provider.close();
-    await web3Modal.clearCachedProvider();
-    provider = null;
-  }
+//   // Subscribe to accounts change
+//   provider.on("accountsChanged", (accounts) => {
+//     fetchAccountData();
+//   });
 
-  selectedAccount = null;
+//   // Subscribe to chainId change
+//   provider.on("chainChanged", (chainId) => {
+//     fetchAccountData();
+//   });
 
-  document.querySelector("#prepare").style.display = "block";
-  document.querySelector("#connected").style.display = "none";
-}
+//   // Subscribe to networkId change
+//   provider.on("networkChanged", (networkId) => {
+//     fetchAccountData();
+//   });
+
+//   await refreshAccountData();
+// }
 
 
-window.addEventListener('load', async () => {
-  init();
-  document.querySelector("#btn-connect").addEventListener("click", onConnect);
-  document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
-});
+// async function onDisconnect() {
+
+//   console.log("Killing the wallet connection", provider);
+
+//   if(provider.close) {
+//     await provider.close();
+//     await web3Modal.clearCachedProvider();
+//     provider = null;
+//   }
+
+//   selectedAccount = null;
+
+//   document.querySelector("#prepare").style.display = "block";
+//   document.querySelector("#connected").style.display = "none";
+// }
+
+
+// window.addEventListener('load', async () => {
+//   init();
+//   document.querySelector("#btn-connect").addEventListener("click", onConnect);
+//   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+// });
