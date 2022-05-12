@@ -87,7 +87,7 @@ const options = {
 
 async function supplyToPool(_poolAddress){
   let user = Moralis.User.current();
- const DAI = "0x2Ec4c6fCdBF5F9beECeB1b51848fc2DB1f3a26af";
+ const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
  //supply the amount
  let supplyOptions = {
@@ -96,7 +96,7 @@ async function supplyToPool(_poolAddress){
    abi: abis.poolContract,
    params: {
      asset: DAI,
-     amount: 150,
+     amount: 10,
      onBehalfOf: user.get('ethAddress'),
      referralCode: 0,
    }
@@ -114,11 +114,12 @@ function approveERC20(_tokenAddress, spender){
           abi: abis.approve,
           params: {
             _spender: spender,
-            _value: 1500000,
+            _value: 15000000000000,
           }
         };
         Moralis.executeFunction(approveOptions);
       }
+
 
 document.getElementById("btn-getPool")
 .onclick= function() {
@@ -165,7 +166,7 @@ async function depositToAave() {
 document.getElementById("btn-depositEth").onclick = depositToAave;
 document.getElementById("btn-approveDaiToken").onclick = function() {
   poolAddress = getPoolContractAddress()
-  let DAI = "0x2Ec4c6fCdBF5F9beECeB1b51848fc2DB1f3a26af";
+  let DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
   approveERC20(DAI, poolAddress);
 };
 //supplyDaiButton
