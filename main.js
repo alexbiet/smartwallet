@@ -14,8 +14,8 @@ async function login() {
       try {
           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
           await Moralis.enableWeb3();
-          console.log(user);
-          console.log(user.get('ethAddress'));
+          // console.log(user);
+          // console.log(user.get('ethAddress'));
       } catch (error) {
           console.log(error)
       }
@@ -58,9 +58,6 @@ async function donate(val) {
   await Moralis.executeFunction(options);
 }
 
-
-
-
 document.getElementById("btn-donate").onclick = function () {
   var donationValue =  document.getElementById("donation-value").value;
   donate(donationValue);
@@ -72,45 +69,40 @@ document.getElementById("btn-donate").onclick = function () {
 // --------------------------
 
 //First: gets the current pool contract address
-async function getPoolContractAddress(_contractAbi) {
+async function getPoolContractAddress() {
 
   let user = Moralis.User.current();
-
-  //console.log(_contractAbi)
 const options = {
   chain: "rinkeby",
   address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
   function_name: "getPool",
-  //abi: abis.poolAddressProvider,
-  abi: _contractAbi,
+  abi: abis.poolAddressProvider,
+  //abi: _contractAbi,
   params: { },
 };
  const lendingPoolAddress = await Moralis.Web3API.native.runContractFunction(options);
- console.log(lendingPoolAddress);
+ console.log("currentPoolAddress: " + lendingPoolAddress)
  return lendingPoolAddress;
- //const lendingPoolInstance = new web3.eth.Contract(lendingPoolABI, lendingPoolAddress)
-
-
 }
 
-async function supplyToPool(){
-
- const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
+async function supplyToPool(_poolAddress){
+  let user = Moralis.User.current();
+ const DAI = "0x2Ec4c6fCdBF5F9beECeB1b51848fc2DB1f3a26af";
 
  //supply the amount
  let supplyOptions = {
-   contractAddress: lendingPoolAddress,
+   contractAddress: _poolAddress,
    functionName: "supply",
    abi: abis.supply,
    params: {
      asset: DAI,
-     amount: 1500000,
+     amount: 150,
      onBehalfOf: user.get('ethAddress'),
      referralCode: 0
    }
    };
  
-   await Moralis.executeFunction(supplyOptions);
+   await console.log(Moralis.executeFunction(supplyOptions));
  
  
 }
@@ -169,20 +161,18 @@ async function depositToAave() {
   // console.log("logged out");
   console.log("donated!");
 }
-
+//approveDaiButton
 document.getElementById("btn-depositEth").onclick = depositToAave;
-document.getElementById("btn-approveToken").onclick = async function() {
-  let DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
-  let _contractAddress = "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C";
-  let addr = await getRinkebyABI(_contractAddress).done(function(pool){
-    console.log("returned!");
-    console.log(pool);
-    approveERC20(DAI, pool)
-
-  }  );
-
+document.getElementById("btn-approveDaiToken").onclick = function() {
+  poolAddress = getPoolContractAddress()
+  let DAI = "0x2Ec4c6fCdBF5F9beECeB1b51848fc2DB1f3a26af";
+  approveERC20(DAI, poolAddress);
 };
-
+//supplyDaiButton
+document.getElementById("btn-supplyDaiToken").onclick = function() {
+  poolAddress = getPoolContractAddress()
+  supplyToPool(poolAddress);
+};
 
 
 // -----------------------
