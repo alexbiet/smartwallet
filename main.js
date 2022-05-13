@@ -8,11 +8,8 @@ const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
 Moralis.start({ serverUrl, appId });
-let user = Moralis.User.current();
-// -----------------------
-// Moralis Wallet       //
-// -----------------------
 
+let user = Moralis.User.current();
 async function login() {
   let user = Moralis.User.current();
   if (!user) {
@@ -182,7 +179,7 @@ function getRinkebyABI(_contractAddress){
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  approveERC20(aWETH, Moralis.Units.ETH(amountValue), getPoolContractAddress());};
+  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
   supplyETH(Moralis.Units.ETH(amountValue), getPoolContractAddress());};
