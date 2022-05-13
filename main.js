@@ -132,16 +132,15 @@ async function supplyETH(_amount, _poolAddress) {
     functionName: "depositETH",
     abi: abis.WETHGateway,
     params: {
-      payableAmount: _amount,
       pool: _poolAddress,
       onBehalfOf: user.get('ethAddress'),
       referralCode: 0,
      },
-      msgValue: Moralis.Units.ETH(_amount),
+      msgValue: _amount,
   };
   Moralis.executeFunction(options);
   }
-  //WITHDRAW ETH (not WETH)
+//WITHDRAW ETH (not WETH)
 async function withdrawETH(_amount, _poolAddress) {
     let options = {
       contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
@@ -182,31 +181,40 @@ function getRinkebyABI(_contractAddress){
 /////    ERC20 WETH     ///
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
-  approveERC20(aWETH, Moralis.Units.ETH("10000"), getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-ETH").value;
+  approveERC20(aWETH, Moralis.Units.ETH(amountValue), getPoolContractAddress());};
 document.getElementById("btn-supplyETH").onclick = function() {
-  supplyETH(0.001, getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-ETH").value;
+  supplyETH(Moralis.Units.ETH(amountValue), getPoolContractAddress());};
 document.getElementById("btn-withdrawETH").onclick = function() {
-  withdrawETH(1000000000000000, getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-ETH").value;
+  withdrawETH(Moralis.Units.ETH(amountValue), getPoolContractAddress());};
 
   //////////////////////////
 /////    ERC20 WBTC     ///
 //////////////////////////
 document.getElementById("btn-approveWBTC").onclick = function() {
-  approveERC20(WBTC, Moralis.Units.ETH(10000), getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-WBTC").value;
+  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
 document.getElementById("btn-supplyWBTC").onclick = function() {
-  supplyERC20(WBTC, 100000, getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-WBTC").value;
+  supplyERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
 document.getElementById("btn-withdrawWBTC").onclick = function() {
-  withdrawERC20(WBTC, 100000, getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-WBTC").value;
+  withdrawERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
   
   //////////////////////////
 /////    ERC20 DAI     ///
 //////////////////////////
 document.getElementById("btn-approveDAI").onclick = function() {
-  approveERC20(DAI, Moralis.Units.ETH(10000), getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-DAI").value;
+  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyDAI").onclick = function() {
-  supplyERC20(DAI, Moralis.Units.ETH(10), getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-DAI").value;
+  supplyERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-withdrawDAI").onclick = function() {
-  withdrawERC20(DAI, Moralis.Units.ETH(10), getPoolContractAddress());};
+  var amountValue =  document.getElementById("amount-DAI").value;
+  withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-getPool")
   .onclick= function() {
     let _contractAddress = "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C";
@@ -215,8 +223,8 @@ document.getElementById("btn-getPool")
 //////////////////////////
 /////    FAUCETS     /////
 //////////////////////////
-document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet(WBTC, 10000000000);}; //10WBTC
-document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, 10000); //10000 DAI
+document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet(WBTC, Moralis.Units.Token("10", "8"));}; //10WBTC
+document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moralis.Units.Token("10000", "18")); //10000 DAI
 }
 
 // -----------------------
