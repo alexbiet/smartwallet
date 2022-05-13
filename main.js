@@ -9,28 +9,28 @@ const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
 Moralis.start({ serverUrl, appId });
 
-let user = Moralis.User.current();
-async function login() {
-  let user = Moralis.User.current();
-  if (!user) {
-      try {
-          user = await Moralis.authenticate({ signingMessage: "Hello World!" });
-          await Moralis.enableWeb3();
-          // console.log(user);
-          // console.log(user.get('ethAddress'));
-      } catch (error) {
-          console.log(error)
-      }
-  }
-}
+// let user = Moralis.User.current();
+// async function login() {
+//   let user = Moralis.User.current();
+//   if (!user) {
+//       try {
+//           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
+//           await Moralis.enableWeb3();
+//           // console.log(user);
+//           // console.log(user.get('ethAddress'));
+//       } catch (error) {
+//           console.log(error)
+//       }
+//   }
+// }
 
-async function logOut() {
-  await Moralis.User.logOut();
-  console.log("logged out");
-}
+// async function logOut() {
+//   await Moralis.User.logOut();
+//   console.log("logged out");
+// }
 
-document.getElementById("btn-login").onclick = login;
-document.getElementById("btn-logout").onclick = logOut;
+// document.getElementById("btn-login").onclick = login;
+// document.getElementById("btn-logout").onclick = logOut;
 
 
 
@@ -95,7 +95,7 @@ async function supplyERC20(_tokenAddress, _amount, _poolAddress){
    params: {
      asset: _tokenAddress,
      amount: _amount,
-     onBehalfOf: user.get('ethAddress'),
+     onBehalfOf: selectedAccount,
      referralCode: 0,
    }
    };
@@ -109,7 +109,7 @@ async function withdrawERC20(_tokenAddress, _amount, _poolAddress){
    params: {
      asset: _tokenAddress,
      amount: _amount,
-     to: user.get('ethAddress'),
+     to: selectedAccount,
    }
    };
    Moralis.executeFunction(supplyOptions);
@@ -122,7 +122,7 @@ async function supplyETH(_amount, _poolAddress) {
     abi: abis.WETHGateway,
     params: {
       pool: _poolAddress,
-      onBehalfOf: user.get('ethAddress'),
+      onBehalfOf: selectedAccount,
       referralCode: 0,
      },
       msgValue: _amount,
@@ -138,7 +138,7 @@ async function withdrawETH(_amount, _poolAddress) {
       params: {
         pool: _poolAddress,
         amount: _amount,
-        to: user.get('ethAddress'),
+        to: selectedAccount,
        },
     };
     Moralis.executeFunction(options);
@@ -286,12 +286,6 @@ var connectTabs = new Tabs();
 
 
 
-
-// sessionStorage.setItem('activeTab', 'Some Name');
-// var name = sessionStorage.getItem('activeTab');
-
-
-
 /////////////////////////////////////
 // Get ABI of any verified contract//
 // /////////////////////////////////////
@@ -313,121 +307,119 @@ var connectTabs = new Tabs();
 // WALLET CONNECT + METAMASK   //
 // ------------------------------
 
-// const Web3Modal = window.Web3Modal.default;
-// const WalletConnectProvider = window.WalletConnectProvider.default;
-// const Fortmatic = window.Fortmatic;
-// const evmChains = window.evmChains;
+const Web3Modal = window.Web3Modal.default;
+const WalletConnectProvider = window.WalletConnectProvider.default;
+const evmChains = window.evmChains;
 
-// let web3Modal;
-// let provider;
-// let selectedAccount;
+let web3Modal;
+let provider;
+let selectedAccount;
 
-// function init() {
+function init() {
+  const providerOptions = {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
+      }
+    }
+  };
 
-//   const providerOptions = {
-//     walletconnect: {
-//       package: WalletConnectProvider,
-//       options: {
-//         infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
-//       }
-//     }
-//   };
+  web3Modal = new Web3Modal({
+    cacheProvider: false, // optional
+    providerOptions, // required
+    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+  });
 
-//   web3Modal = new Web3Modal({
-//     cacheProvider: false, // optional
-//     providerOptions, // required
-//     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
-//   });
-
-//   console.log("Web3Modal instance is", web3Modal);
-// }
+  console.log("Web3Modal instance is", web3Modal);
+}
 
 
 
-// async function fetchAccountData() {
+async function fetchAccountData() {
 
-//   const web3 = new Web3(provider);
+  const web3 = new Web3(provider);
 
-//   console.log("Web3 instance is", web3);
+  console.log("Web3 instance is", web3);
 
-//   const chainId = await web3.eth.getChainId();
-//   const chainData = evmChains.getChain(chainId);
-//   document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
+  const chainId = await web3.eth.getChainId();
+  const chainData = evmChains.getChain(chainId);
+  document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
 
-//   const accounts = await web3.eth.getAccounts();
-//   console.log("Got accounts", accounts);
-//   selectedAccount = accounts[0];
-//   const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
-//   const selectedEthBalance = web3.utils.fromWei(selectedAccountBalance, "ether");
-//   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
-//   const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
+  const accounts = await web3.eth.getAccounts();
+  console.log("Got accounts", accounts);
+  selectedAccount = accounts[0];
+  const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
+  const selectedEthBalance = web3.utils.fromWei(selectedAccountBalance, "ether");
+  const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
+  const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
 
-//   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
-//   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
+  document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
+  document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
-//   // Display fully loaded UI for wallet data
-//   document.querySelector("#prepare").style.display = "none";
-//   document.querySelector("#connected").style.display = "inline-block";
-// }
-
-
-// async function refreshAccountData() {
-//   document.querySelector("#connected").style.display = "none";
-//   document.querySelector("#prepare").style.display = "block";
-//   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
-//   await fetchAccountData(provider);
-//   document.querySelector("#btn-connect").removeAttribute("disabled")
-// }
+  // Display fully loaded UI for wallet data
+  document.querySelector("#prepare").style.display = "none";
+  document.querySelector("#connected").style.display = "inline-block";
+}
 
 
-// async function onConnect() {
-
-//   console.log("Opening a dialog", web3Modal);
-//   try {
-//     provider = await web3Modal.connect();
-//   } catch(e) {
-//     console.log("Could not get a wallet connection", e);
-//     return;
-//   }
-
-//   // Subscribe to accounts change
-//   provider.on("accountsChanged", (accounts) => {
-//     fetchAccountData();
-//   });
-
-//   // Subscribe to chainId change
-//   provider.on("chainChanged", (chainId) => {
-//     fetchAccountData();
-//   });
-
-//   // Subscribe to networkId change
-//   provider.on("networkChanged", (networkId) => {
-//     fetchAccountData();
-//   });
-
-//   await refreshAccountData();
-// }
+async function refreshAccountData() {
+  document.querySelector("#connected").style.display = "none";
+  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+  await fetchAccountData(provider);
+  document.querySelector("#btn-connect").removeAttribute("disabled")
+}
 
 
-// async function onDisconnect() {
+async function onConnect() {
+  console.log("Opening a dialog", web3Modal);
+  try {
+    provider = await web3Modal.connect();
+    await Moralis.enableWeb3({ provider: provider });
+  } catch(e) {
+    console.log("Could not get a wallet connection", e);
+    return;
+  }
 
-//   console.log("Killing the wallet connection", provider);
+  // Subscribe to accounts change
+  provider.on("accountsChanged", (accounts) => {
+    fetchAccountData();
+  });
 
-//   if(provider.close) {
-//     await provider.close();
-//     await web3Modal.clearCachedProvider();
-//     provider = null;
-//   }
+  // Subscribe to chainId change
+  provider.on("chainChanged", (chainId) => {
+    fetchAccountData();
+  });
 
-//   selectedAccount = null;
+  // Subscribe to networkId change
+  provider.on("networkChanged", (networkId) => {
+    fetchAccountData();
+  });
 
-//   document.querySelector("#prepare").style.display = "block";
-//   document.querySelector("#connected").style.display = "none";
-// }
+  await refreshAccountData();
+}
 
 
-// window.addEventListener('load', async () => {
-//   init();
-//   document.querySelector("#btn-connect").addEventListener("click", onConnect);
-//   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
-// });
+async function onDisconnect() {
+
+  console.log("Killing the wallet connection", provider);
+
+  if(provider.close) {
+    await provider.close();
+    await web3Modal.clearCachedProvider();
+    provider = null;
+  }
+
+  selectedAccount = null;
+
+  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#connected").style.display = "none";
+}
+
+
+window.addEventListener('load', async () => {
+  init();
+  document.querySelector("#btn-connect").addEventListener("click", onConnect);
+  document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+});
