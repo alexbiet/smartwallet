@@ -311,6 +311,7 @@ const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const evmChains = window.evmChains;
 
+
 let web3Modal;
 let provider;
 let selectedAccount;
@@ -376,7 +377,17 @@ async function onConnect() {
   console.log("Opening a dialog", web3Modal);
   try {
     provider = await web3Modal.connect();
-    await Moralis.enableWeb3({ provider: provider });
+    // console.log(provider.isMetaMask);
+    
+    let moralisProvider = provider.isMetaMask;
+
+    if (moralisProvider === undefined) {
+      moralisProvider = "walletconnect";
+    } else {
+      moralisProvider = "metamask";
+    }
+    await Moralis.enableWeb3({ provider: moralisProvider });
+
   } catch(e) {
     console.log("Could not get a wallet connection", e);
     return;
