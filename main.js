@@ -34,14 +34,6 @@ document.getElementById("btn-logout").onclick = logOut;
 
 
 
-// -----------------------
-// Wallet Connect       //
-// -----------------------
-
-// TO IMPLEMENT
-
-
-
 // --------------------------
 // Polygon Mumbai Donation //
 // --------------------------
@@ -238,6 +230,15 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moral
 
 function Tabs() {
   var bindAll = function() {
+    var getActiveDataTab = sessionStorage.getItem('activeDataTab');
+    if(getActiveDataTab !== "") {
+      clear();
+      $('[data-tab="'+ getActiveDataTab +'"]').addClass('active');
+      document.getElementById(getActiveDataTab).classList.add('active');
+    } else {
+      sessionStorage.setItem('activeDataTab', 'view-1');
+    }
+
     var menuElements = document.querySelectorAll('[data-tab]');
     for(var i = 0; i < menuElements.length ; i++) {
       menuElements[i].addEventListener('click', change, false);
@@ -257,6 +258,7 @@ function Tabs() {
     clear();
     e.target.classList.add('active');
     var id = e.currentTarget.getAttribute('data-tab');
+    sessionStorage.setItem('activeDataTab', id);
     document.getElementById(id).classList.add('active');
   }
 
@@ -265,6 +267,11 @@ function Tabs() {
 
 var connectTabs = new Tabs();
 
+
+
+
+// sessionStorage.setItem('activeTab', 'Some Name');
+// var name = sessionStorage.getItem('activeTab');
 
 
 
