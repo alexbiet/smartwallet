@@ -317,6 +317,7 @@ let provider;
 let selectedAccount;
 
 function init() {
+  
   const providerOptions = {
     walletconnect: {
       package: WalletConnectProvider,
@@ -324,6 +325,7 @@ function init() {
         infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
       }
     }
+    
   };
 
   web3Modal = new Web3Modal({
@@ -333,6 +335,11 @@ function init() {
   });
 
   console.log("Web3Modal instance is", web3Modal);
+
+  if (localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) {
+    console.log(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER"))
+    onConnect();
+  }
 }
 
 
@@ -340,6 +347,7 @@ function init() {
 async function fetchAccountData() {
 
   const web3 = new Web3(provider);
+  localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", "TRUE" );
 
   console.log("Web3 instance is", web3);
 
@@ -413,9 +421,8 @@ async function onConnect() {
 
 
 async function onDisconnect() {
-
+  localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", "FALSE");
   console.log("Killing the wallet connection", provider);
-
   if(provider.close) {
     await provider.close();
     await web3Modal.clearCachedProvider();
