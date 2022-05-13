@@ -228,21 +228,38 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moral
 // TABS NAV             //
 // -----------------------
 
+
+// sessionStorage.removeItem('activeDataTab');
+
 function Tabs() {
+
   var bindAll = function() {
-    var getActiveDataTab = sessionStorage.getItem('activeDataTab');
-    if(getActiveDataTab !== "") {
+
+    var getActiveDataTab;
+
+    if(sessionStorage.getItem('activeDataTab') === null) {
+      sessionStorage.setItem('activeDataTab', 'view-1');
+      getActiveDataTab = sessionStorage.setItem('activeDataTab', 'view-1');
+    }
+
+    if(sessionStorage.getItem('activeDataTab') !== "") {
+      getActiveDataTab = sessionStorage.getItem('activeDataTab');
       clear();
       $('[data-tab="'+ getActiveDataTab +'"]').addClass('active');
-      document.getElementById(getActiveDataTab).classList.add('active');
+      $("#" + getActiveDataTab).addClass('active');
     } else {
       sessionStorage.setItem('activeDataTab', 'view-1');
+      getActiveDataTab = sessionStorage.getItem('activeDataTab');
+      clear();
+      $('[data-tab="'+ getActiveDataTab +'"]').addClass('active');
+      $("#" + getActiveDataTab).addClass('active');
     }
 
     var menuElements = document.querySelectorAll('[data-tab]');
     for(var i = 0; i < menuElements.length ; i++) {
       menuElements[i].addEventListener('click', change, false);
     }
+    
   }
 
   var clear = function() {
