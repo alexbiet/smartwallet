@@ -19,3 +19,16 @@ body {
     color: #ff8400 !important;
     font-weight: bold;
   }
+
+/*// tempCSS START//*/
+.btn-primary {
+  margin: 5px;
+  padding: 5px 20px;
+  text-align: center;
+}
+.asset-container {
+  display: flex;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+/*// tempCSS FINISH//*/
