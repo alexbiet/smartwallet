@@ -228,9 +228,6 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moral
 // TABS NAV             //
 // -----------------------
 
-
-// sessionStorage.removeItem('activeDataTab');
-
 function Tabs() {
 
   var bindAll = function() {
@@ -286,23 +283,6 @@ var connectTabs = new Tabs();
 
 
 
-/////////////////////////////////////
-// Get ABI of any verified contract//
-// /////////////////////////////////////
-// function queryABIrinkeby(_contractAddress) {
-
-    
-// }
-
-// //queryABIrinkeby("0xBA6378f1c1D046e9EB0F538560BA7558546edF3C")
-// // .then((json) => { console.log(json)})
-
-
-
-
-
-
-
 // ------------------------------
 // WALLET CONNECT + METAMASK   //
 // ------------------------------
@@ -325,7 +305,6 @@ function init() {
         infuraId: "4a50be229d4d485cb7b65eec5e5d9440",
       }
     }
-    
   };
 
   web3Modal = new Web3Modal({
@@ -336,10 +315,6 @@ function init() {
 
   console.log("Web3Modal instance is", web3Modal);
 
-  if (localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) {
-    console.log(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER"))
-    onConnect();
-  }
 }
 
 
@@ -347,7 +322,6 @@ function init() {
 async function fetchAccountData() {
 
   const web3 = new Web3(provider);
-  localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", "TRUE" );
 
   console.log("Web3 instance is", web3);
 
@@ -381,11 +355,23 @@ async function refreshAccountData() {
 }
 
 
+async function walletSession() {
+  // if (localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) {
+
+  //   if (web3Modal.cachedProvider) {
+  //     onConnect();
+  //   }
+  
+  // }
+}
+
+
 async function onConnect() {
   console.log("Opening a dialog", web3Modal);
   try {
     provider = await web3Modal.connect();
     // console.log(provider.isMetaMask);
+    localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", true);
     
     let moralisProvider = provider.isMetaMask;
 
@@ -421,23 +407,27 @@ async function onConnect() {
 
 
 async function onDisconnect() {
-  localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", "FALSE");
+
   console.log("Killing the wallet connection", provider);
+
   if(provider.close) {
     await provider.close();
     await web3Modal.clearCachedProvider();
     provider = null;
+    localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", false);
   }
 
   selectedAccount = null;
 
   document.querySelector("#prepare").style.display = "block";
   document.querySelector("#connected").style.display = "none";
+
 }
 
 
 window.addEventListener('load', async () => {
   init();
+  walletSession();
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
 });
