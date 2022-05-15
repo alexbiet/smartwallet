@@ -26,17 +26,16 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" data-tab="view-1" class="nav-link px-2 text-white active">My Wallet</a></li>
-              <li><a href="#" data-tab="view-2" class="nav-link px-2 text-white">Aave Staking</a></li>
+              <li><a href="#" data-tab="view-1" class="nav-link px-2 text-white">Aave Yield</a></li>
+              <li><a href="#" data-tab="view-2" class="nav-link px-2 text-white">Buy Crypto</a></li>
               <li><a href="#" data-tab="view-3" class="nav-link px-2 text-white">Donate</a></li>
-              <li><a href="#" data-tab="view-4" class="nav-link px-2 text-white">Buy Crypto (Transak)</a></li>
             </ul>
 
             <div class="text-end">
               <!-- <button class="btn btn-warning" id="btn-login">Metamask Connect</button>
               <button class="btn btn-outline-light me-2" id="btn-logout">Logout</button> -->
 
-              <div id="prepare">
+              <div id="not-connected">
                 <button class="btn btn-warning" id="btn-connect">
                   Connect Wallet
                 </button>
@@ -75,15 +74,8 @@
               <br>
               <br>
 
-
-              <!-- MY WALLET -->
-              <div id="view-1" class="b-tab active">
-                My wallet - implement details...
-              </div>
-
-
-              <!-- STAKING AAVE -->
-              <div id="view-2" class="b-tab">
+              <!-- AAVE YIELD -->
+              <div id="view-1" class="b-tab">
                   <div class = asset-container>
                     <input type="text" id="amount-ETH" class="form-control" placeholder="e.g. 0.01" aria-label="ETH Amount" aria-describedby="button-addon2">
                     <button class="btn btn-primary" id="btn-supplyETH">supply ETH</button>
@@ -111,18 +103,8 @@
               </div>
 
 
-              <!-- DONATE -->
-              <div id="view-3" class="b-tab ">
-                <div class="input-group">
-                  <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
-                  <span class="input-group-text">MATIC</span>
-                  <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
-                </div>
-              </div>
-
-
               <!-- BUY CRYPTO (TRANSAK) -->
-              <div id="view-4" class="b-tab">
+              <div id="view-2" class="b-tab">
                 <iframe height="625" title="Transak On/Off Ramp Widget"
                     src="https://staging-global.transak.com?apiKey=7fc30c92-ef84-4d9d-b411-c2e12fe02677&cryptoCurrencyCode=DAI"
                     frameborder="no" allowtransparency="true" allowfullscreen=""
@@ -131,6 +113,14 @@
               </div>
 
 
+              <!-- DONATE -->
+              <div id="view-3" class="b-tab ">
+                <div class="input-group">
+                  <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
+                  <span class="input-group-text">MATIC</span>
+                  <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
+                </div>
+              </div>
 
 
               </div>

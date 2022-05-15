@@ -9,31 +9,6 @@ const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
 Moralis.start({ serverUrl, appId });
 
-// let user = Moralis.User.current();
-// async function login() {
-//   let user = Moralis.User.current();
-//   if (!user) {
-//       try {
-//           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
-//           await Moralis.enableWeb3();
-//           // console.log(user);
-//           // console.log(user.get('ethAddress'));
-//       } catch (error) {
-//           console.log(error)
-//       }
-//   }
-// }
-
-// async function logOut() {
-//   await Moralis.User.logOut();
-//   console.log("logged out");
-// }
-
-// document.getElementById("btn-login").onclick = login;
-// document.getElementById("btn-logout").onclick = logOut;
-
-
-
 // --------------------------
 // Polygon Mumbai Donation //
 // --------------------------
@@ -58,7 +33,7 @@ document.getElementById("btn-donate").onclick = function () {
 
 
 // --------------------------//
-// Aave Rinkeby Functions ////
+// Aave Rinkeby Functions    //
 // --------------------------//
 
 //Gets the current pool contract address (address sometimes changes, ABI doesn't)
@@ -287,14 +262,39 @@ var connectTabs = new Tabs();
 // WALLET CONNECT + METAMASK   //
 // ------------------------------
 
+// let user = Moralis.User.current();
+// async function login() {
+//   let user = Moralis.User.current();
+//   if (!user) {
+//       try {
+//           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
+//           await Moralis.enableWeb3();
+//           // console.log(user);
+//           // console.log(user.get('ethAddress'));
+//       } catch (error) {
+//           console.log(error)
+//       }
+//   }
+// }
+
+// async function logOut() {
+//   await Moralis.User.logOut();
+//   console.log("logged out");
+// }
+
+// document.getElementById("btn-login").onclick = login;
+// document.getElementById("btn-logout").onclick = logOut;
+
+
+
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const evmChains = window.evmChains;
 
-
 let web3Modal;
 let provider;
 let selectedAccount;
+
 
 function init() {
   
@@ -308,9 +308,9 @@ function init() {
   };
 
   web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
-    providerOptions, // required
-    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+    cacheProvider: true,
+    providerOptions,
+    disableInjectedProvider: false,
   });
 
   console.log("Web3Modal instance is", web3Modal);
@@ -330,6 +330,7 @@ async function fetchAccountData() {
   document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
 
   const accounts = await web3.eth.getAccounts();
+
   console.log("Got accounts", accounts);
   selectedAccount = accounts[0];
   const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
@@ -341,28 +342,17 @@ async function fetchAccountData() {
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
   // Display fully loaded UI for wallet data
-  document.querySelector("#prepare").style.display = "none";
+  document.querySelector("#not-connected").style.display = "none";
   document.querySelector("#connected").style.display = "inline-block";
 }
 
 
 async function refreshAccountData() {
   document.querySelector("#connected").style.display = "none";
-  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#not-connected").style.display = "block";
   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
   await fetchAccountData(provider);
   document.querySelector("#btn-connect").removeAttribute("disabled")
-}
-
-
-async function walletSession() {
-  // if (localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) {
-
-  //   if (web3Modal.cachedProvider) {
-  //     onConnect();
-  //   }
-  
-  // }
 }
 
 
@@ -370,8 +360,6 @@ async function onConnect() {
   console.log("Opening a dialog", web3Modal);
   try {
     provider = await web3Modal.connect();
-    // console.log(provider.isMetaMask);
-    localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", true);
     
     let moralisProvider = provider.isMetaMask;
 
@@ -414,20 +402,20 @@ async function onDisconnect() {
     await provider.close();
     await web3Modal.clearCachedProvider();
     provider = null;
-    localStorage.setItem("WEB3_CONNECT_CACHED_PROVIDER", false);
   }
-
+  localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
   selectedAccount = null;
 
-  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#not-connected").style.display = "block";
   document.querySelector("#connected").style.display = "none";
 
 }
 
-
+ 
 window.addEventListener('load', async () => {
   init();
-  walletSession();
+  if(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) await onConnect();
+
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
 });
