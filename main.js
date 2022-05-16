@@ -152,6 +152,21 @@ async function getRates(_asset){
     document.getElementById("interestDisplayWETH").innerHTML += depositAPY + "%";
 
  }
+ 
+ async function getPrice(_asset){
+  let options = {
+    contractAddress: await getPoolContractAddress(),
+    functionName: "getPriceOracle",
+    abi: abis.poolContract,
+    params: {
+      asset: _asset,
+    }};
+    let subGraph = await Moralis.executeFunction(options);
+    let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
+    let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
+    document.getElementById("interestDisplayWETH").innerHTML += depositAPY + "%";
+
+ }
 
 async function ERC20Faucet(_token, _amount) {
       let options = {
@@ -182,7 +197,7 @@ async function ERC20Faucet(_token, _amount) {
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"));};
+  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
   supplyETH(Moralis.Units.ETH(amountValue));};
