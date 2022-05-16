@@ -81,24 +81,29 @@
                     <button class="btn btn-primary" id="btn-supplyETH">supply ETH</button>
                     <button class="btn btn-primary" id="btn-approveaWETH">approve aWETH</button>
                     <button class="btn btn-primary" id="btn-withdrawETH">withdraw ETH</button>
-                    <p class = "btn btn-secondary" id ="depositedWETH">Deposited Balance: 0</p>           
+                    <p class = "btn btn-secondary" id ="depositedWETH">Deposited Balance: 0</p>
+                    <p class = "btn btn-secondary" id ="interestDisplayWETH">Borrow APY: </p>                 
                   </div>
                   <div class = asset-container>  
                     <input type="text" id="amount-WBTC" class="form-control" placeholder="e.g. 0.01" aria-label="WBTC Amount" aria-describedby="button-addon2">                  
                     <button class="btn btn-primary" id="btn-approveWBTC">approve WBTC</button>
                     <button class="btn btn-primary" id="btn-supplyWBTC">supply WBTC</button>
                     <button class="btn btn-primary" id="btn-withdrawWBTC">withdraw WBTC</button>
+                    <p class = "btn btn-secondary" id ="depositedWBTC">Deposited Balance: 0</p>
+                    <p class = "btn btn-secondary" id ="interestDisplayWBTC">Borrow APY: </p>     
                   </div>
                   <div class = asset-container>
                     <input type="text" id="amount-DAI" class="form-control" placeholder="e.g. 0.01" aria-label="DAI Amount" aria-describedby="button-addon2">
                     <button class="btn btn-primary" id="btn-approveDAI">approve DAI</button>                     
                     <button class="btn btn-primary" id="btn-supplyDAI">supply DAI</button>
                     <button class="btn btn-primary" id="btn-withdrawDAI">withdraw DAI</button>
+                    <p class = "btn btn-secondary" id ="depositedDAI">Deposited Balance: 0</p>
+                    <p class = "btn btn-secondary" id ="interestDisplayDAI">Borrow APY: </p>     
                   </div>
                   <div class = asset-container>
                   <a href="https://rinkebyfaucet.com/" class="btn btn-primary" id="btn-faucetETH" target="_blank">faucet ETH (link)</a>
                   <button class="btn btn-primary" id="btn-faucetWBTC">faucet WBTC</button>
-                  <button class="btn btn-primary" id="btn-faucetDAI">faucet DAI</button>
+                  <button class="btn btn-primary" id="btn-faucetDAI">faucet DAI</button> 
                   </div>
                   <button class="btn btn-primary" id="btn-getPool">getAavePool</button>
               </div>
@@ -134,8 +139,8 @@
           <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
           <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.7.1/web3-provider.min.js"></script>
 
-          <!-- <script type="text/javascript" src="/node_modules/@aave/contract-helpers/dist/cjs/index.js"></script>
-          <script type="text/javascript" src="/node_modules/@aave/math-utils/dist/cjs/index.js"></script> -->
+          <!-- <script type="text/javascript" src="/node_modules/@aave/contract-helpers/dist/cjs/index.js"></script> -->
+          <!-- <script type="text/javascript" src="/node_modules/@aave/math-utils/dist/cjs/index.js"></script> -->
 
 
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

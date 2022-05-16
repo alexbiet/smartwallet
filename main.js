@@ -2,6 +2,7 @@
 const serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
+
 const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, return aWETH to user
 const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
@@ -62,9 +63,9 @@ async function approveERC20(_tokenAddress, _amount, spender){
   };
   Moralis.executeFunction(approveOptions);
 }
-async function supplyERC20(_tokenAddress, _amount, _poolAddress){
+async function supplyERC20(_tokenAddress, _amount){
  let supplyOptions = {
-   contractAddress: _poolAddress,
+   contractAddress: await getPoolContractAddress(),
    functionName: "supply",
    abi: abis.poolContract,
    params: {
@@ -76,9 +77,9 @@ async function supplyERC20(_tokenAddress, _amount, _poolAddress){
    };
    Moralis.executeFunction(supplyOptions);
 }
-async function withdrawERC20(_tokenAddress, _amount, _poolAddress){
+async function withdrawERC20(_tokenAddress, _amount){
  let supplyOptions = {
-   contractAddress: _poolAddress,
+   contractAddress: await getPoolContractAddress(),
    functionName: "withdraw",
    abi: abis.poolContract,
    params: {
@@ -90,13 +91,13 @@ async function withdrawERC20(_tokenAddress, _amount, _poolAddress){
    Moralis.executeFunction(supplyOptions);
 }
 //DEPOSIT ETH (not WETH)
-async function supplyETH(_amount, _poolAddress) {
+async function supplyETH(_amount) {
   let options = {
     contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
     functionName: "depositETH",
     abi: abis.WETHGateway,
     params: {
-      pool: _poolAddress,
+      pool: await getPoolContractAddress(),
       onBehalfOf: selectedAccount,
       referralCode: 0,
      },
@@ -105,13 +106,13 @@ async function supplyETH(_amount, _poolAddress) {
   Moralis.executeFunction(options);
   }
 //WITHDRAW ETH (not WETH)
-async function withdrawETH(_amount, _poolAddress) {
+async function withdrawETH(_amount) {
     let options = {
       contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
       functionName: "withdrawETH",
       abi: abis.WETHGateway,
       params: {
-        pool: _poolAddress,
+        pool: await getPoolContractAddress(),
         amount: _amount,
         to: selectedAccount,
        },
@@ -119,20 +120,39 @@ async function withdrawETH(_amount, _poolAddress) {
     
   Moralis.executeFunction(options);
 }
-async function getDepositedValue(_poolAddress) {
+//getValueDeposited on Aave
+async function getDepositedValue(_asset, _assetName) {
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
     abi: abis.AaveProtocolDataProvider,
     params: {
-      asset: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+      asset: _asset,
       user: selectedAccount,
       },
   };
-  let returnVal = await Moralis.executeFunction(options);
-  returnVal = await Moralis.Units.FromWei(returnVal.currentATokenBalance);
-  document.getElementById("depositedWETH").innerHTML = `Deposited Balance: ${returnVal}`;
+  let subGraph = await Moralis.executeFunction(options);
+  let returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance);
+  returnVal = Math.abs(returnVal).toFixed(4);
+  document.getElementById(`deposited${_assetName}`).innerHTML = "Deposited Balance: " + returnVal;
+  console.log(_assetName)
   }
+//
+async function getRates(_asset){
+  let options = {
+    contractAddress: await getPoolContractAddress(),
+    functionName: "getReserveData",
+    abi: abis.poolContract,
+    params: {
+      asset: _asset,
+    }};
+    let subGraph = await Moralis.executeFunction(options);
+    let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
+    let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
+    document.getElementById("interestDisplayWETH").innerHTML += depositAPY + "%";
+    
+ }
+
 async function ERC20Faucet(_token, _amount) {
       let options = {
         contractAddress: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
@@ -143,61 +163,60 @@ async function ERC20Faucet(_token, _amount) {
           _amount: _amount,
          },
       };
+
       Moralis.executeFunction(options);
       }
     
 
 //FetchABI WIP/////////////
-function getRinkebyABI(_contractAddress){
-  $.getJSON(`https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=${_contractAddress}&apikey=AG1IR692DPYC6M7VPNMEUCXV27N85NEANM`, function(json){
-      return json["result"]
-    }).done(function(data) {
-      getPoolContractAddress(JSON.parse(data.result))
-    });
-  }
+// function getRinkebyABI(_contractAddress){
+//   $.getJSON(`https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=${_contractAddress}&apikey=AG1IR692DPYC6M7VPNMEUCXV27N85NEANM`, function(json){
+//       return json["result"]
+//     }).done(function(data) {
+//       getPoolContractAddress(JSON.parse(data.result))
+//     });
+//   }
   
   //////////////////////////
 /////    ERC20 WETH     ///
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
+  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-supplyETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  supplyETH(Moralis.Units.ETH(amountValue), getPoolContractAddress());};
+  supplyETH(Moralis.Units.ETH(amountValue));};
 document.getElementById("btn-withdrawETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  withdrawETH(Moralis.Units.ETH(amountValue), getPoolContractAddress());};
+  withdrawETH(Moralis.Units.ETH(amountValue));};
 
   //////////////////////////
 /////    ERC20 WBTC     ///
 //////////////////////////
 document.getElementById("btn-approveWBTC").onclick = function() {
   var amountValue =  document.getElementById("amount-WBTC").value;
-  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
+  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
 document.getElementById("btn-supplyWBTC").onclick = function() {
   var amountValue =  document.getElementById("amount-WBTC").value;
-  supplyERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
+  supplyERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
 document.getElementById("btn-withdrawWBTC").onclick = function() {
   var amountValue =  document.getElementById("amount-WBTC").value;
-  withdrawERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
+  withdrawERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
   
   //////////////////////////
 /////    ERC20 DAI     ///
 //////////////////////////
 document.getElementById("btn-approveDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
-  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
+  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-supplyDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
-  supplyERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
+  supplyERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-withdrawDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
-  withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
-document.getElementById("btn-getPool")
-  .onclick= function() {
-    let _contractAddress = "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C";
-    getRinkebyABI(_contractAddress);
+  withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
+document.getElementById("btn-getPool").onclick= function() {
+  console.log("testButton")
   }
 
 //////////////////////////
@@ -272,35 +291,10 @@ function Tabs() {
 
 var connectTabs = new Tabs();
 
-// ------------------------------
-// WALLET CONNECT + METAMASK   //
-// ------------------------------
 
-// let user = Moralis.User.current();
-// async function login() {
-//   let user = Moralis.User.current();
-//   if (!user) {
-//       try {
-//           user = await Moralis.authenticate({ signingMessage: "Hello World!" });
-//           await Moralis.enableWeb3();
-//           // console.log(user);
-//           // console.log(user.get('ethAddress'));
-//       } catch (error) {
-//           console.log(error)
-//       }
-//   }
-// }
-
-// async function logOut() {
-//   await Moralis.User.logOut();
-//   console.log("logged out");
-// }
-
-// document.getElementById("btn-login").onclick = login;
-// document.getElementById("btn-logout").onclick = logOut;
-
-
-
+////////////////
+///Web3 Modal///
+////////////////
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const evmChains = window.evmChains;
@@ -429,8 +423,14 @@ async function onDisconnect() {
 window.addEventListener('load', async () => {
   init();
   if(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) await onConnect();
-
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
-  getDepositedValue(getPoolContractAddress);
+
+  
+  //Update Deposited Values for Aave _tokenAddress _tokenName
+  // async () => {
+  // await getDepositedValue(aWETH, Object.keys({aWETH})[0]);
+  // await getRates(aWETH, Object.keys({aWETH})[0]);
+// }
+    
 });
