@@ -47,10 +47,22 @@ const options = {
   params: { },
 };
  const lendingPoolAddress = await Moralis.Web3API.native.runContractFunction(options);
- console.log("currentPoolAddress: " + lendingPoolAddress)
+ console.log("current PoolAddress: " + lendingPoolAddress)
  return lendingPoolAddress;
 }
-
+//Gets priceOracle contract Address
+async function getPriceOracle() {
+  const options = {
+    chain: "rinkeby",
+    address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
+    function_name: "getPriceOracle",
+    abi: abis.poolAddressProvider,
+    params: { },
+  };
+   const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
+   console.log("current PriceOracleAddress: " + priceOracleAddress)
+   return priceOracleAddress;
+  }
 async function approveERC20(_tokenAddress, _amount, spender){
   let approveOptions = {
     contractAddress: _tokenAddress,
@@ -152,6 +164,19 @@ async function getRates(_asset){
     document.getElementById("interestDisplayWETH").innerHTML += depositAPY + "%";
 
  }
+ 
+ async function getPrice(_asset){
+  let options = {
+    // contractAddress: await getPriceOracle(),
+    contractAddress: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
+    functionName: "getAssetPrice",
+    abi: abis.AaveOracle,
+    params: {
+      asset: _asset,
+    }};
+    let price = await Moralis.executeFunction(options);
+    console.log(Math.abs((price._hex) / 100000000));
+ }
 
 async function ERC20Faucet(_token, _amount) {
       let options = {
@@ -182,7 +207,7 @@ async function ERC20Faucet(_token, _amount) {
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
-  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"));};
+  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyETH").onclick = function() {
   var amountValue =  document.getElementById("amount-ETH").value;
   supplyETH(Moralis.Units.ETH(amountValue));};
@@ -216,7 +241,7 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
   withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-getPool").onclick= function() {
-  console.log("testButton")
+  getPrice(WBTC);
   }
 
 //////////////////////////
