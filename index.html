@@ -81,24 +81,26 @@
                   <button class="btn btn-primary" id="btn-supplyETH">supply ETH</button>
                   <button class="btn btn-primary" id="btn-approveaWETH">approve aWETH</button>
                   <button class="btn btn-primary" id="btn-withdrawETH">withdraw ETH</button>
-                  <p class = "btn btn-secondary" id ="depositedWETH">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayWETH">Borrow APY: </p>                 
-                </div> 
-                <div class = asset-container>  
-                  <input type="text" id="amount-WBTC" class="form-control" placeholder="e.g. 0.01" aria-label="WBTC Amount" aria-describedby="button-addon2">                  
+                  <p class = "btn btn-secondary" id ="depositedaWETH">Deposited Balance: 0</p>
+                  <p class = "btn btn-secondary" id ="interestDisplayWETH">Borrow APY: </p>
+                  <p class = "btn btn-secondary" id ="priceaWETH">ETH Price: </p>
+                </div>
+                <div class = asset-container>
+                  <input type="text" id="amount-WBTC" class="form-control" placeholder="e.g. 0.01" aria-label="WBTC Amount" aria-describedby="button-addon2">
                   <button class="btn btn-primary" id="btn-approveWBTC">approve WBTC</button>
                   <button class="btn btn-primary" id="btn-supplyWBTC">supply WBTC</button>
                   <button class="btn btn-primary" id="btn-withdrawWBTC">withdraw WBTC</button>
                   <p class = "btn btn-secondary" id ="depositedWBTC">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayWBTC">Borrow APY: </p>     
+                  <p class = "btn btn-secondary" id ="interestDisplayWBTC">Borrow APY: </p>
+                  <p class = "btn btn-secondary" id ="priceWBTC">WBTC Price: </p>
                 </div>
                 <div class = asset-container>
                   <input type="text" id="amount-DAI" class="form-control" placeholder="e.g. 0.01" aria-label="DAI Amount" aria-describedby="button-addon2">
-                  <button class="btn btn-primary" id="btn-approveDAI">approve DAI</button>                     
+                  <button class="btn btn-primary" id="btn-approveDAI">approve DAI</button>
                   <button class="btn btn-primary" id="btn-supplyDAI">supply DAI</button>
                   <button class="btn btn-primary" id="btn-withdrawDAI">withdraw DAI</button>
                   <p class = "btn btn-secondary" id ="depositedDAI">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayDAI">Borrow APY: </p>     
+                  <p class = "btn btn-secondary" id ="interestDisplayDAI">Borrow APY: </p>
                 </div>-->
 
                 <p>Dev tool: <button class="btn btn-primary" id="btn-getPool">getAavePool</button></p>
@@ -140,19 +142,19 @@
 
           <div class="col">
           <div class="card" style="width:24rem;">
-  
+
             <div class="card-body" style="padding-bottom:0;">
               <div class="row align-items-center">
                 <div class="col" style="max-width:52px;margin-right:10px;">
                   <img class="pull-left" style="display:inline-block;width:48px;" src="images/eth.svg" alt="Ethereum">
                 </div>
                 <div class="col">
-                    <h3 class="card-title" style="margin-bottom:0;">ETH</h3> 
+                    <h3 class="card-title" style="margin-bottom:0;">ETH</h3>
                     <span><small>ETHEREUM</small></span>
                 </div>
                 <div class="col">
 
-                  <!-- ETH - PRICE IN $ --> 
+                  <!-- ETH - PRICE IN $ -->
                   <p class="card-text text-end">1 ETH = <span id="eth-price">$1,830.23</span></p>
                 </div>
               </div>
@@ -161,23 +163,23 @@
 
             </div>
             <div class="card-body text-center" style="padding-top:0;">
-            
+
               <div class="row justify-content-center">
                 <div class="col text-end" style="padding-right:0;">
                     <p><strong>Your Balance:</strong></p>
                 </div>
-                <div class="col text-start" style="padding-left:8px;">  
+                <div class="col text-start" style="padding-left:8px;">
 
-                  <!-- ETH - BALANCE --> 
+                  <!-- ETH - BALANCE -->
                   <p><span id="eth-balance">0.03</span> ETH</p>
                 </div>
               </div>
-              
+
               <p>
                 <a href="javascript:void(0);" style="margin-right:0;" class="btn btn-primary btn-sm">BUY ETH</a>
                 <a href="https://rinkebyfaucet.com/" id="btn-faucetETH" target="_blank" class="btn btn-primary btn-sm">GET FAUCET ETH</a>
               </p>
-              
+
               <hr>
 
               <div class="row justify-content-center">
@@ -216,45 +218,45 @@
 
           <div class="col">
             <div class="card" style="width:24rem;">
-    
+
               <div class="card-body" style="padding-bottom:0;">
                 <div class="row align-items-center">
                   <div class="col" style="max-width:52px;margin-right:10px;">
                     <img class="pull-left" style="display:inline-block;width:48px;" src="images/wbtc.svg" alt="Wrapped BTC">
                   </div>
                   <div class="col">
-                      <h3 class="card-title" style="margin-bottom:0;">WBTC</h3> 
+                      <h3 class="card-title" style="margin-bottom:0;">WBTC</h3>
                       <span><small>WRAPPED BTC</small></span>
                   </div>
                   <div class="col">
 
-                    <!-- WBTC - PRICE IN $ --> 
+                    <!-- WBTC - PRICE IN $ -->
                     <p class="card-text text-end">1 WBTC = <span id="wbtc-price">$31,830.23</span></p>
                   </div>
                 </div>
-  
+
                 <hr>
-  
+
               </div>
               <div class="card-body text-center" style="padding-top:0;">
-              
+
                 <div class="row justify-content-center">
                   <div class="col text-end" style="padding-right:0;">
                       <p><strong>Your Balance:</strong></p>
                   </div>
-                  <div class="col text-start" style="padding-left:8px;">   
+                  <div class="col text-start" style="padding-left:8px;">
                     <!-- WBTC - BALANCE -->
                     <p><span id="wbtc-balance">0.03</span> WBTC</p>
                   </div>
                 </div>
-                
+
                 <p>
                   <a href="#" style="margin-right:0;" class="btn btn-primary btn-sm">BUY WBTC</a>
                   <a href="#" id="btn-faucetWBTC" class="btn btn-primary btn-sm">GET FAUCET WBTC</a>
                 </p>
-                
+
                 <hr>
-  
+
                 <div class="row justify-content-center">
                   <div class="col text-end" style="padding-right:0;">
                     <p><strong>APY:</strong></p>
@@ -269,7 +271,7 @@
                     <p><span id="wbtc-earnings">0.0000003</span> WBTC</p>
                   </div>
                 </div>
-  
+
                 <p>
                   <div class="input-group">
                     <span class="input-group-text">WBTC</span>
@@ -281,7 +283,7 @@
                     <button id="btn-withdrawWBTC" class="btn btn-danger btn-sm" style="padding-right:12px;padding-left:12px;" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Withdraw"><i class="bi bi-dash-circle"></i></button>
                   </div>
                 </p>
-              
+
                 <a href="#" class="card-link">Learn more</a>
               </div>
             </div>
@@ -290,14 +292,14 @@
 
             <div class="col">
               <div class="card" style="width:24rem;">
-      
+
                 <div class="card-body" style="padding-bottom:0;">
                   <div class="row align-items-center">
                     <div class="col" style="max-width:52px;margin-right:10px;">
                       <img class="pull-left" style="display:inline-block;width:48px;" src="images/dai.svg" alt="DAI">
                     </div>
                     <div class="col">
-                        <h3 class="card-title" style="margin-bottom:0;">DAI</h3> 
+                        <h3 class="card-title" style="margin-bottom:0;">DAI</h3>
                         <span><small>DAI</small></span>
                     </div>
                     <div class="col">
@@ -306,30 +308,30 @@
                       <p class="card-text text-end">1 DAI = <span id="dai-price">$1.00</span></p>
                     </div>
                   </div>
-    
+
                   <hr>
-    
+
                 </div>
                 <div class="card-body text-center" style="padding-top:0;">
-                
+
                   <div class="row justify-content-center">
                     <div class="col text-end" style="padding-right:0;">
                         <p><strong>Your Balance:</strong></p>
                     </div>
 
                     <!-- DAI - BALANCE -->
-                    <div class="col text-start" style="padding-left:8px;">   
+                    <div class="col text-start" style="padding-left:8px;">
                       <p><span id="dai-balance">0.03</span> DAI</p>
                     </div>
                   </div>
-                  
+
                   <p>
                     <a href="javascript:void(0);" style="margin-right:0;" class="btn btn-primary btn-sm">BUY DAI</a>
                     <a href="javascript:void(0);" id="btn-faucetDAI" class="btn btn-primary btn-sm">GET FAUCET DAI</a>
                   </p>
-                  
+
                   <hr>
-    
+
                   <div class="row justify-content-center">
                     <div class="col text-end" style="padding-right:0;">
                       <p><strong>APY:</strong></p>
@@ -344,7 +346,7 @@
                       <p><span id="dai-earnings">0.0000003</span> DAI</p>
                     </div>
                   </div>
-    
+
                   <p>
                     <div class="input-group">
                       <span class="input-group-text">DAI</span>
@@ -356,13 +358,13 @@
                       <button id="btn-withdrawDAI" class="btn btn-danger btn-sm" style="padding-right:12px;padding-left:12px;" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Withdraw"><i class="bi bi-dash-circle"></i></button>
                     </div>
                   </p>
-                
+
                   <a href="javascript:void(0);" class="card-link">Learn more</a>
                 </div>
               </div>
               </div>
-  
-  
+
+
 
         </div>
       </div>

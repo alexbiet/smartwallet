@@ -62,6 +62,7 @@ async function getPriceOracle() {
    const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
    console.log("current PriceOracleAddress: " + priceOracleAddress)
    return priceOracleAddress;
+   
   }
 async function approveERC20(_tokenAddress, _amount, spender){
   let approveOptions = {
@@ -161,11 +162,11 @@ async function getRates(_asset){
     let subGraph = await Moralis.executeFunction(options);
     let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
     let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
-    document.getElementById("interestDisplayWETH").innerHTML += depositAPY + "%";
+    document.getElementById("interestDisplayWETH").innerHTML = `Deposit APY: ${depositAPY}%`;
 
  }
  
- async function getPrice(_asset){
+ async function getPrice(_asset, _assetName){
   let options = {
     // contractAddress: await getPriceOracle(),
     contractAddress: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
@@ -175,7 +176,8 @@ async function getRates(_asset){
       asset: _asset,
     }};
     let price = await Moralis.executeFunction(options);
-    console.log(Math.abs((price._hex) / 100000000));
+    price = Math.abs((price._hex) / 100000000);
+    document.getElementById(`price${_assetName}`).innerHTML = `${_assetName} Price: $${price}`;
  }
 
 async function ERC20Faucet(_token, _amount) {
@@ -241,7 +243,9 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
   withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-getPool").onclick= function() {
-  getPrice(WBTC);
+  getPrice(aWETH, Object.keys({aWETH})[0]);
+  getDepositedValue(aWETH, Object.keys({aWETH})[0]);
+  getRates(aWETH, Object.keys({aWETH})[0]);
   }
 
 //////////////////////////
@@ -479,7 +483,6 @@ async function onDisconnect() {
 window.addEventListener('load', async () => {
   init();
   if(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) await onConnect();
-
   // launchTransak(selectedAccount);
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
