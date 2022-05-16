@@ -116,8 +116,23 @@ async function withdrawETH(_amount, _poolAddress) {
         to: selectedAccount,
        },
     };
-    Moralis.executeFunction(options);
-    }
+    
+  Moralis.executeFunction(options);
+}
+async function getDepositedValue(_poolAddress) {
+  let options = {
+    contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
+    functionName: "getUserReserveData",
+    abi: abis.AaveProtocolDataProvider,
+    params: {
+      asset: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+      user: selectedAccount,
+      },
+  };
+  let returnVal = await Moralis.executeFunction(options);
+  returnVal = await Moralis.Units.FromWei(returnVal.currentATokenBalance);
+  document.getElementById("depositedWETH").innerHTML = `Deposited Balance: ${returnVal}`;
+  }
 async function ERC20Faucet(_token, _amount) {
       let options = {
         contractAddress: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
@@ -182,7 +197,8 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
 document.getElementById("btn-getPool")
   .onclick= function() {
     let _contractAddress = "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C";
-    getRinkebyABI(_contractAddress)};
+    getRinkebyABI(_contractAddress);
+  }
 
 //////////////////////////
 /////    FAUCETS     /////
@@ -255,8 +271,6 @@ function Tabs() {
 }
 
 var connectTabs = new Tabs();
-
-
 
 // ------------------------------
 // WALLET CONNECT + METAMASK   //
@@ -418,4 +432,5 @@ window.addEventListener('load', async () => {
 
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+  getDepositedValue(getPoolContractAddress);
 });
