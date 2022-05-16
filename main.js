@@ -195,7 +195,38 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moral
 // Transak              //
 // -----------------------
 
-// TO IMPLEMENT
+function launchTransak(_walletAddress) {
+  let transak = new TransakSDK.default({
+    apiKey: '7fc30c92-ef84-4d9d-b411-c2e12fe02677',  // Your API Key
+    environment: 'STAGING', // STAGING/PRODUCTION
+    hostURL: window.location.origin,
+    widgetHeight: '625px',
+    widgetWidth: '500px',
+    // Examples of some of the customization parameters you can pass
+    defaultCryptoCurrency: 'DAI', // Example 'ETH'
+    walletAddress: _walletAddress, // Your customer's wallet address
+    themeColor: 'azure', // App theme color
+    hideMenu: true,
+    fiatCurrency: '', // If you want to limit fiat selection eg 'USD'
+    email: '', // Your customer's email address
+    redirectURL: ''
+  });
+  transak.init();
+  // To get all the events
+  transak
+    .on(transak.ALL_EVENTS, (data) => {
+      console.log(data)
+    });
+  // This will trigger when the user marks payment is made.
+  transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+    console.log(orderData);
+    //transak.close();
+  });
+}
+// window.onload = function() {
+  // launchTransak(selectedAccount);
+  // console.log(await selectedAccount);
+// }
 
 
 
@@ -416,6 +447,7 @@ window.addEventListener('load', async () => {
   init();
   if(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) await onConnect();
 
+  // launchTransak(selectedAccount);
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
 });
