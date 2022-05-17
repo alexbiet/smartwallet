@@ -145,9 +145,14 @@ async function getDepositedValue(_asset, _assetName) {
       },
   };
   let subGraph = await Moralis.executeFunction(options);
-  let returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, subGraph.currentATokenBalance["_hex"].length-2); //balance, decimals
-  returnVal = Math.abs(returnVal).toFixed(4);
-  console.log(returnVal)
+  console.log(subGraph);
+  let returnVal;
+  if(_assetName === "aWETH"){
+  returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, 18); //balance, decimals
+  } else {
+  returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, subGraph.currentATokenBalance["_hex"].length-2); //balance, decimals
+  }
+  returnVal = Math.abs(returnVal).toFixed(3);
   document.getElementById(`deposited-${_assetName}`).innerHTML = returnVal;
   }
 //NumberFormatter//
@@ -414,11 +419,13 @@ async function fetchAccountData() {
   document.querySelector("#not-connected").style.display = "none";
   document.querySelector("#connected").style.display = "inline-block";
 
-  //Get and Display ETH Balance
+  ///////////////////
+  ///USER BALANCES///
+  ///////////////////
+  //update native ETH Balance
   var balanceShort = new BigNumber(selectedAccountBalance);
-  balanceShort = balanceShort.shiftedBy(-18).toFixed(4);
+  balanceShort = balanceShort.shiftedBy(-18).toFixed(3);
   document.getElementById("eth-balance").innerHTML = balanceShort;
-  
   //updateBalanceERC20
   updateBalanceERC20(WBTC);
   updateBalanceERC20(DAI);
