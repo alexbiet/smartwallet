@@ -2,8 +2,12 @@
 const serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
+//MARK TEMPORARY OVERIDE
+// serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
+// appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
 
-const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, return aWETH to user
+
+const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, returns aWETH to user
 const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
@@ -47,7 +51,7 @@ const options = {
   params: { },
 };
  const lendingPoolAddress = await Moralis.Web3API.native.runContractFunction(options);
- console.log("current PoolAddress: " + lendingPoolAddress)
+ //console.log("current PoolAddress: " + lendingPoolAddress)
  return lendingPoolAddress;
 }
 //Gets priceOracle contract Address
@@ -60,7 +64,7 @@ async function getPriceOracle() {
     params: { },
   };
    const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
-   console.log("current PriceOracleAddress: " + priceOracleAddress)
+   //console.log("current PriceOracleAddress: " + priceOracleAddress)
    return priceOracleAddress;
    
   }
@@ -145,7 +149,6 @@ async function getDepositedValue(_asset, _assetName) {
       },
   };
   let subGraph = await Moralis.executeFunction(options);
-  console.log(subGraph);
   let returnVal;
   if(_assetName === "aWETH"){
   returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, 18); //balance, decimals
@@ -176,8 +179,7 @@ async function getRates(_asset, _assetName){
  
  async function getPrice(_asset, _assetName){
   let options = {
-    // contractAddress: await getPriceOracle(),
-    contractAddress: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
+    contractAddress: await getPriceOracle(),
     functionName: "getAssetPrice",
     abi: abis.AaveOracle,
     params: {
@@ -186,6 +188,19 @@ async function getRates(_asset, _assetName){
     let price = await Moralis.executeFunction(options);
     price = formatter.format(Math.abs((price._hex) / 100000000));
     document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
+ }
+
+ async function getEarnings() {
+   let options = {
+     contractAddress: "0x3fc92c5f08c361EB21ef86a31d55df4b92ab7874", //_aAssetContractAddress
+     functionName: "balanceOf",
+     abi: abis.aTokenABI,
+     params: {
+       user: "0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a",
+     },
+   };
+   let earnings = await Moralis.executeFunction(options);
+   //document.getElementById(`earnings-WBTC`).innerHTML = `${earnings}`;
  }
 
 async function ERC20Faucet(_token, _amount) {
@@ -442,6 +457,8 @@ async function fetchAccountData() {
   getDepositedValue(DAI, Object.keys({DAI})[0]);
   getRates(DAI, Object.keys({DAI})[0]);  
 
+  getEarnings();
+
     async function updateBalanceERC20(_contractAddress){
     const options = {
       chain: "rinkeby",
@@ -450,7 +467,7 @@ async function fetchAccountData() {
       let ERC20Balances = await Moralis.Web3API.account.getTokenBalances(options);
       ERC20Balances.forEach(element => {
         if (element.token_address === _contractAddress.toLowerCase()){
-          let balance = parseFloat((Moralis.Units.FromWei(element.balance, element.decimals))).toFixed(4);
+          let balance = parseFloat((Moralis.Units.FromWei(element.balance, element.decimals))).toFixed(3);
           document.getElementById(`balance-${element.symbol}`).innerHTML = balance;
         }
       });
