@@ -4,7 +4,8 @@ const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
 
 const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, return aWETH to user
-const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
+const WETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D";
+const aWETH = "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4"; //must be approved to withdraw supplied ETH
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
@@ -134,24 +135,23 @@ async function withdrawETH(_amount) {
   Moralis.executeFunction(options);
 }
 //getValueDeposited on Aave
-async function getDepositedValue(_asset, _assetName) {
+async function getDepositedValue(_asset, _assetName, _selectedAccount) {
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
     abi: abis.AaveProtocolDataProvider,
     params: {
       asset: _asset,
-      user: selectedAccount,
+      user: _selectedAccount,
       },
   };
   let subGraph = await Moralis.executeFunction(options);
   let returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance);
   returnVal = Math.abs(returnVal).toFixed(4);
-  document.getElementById(`deposited${_assetName}`).innerHTML = "Deposited Balance: " + returnVal;
-  console.log(_assetName)
+  document.getElementById(`deposited${_assetName}`).innerHTML = returnVal;
   }
 //
-async function getRates(_asset){
+async function getRates(_asset, _assetName){
   let options = {
     contractAddress: await getPoolContractAddress(),
     functionName: "getReserveData",
@@ -162,7 +162,7 @@ async function getRates(_asset){
     let subGraph = await Moralis.executeFunction(options);
     let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
     let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
-    document.getElementById("interestDisplayWETH").innerHTML = `Deposit APY: ${depositAPY}%`;
+    document.getElementById(`interestDisplay${_assetName}`).innerHTML =  depositAPY + "%";
 
  }
  
@@ -178,6 +178,7 @@ async function getRates(_asset){
     let price = await Moralis.executeFunction(options);
     price = Math.abs((price._hex) / 100000000);
     document.getElementById(`price${_assetName}`).innerHTML = `${_assetName} Price: $${price}`;
+
  }
 
 async function ERC20Faucet(_token, _amount) {
@@ -381,6 +382,7 @@ function init() {
     disableInjectedProvider: false,
   });
 
+
   console.log("Web3Modal instance is", web3Modal);
 
 }
@@ -406,6 +408,8 @@ async function fetchAccountData() {
   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
   const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
 
+  updateInterfaceData(selectedAccount);
+
   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
@@ -421,6 +425,19 @@ async function refreshAccountData() {
   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
   await fetchAccountData(provider);
   document.querySelector("#btn-connect").removeAttribute("disabled")
+}
+
+async function updateInterfaceData(_userAccount){
+
+  // Display data on the interface
+  getRates(DAI,"DAI");
+  getRates(WBTC, "WBTC");
+  getRates(WETH, "WETH");
+
+  getDepositedValue(DAI, "DAI", _userAccount);
+  getDepositedValue(WBTC, "WBTC", _userAccount);
+  getDepositedValue(WETH, "WETH", _userAccount);
+
 }
 
 
@@ -458,8 +475,13 @@ async function onConnect() {
     fetchAccountData();
   });
 
+
+ 
+
   await refreshAccountData();
 }
+
+
 
 
 async function onDisconnect() {
