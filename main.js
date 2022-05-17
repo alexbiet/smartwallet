@@ -193,18 +193,20 @@ async function getRates(_asset, _assetName){
     document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
  }
 
- async function getEarnings() {
-   let options = {
-     contractAddress: "0x3fc92c5f08c361EB21ef86a31d55df4b92ab7874", //_aAssetContractAddress
-     functionName: "balanceOf",
-     abi: abis.aTokenABI,
-     params: {
-       user: "0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a",
-     },
-   };
-   let earnings = await Moralis.executeFunction(options);
-   //document.getElementById(`earnings-WBTC`).innerHTML = `${earnings}`;
- }
+//  async function getEarnings() {    //1445748375,4264613452sdsdsdsdsds
+//   console.log(4264613452 / 10**8  + "    VALUEEsdsdsdsdsdsdEE         " + 1445748375 / 10**8)
+//    let options = {
+//      contractAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326", //_aAssetContractAddress
+//      functionName: "getScaledUserBalanceAndSupply",
+//      abi: abis.aTokenABI,
+//      params: {
+//        user: "0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a",
+//      },
+//    };
+//    let earnings = (await Moralis.executeFunction(options))
+//    return earnings;
+  
+//  }
 
 async function ERC20Faucet(_token, _amount) {
       let options = {
@@ -471,8 +473,9 @@ async function fetchAccountData() {
   getDepositedValue(DAI, Object.keys({DAI})[0]);
   getRates(DAI, Object.keys({DAI})[0]);  
 
-  getEarnings();
-
+  // console.log(getEarnings());
+  // document.getElementById(`earnings-ETH`).innerHTML = `${await getEarnings()}`;
+  
     async function updateBalanceERC20(_contractAddress){
     const options = {
       chain: "rinkeby",
