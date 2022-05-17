@@ -222,7 +222,7 @@ document.getElementById("btn-withdrawETH").onclick = function() {
 //////////////////////////
 document.getElementById("btn-approveWBTC").onclick = function() {
   var amountValue =  document.getElementById("amount-WBTC").value;
-  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
+  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
 document.getElementById("btn-supplyWBTC").onclick = function() {
   var amountValue =  document.getElementById("amount-WBTC").value;
   supplyERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
@@ -235,7 +235,7 @@ document.getElementById("btn-withdrawWBTC").onclick = function() {
 //////////////////////////
 document.getElementById("btn-approveDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
-  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
+  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
   supplyERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
