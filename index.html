@@ -76,39 +76,10 @@
 
             <!-- AAVE YIELD -->
             <div id="view-1" class="b-tab">
-                <!-- <div class = asset-container>
-                  <input type="text" id="amount-ETH" class="form-control" placeholder="e.g. 0.01" aria-label="ETH Amount" aria-describedby="button-addon2">
-                  <button class="btn btn-primary" id="btn-supplyETH">supply ETH</button>
-                  <button class="btn btn-primary" id="btn-approveaWETH">approve aWETH</button>
-                  <button class="btn btn-primary" id="btn-withdrawETH">withdraw ETH</button>
-                  <p class = "btn btn-secondary" id ="depositedaWETH">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayWETH">Borrow APY: </p>
-                  <p class = "btn btn-secondary" id ="priceaWETH">ETH Price: </p>
-                </div>
-                <div class = asset-container>
-                  <input type="text" id="amount-WBTC" class="form-control" placeholder="e.g. 0.01" aria-label="WBTC Amount" aria-describedby="button-addon2">
-                  <button class="btn btn-primary" id="btn-approveWBTC">approve WBTC</button>
-                  <button class="btn btn-primary" id="btn-supplyWBTC">supply WBTC</button>
-                  <button class="btn btn-primary" id="btn-withdrawWBTC">withdraw WBTC</button>
-                  <p class = "btn btn-secondary" id ="depositedWBTC">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayWBTC">Borrow APY: </p>
-                  <p class = "btn btn-secondary" id ="priceWBTC">WBTC Price: </p>
-                </div>
-                <div class = asset-container>
-                  <input type="text" id="amount-DAI" class="form-control" placeholder="e.g. 0.01" aria-label="DAI Amount" aria-describedby="button-addon2">
-                  <button class="btn btn-primary" id="btn-approveDAI">approve DAI</button>
-                  <button class="btn btn-primary" id="btn-supplyDAI">supply DAI</button>
-                  <button class="btn btn-primary" id="btn-withdrawDAI">withdraw DAI</button>
-                  <p class = "btn btn-secondary" id ="depositedDAI">Deposited Balance: 0</p>
-                  <p class = "btn btn-secondary" id ="interestDisplayDAI">Borrow APY: </p>
-                </div>-->
-
-                <p>Dev tool: <button class="btn btn-primary" id="btn-getPool">getAavePool</button></p>
-
-                <br>
+        
+              <p>Dev tool: <button class="btn btn-primary" id="btn-getPool">getAavePool</button></p>
 
             </div>
-
 
             <!-- BUY CRYPTO (TRANSAK) -->
             <div id="view-2" class="b-tab">
@@ -119,7 +90,6 @@
               </iframe> -->
             </div>
 
-
             <!-- DONATE -->
             <div id="view-3" class="b-tab ">
               <div class="input-group">
@@ -129,7 +99,7 @@
               </div>
             </div>
 
-
+            <br>
           </div>
         </div>
       </div>
@@ -155,7 +125,7 @@
                 <div class="col">
 
                   <!-- ETH - PRICE IN $ -->
-                  <p class="card-text text-end">1 ETH = <span id="price-aWETH">$1,830.23</span></p>
+                  <p class="card-text text-end">1 ETH = <span id="price-aWETH">$0.00</span></p>
                 </div>
               </div>
 
@@ -171,12 +141,12 @@
                 <div class="col text-start" style="padding-left:8px;">
 
                   <!-- ETH - BALANCE -->
-                  <p><span id="eth-balance">0.03</span> ETH</p>
+                  <p><span id="eth-balance">0.00</span> ETH</p>
                 </div>
               </div>
 
               <p>
-                <a href="javascript:void(0);" style="margin-right:0;" class="btn btn-primary btn-sm">BUY ETH</a>
+                <a href="javascript:void(0);" id="btn-buyETH" style="margin-right:0;" class="btn btn-primary btn-sm">BUY ETH</a>
                 <a href="https://rinkebyfaucet.com/" id="btn-faucetETH" target="_blank" class="btn btn-primary btn-sm">GET FAUCET ETH</a>
               </p>
 
@@ -191,9 +161,9 @@
                 <div class="col text-start" style="padding-left:8px;">
 
                   <!-- ETH - APY, SUPPLY & EARNINGS -->
-                  <p><span id="interest-aWETH">9%</span></p>
-                  <p><span id="deposited-aWETH">0.002</span> ETH</p>
-                  <p><span id="earnings-ETH">0.0000003</span> ETH</p>
+                  <p><span id="interest-aWETH">-%</span></p>
+                  <p><span id="deposited-aWETH">0.00</span> ETH</p>
+                  <p><span id="earnings-ETH">0.0000000</span> ETH</p>
                 </div>
               </div>
 
@@ -231,7 +201,7 @@
                   <div class="col">
 
                     <!-- WBTC - PRICE IN $ -->
-                    <p class="card-text text-end">1 WBTC = <span id="price-WBTC">$31,830.23</span></p>
+                    <p class="card-text text-end">1 WBTC = <span id="price-WBTC">$0.00</span></p>
                   </div>
                 </div>
 
@@ -246,13 +216,13 @@
                   </div>
                   <div class="col text-start" style="padding-left:8px;">
                     <!-- WBTC - BALANCE -->
-                    <p><span id="balance-WBTC">0.03</span> WBTC</p>
+                    <p><span id="balance-WBTC">0.00</span> WBTC</p>
                   </div>
                 </div>
 
                 <p>
-                  <a href="#" style="margin-right:0;" class="btn btn-primary btn-sm">BUY WBTC</a>
-                  <a href="#" id="btn-faucetWBTC" class="btn btn-primary btn-sm">GET FAUCET WBTC</a>
+                  <a href="javascript:void(0);" id="btn-buyWBTC" style="margin-right:0;" class="btn btn-primary btn-sm">BUY WBTC</a>
+                  <a href="javascript:void(0);" id="btn-faucetWBTC" class="btn btn-primary btn-sm">GET FAUCET WBTC</a>
                 </p>
 
                 <hr>
@@ -266,9 +236,9 @@
                   <div class="col text-start" style="padding-left:8px;">
 
                     <!-- WBTC - APY, SUPPLY & EARNINGS -->
-                    <p><span id="interest-WBTC">9%</span></p>
-                    <p><span id="deposited-WBTC">0.002</span> WBTC</p>
-                    <p><span id="earnings-WBTC">0.0000003</span> WBTC</p>
+                    <p><span id="interest-WBTC">-%</span></p>
+                    <p><span id="deposited-WBTC">0.00</span> WBTC</p>
+                    <p><span id="earnings-WBTC">0.0000000</span> WBTC</p>
                   </div>
                 </div>
 
@@ -305,7 +275,7 @@
                     <div class="col">
 
                       <!-- DAI - PRICE IN $ -->
-                      <p class="card-text text-end">1 DAI = <span id="price-DAI">$1.00</span></p>
+                      <p class="card-text text-end">1 DAI = <span id="price-DAI">$0.00</span></p>
                     </div>
                   </div>
 
@@ -321,12 +291,12 @@
 
                     <!-- DAI - BALANCE -->
                     <div class="col text-start" style="padding-left:8px;">
-                      <p><span id="balance-DAI">0.03</span> DAI</p>
+                      <p><span id="balance-DAI">0.00</span> DAI</p>
                     </div>
                   </div>
 
                   <p>
-                    <a href="javascript:void(0);" style="margin-right:0;" class="btn btn-primary btn-sm">BUY DAI</a>
+                    <a href="javascript:void(0);" id="btn-buyDAI" style="margin-right:0;" class="btn btn-primary btn-sm">BUY DAI</a>
                     <a href="javascript:void(0);" id="btn-faucetDAI" class="btn btn-primary btn-sm">GET FAUCET DAI</a>
                   </p>
 
@@ -341,9 +311,9 @@
 
                     <!-- DAI - APY, SUPPLY & EARNINGS -->
                     <div class="col text-start" style="padding-left:8px;">
-                      <p><span id="interest-DAI">9%</span></p>
-                      <p><span id="deposited-DAI">0.002</span> DAI</p>
-                      <p><span id="earnings-DAI">0.0000003</span> DAI</p>
+                      <p><span id="interest-DAI">-%</span></p>
+                      <p><span id="deposited-DAI">0.00</span> DAI</p>
+                      <p><span id="earnings-DAI">0.0000000</span> DAI</p>
                     </div>
                   </div>
 

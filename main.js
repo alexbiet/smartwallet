@@ -12,7 +12,10 @@ const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved t
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
+
 Moralis.start({ serverUrl, appId });
+
+const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 // --------------------------
 // Polygon Mumbai Donation //
@@ -26,7 +29,7 @@ async function donate(val) {
     params: {
       note: "Thanks for your work",
     },
-    msgValue: Moralis.Units.ETH(val),
+    msgValue: web3.utils.toWei(val, "ether"),
   };
   await Moralis.executeFunction(options);
 }
@@ -279,7 +282,7 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moral
 // Transak              //
 // -----------------------
 
-function launchTransak(_walletAddress) {
+function launchTransak(_walletAddress, _cryptoAsset) {
   let transak = new TransakSDK.default({
     apiKey: '7fc30c92-ef84-4d9d-b411-c2e12fe02677',  // Your API Key
     environment: 'STAGING', // STAGING/PRODUCTION
@@ -287,11 +290,11 @@ function launchTransak(_walletAddress) {
     widgetHeight: '625px',
     widgetWidth: '500px',
     // Examples of some of the customization parameters you can pass
-    defaultCryptoCurrency: 'DAI', // Example 'ETH'
+    defaultCryptoCurrency: _cryptoAsset, // Example 'ETH'
     walletAddress: _walletAddress, // Your customer's wallet address
     themeColor: 'azure', // App theme color
     hideMenu: true,
-    fiatCurrency: '', // If you want to limit fiat selection eg 'USD'
+    fiatCurrency: '', // Limit fiat selection eg 'USD'
     email: '', // Your customer's email address
     redirectURL: ''
   });
@@ -301,13 +304,24 @@ function launchTransak(_walletAddress) {
     .on(transak.ALL_EVENTS, (data) => {
       console.log(data)
     });
+
   // This will trigger when the user marks payment is made.
   transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
     console.log(orderData);
-    //transak.close();
+    transak.close();
   });
 }
-// window.onload = function() {
+
+// function transakOpen(_walletAddress, _cryptoAsset) {
+
+//   let bb = launchTransak(_walletAddress, _cryptoAsset);
+
+//   console.log(bb);
+//   console.log(1231029498938409234);
+//   this.open();
+
+// }
+// // window.onload = function() {
   // launchTransak(selectedAccount);
   // console.log(await selectedAccount);
 // }
@@ -409,7 +423,7 @@ function init() {
 
 async function fetchAccountData() {
 
-  const web3 = new Web3(provider);
+  //const web3 = new Web3(provider);
 
 
   console.log("Web3 instance is", web3);
@@ -427,7 +441,7 @@ async function fetchAccountData() {
   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
   const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
 
-  document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
+  document.querySelector("#selected-account").textContent = selectedAccount.substring(0,6) + "..." + selectedAccount.slice(-4);
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
   // Display fully loaded UI for wallet data
@@ -541,10 +555,15 @@ async function onDisconnect() {
 
 window.addEventListener('load', async () => {
   init();
+
   if(localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")) await onConnect();
-  // launchTransak(selectedAccount);
+
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+
+  document.querySelector("#btn-buyETH").addEventListener("click", function () {launchTransak(selectedAccount, "ETH")});
+  document.querySelector("#btn-buyWBTC").addEventListener("click", function () {launchTransak(selectedAccount, "WBTC")});
+  document.querySelector("#btn-buyDAI").addEventListener("click", function () {launchTransak(selectedAccount, "DAI")});
 
 });
 
