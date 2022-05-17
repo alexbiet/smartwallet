@@ -4,8 +4,7 @@ const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
 
 const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, return aWETH to user
-const WETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D";
-const aWETH = "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4"; //must be approved to withdraw supplied ETH
+const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
 
@@ -135,22 +134,26 @@ async function withdrawETH(_amount) {
   Moralis.executeFunction(options);
 }
 //getValueDeposited on Aave
-async function getDepositedValue(_asset, _assetName, _selectedAccount) {
+async function getDepositedValue(_asset, _assetName) {
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
     abi: abis.AaveProtocolDataProvider,
     params: {
       asset: _asset,
-      user: _selectedAccount,
+      user: selectedAccount,
       },
   };
   let subGraph = await Moralis.executeFunction(options);
-  let returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance);
+  let returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, subGraph.currentATokenBalance["_hex"].length-2); //balance, decimals
   returnVal = Math.abs(returnVal).toFixed(4);
-  document.getElementById(`deposited${_assetName}`).innerHTML = returnVal;
+  console.log(returnVal)
+  document.getElementById(`deposited-${_assetName}`).innerHTML = returnVal;
   }
-//
+//NumberFormatter//
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',});
 async function getRates(_asset, _assetName){
   let options = {
     contractAddress: await getPoolContractAddress(),
@@ -162,7 +165,7 @@ async function getRates(_asset, _assetName){
     let subGraph = await Moralis.executeFunction(options);
     let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
     let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
-    document.getElementById(`interestDisplay${_assetName}`).innerHTML =  depositAPY + "%";
+    document.getElementById(`interest-${_assetName}`).innerHTML = `${depositAPY}%`;
 
  }
  
@@ -176,9 +179,8 @@ async function getRates(_asset, _assetName){
       asset: _asset,
     }};
     let price = await Moralis.executeFunction(options);
-    price = Math.abs((price._hex) / 100000000);
-    document.getElementById(`price${_assetName}`).innerHTML = `${_assetName} Price: $${price}`;
-
+    price = formatter.format(Math.abs((price._hex) / 100000000));
+    document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
  }
 
 async function ERC20Faucet(_token, _amount) {
@@ -194,7 +196,6 @@ async function ERC20Faucet(_token, _amount) {
 
       Moralis.executeFunction(options);
       }
-
 
 //FetchABI WIP/////////////
 // function getRinkebyABI(_contractAddress){
@@ -244,9 +245,7 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
   var amountValue =  document.getElementById("amount-DAI").value;
   withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-getPool").onclick= function() {
-  getPrice(aWETH, Object.keys({aWETH})[0]);
-  getDepositedValue(aWETH, Object.keys({aWETH})[0]);
-  getRates(aWETH, Object.keys({aWETH})[0]);
+
   }
 
 //////////////////////////
@@ -382,7 +381,6 @@ function init() {
     disableInjectedProvider: false,
   });
 
-
   console.log("Web3Modal instance is", web3Modal);
 
 }
@@ -392,6 +390,7 @@ function init() {
 async function fetchAccountData() {
 
   const web3 = new Web3(provider);
+
 
   console.log("Web3 instance is", web3);
 
@@ -408,36 +407,55 @@ async function fetchAccountData() {
   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
   const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
 
-  updateInterfaceData(selectedAccount);
-
   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,4) + "..." + selectedAccount.slice(-4);
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
   // Display fully loaded UI for wallet data
   document.querySelector("#not-connected").style.display = "none";
   document.querySelector("#connected").style.display = "inline-block";
+
+  //Get and Display ETH Balance
+  var balanceShort = new BigNumber(selectedAccountBalance);
+  balanceShort = balanceShort.shiftedBy(-18).toFixed(4);
+  document.getElementById("eth-balance").innerHTML = balanceShort;
+  
+  //updateBalanceERC20
+  updateBalanceERC20(WBTC);
+  updateBalanceERC20(DAI);
+
+  getPrice(aWETH, Object.keys({aWETH})[0]);
+  getDepositedValue(aWETH, Object.keys({aWETH})[0]);
+  getRates(aWETH, Object.keys({aWETH})[0]);
+
+  getPrice(WBTC, Object.keys({WBTC})[0]);
+  getDepositedValue(WBTC, Object.keys({WBTC})[0]);
+  getRates(WBTC, Object.keys({WBTC})[0]);
+
+  getPrice(DAI, Object.keys({DAI})[0]);
+  getDepositedValue(DAI, Object.keys({DAI})[0]);
+  getRates(DAI, Object.keys({DAI})[0]);  
+
+    async function updateBalanceERC20(_contractAddress){
+    const options = {
+      chain: "rinkeby",
+      address: selectedAccount,
+    };
+      let ERC20Balances = await Moralis.Web3API.account.getTokenBalances(options);
+      ERC20Balances.forEach(element => {
+        if (element.token_address === _contractAddress.toLowerCase()){
+          let balance = parseFloat((Moralis.Units.FromWei(element.balance, element.decimals))).toFixed(4);
+          document.getElementById(`balance-${element.symbol}`).innerHTML = balance;
+        }
+      });
+    }
+
 }
-
-
 async function refreshAccountData() {
   document.querySelector("#connected").style.display = "none";
   document.querySelector("#not-connected").style.display = "block";
   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
   await fetchAccountData(provider);
   document.querySelector("#btn-connect").removeAttribute("disabled")
-}
-
-async function updateInterfaceData(_userAccount){
-
-  // Display data on the interface
-  getRates(DAI,"DAI");
-  getRates(WBTC, "WBTC");
-  getRates(WETH, "WETH");
-
-  getDepositedValue(DAI, "DAI", _userAccount);
-  getDepositedValue(WBTC, "WBTC", _userAccount);
-  getDepositedValue(WETH, "WETH", _userAccount);
-
 }
 
 
@@ -475,13 +493,8 @@ async function onConnect() {
     fetchAccountData();
   });
 
-
- 
-
   await refreshAccountData();
 }
-
-
 
 
 async function onDisconnect() {
@@ -508,13 +521,6 @@ window.addEventListener('load', async () => {
   // launchTransak(selectedAccount);
   document.querySelector("#btn-connect").addEventListener("click", onConnect);
   document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
-
-
-  //Update Deposited Values for Aave _tokenAddress _tokenName
-  // async () => {
-  // await getDepositedValue(aWETH, Object.keys({aWETH})[0]);
-  // await getRates(aWETH, Object.keys({aWETH})[0]);
-// }
 
 });
 
