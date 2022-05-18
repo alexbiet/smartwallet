@@ -3,8 +3,8 @@ let serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
 //MARK TEMPORARY OVERIDE
-serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
-appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
+//serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
+//appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
 
 // const ETH = {
 //     id: "ETH",
@@ -32,6 +32,18 @@ const DAI = {
 Moralis.start({ serverUrl, appId });
 
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+
+// let options = {
+//   filter: {
+//       value: ['1000', '1337']    //Only get events where transfer value was 1000 or 1337
+//   },
+//   fromBlock: 0,                  //Number || "earliest" || "pending" || "latest"
+//   toBlock: 'latest'
+// };
+
+// myContract.getPastEvents('Transfer', options)
+//   .then(results => console.log(results))
+//   .catch(err => throw err);
 
 // --------------------------
 // Polygon Mumbai Donation //
@@ -158,8 +170,9 @@ async function withdrawETH(_amount) {
 }
 //getValueDeposited on Aave
 async function getDepositedValue(_token) {
-  let assetName = _token.id;
   let assetAddress = _token.contractAddress;
+  let assetName = _token.id;
+  let decimals = _token.decimals;
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
@@ -170,14 +183,10 @@ async function getDepositedValue(_token) {
       },
   };
   let subGraph = await Moralis.executeFunction(options);
-  let returnVal;
-  if(assetName === WETH.id){
-  returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, 18); //balance, decimals
-  } else {
-  returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, subGraph.currentATokenBalance["_hex"].length-2); //balance, decimals
-  }
-  returnVal = Math.abs(returnVal).toFixed(3);
-  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal;
+  let returnVal = subGraph.currentATokenBalance / 10 ** decimals;
+  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal.toFixed(3);
+  return returnVal;
+
   }
 //NumberFormatter//
 let formatter = new Intl.NumberFormat('en-US', {
@@ -214,54 +223,12 @@ async function getRates(_token){
     price = formatter.format(Math.abs((price._hex) / 100000000));
     document.getElementById(`price-${assetName}`).innerHTML = `${price}`;
  }
-async function getLiquidityRate(_assetAddress) {
-  assetAddress = _assetAddress;
-  if (assetAddress === WBTC.aTokenAddress)
-    tokenContract = WBTC.contractAddress;
-  else if (assetAddress === WETH.aTokenAddress)
-    tokenContract = WETH.contractAddress;
-  else if(assetAddress === DAI.aTokenAddress)
-    tokenContract = DAI.contractAddress;
-  let options = {
-    contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
-    functionName: "getUserReserveData",
-    abi: abis.AaveProtocolDataProvider,
-    params: {
-      asset: tokenContract,
-      user: selectedAccount,
-      },
-    };
-    let reserveData = await Moralis.executeFunction(options)
-    let liquidityRate = new BigNumber(reserveData["liquidityRate"]._hex).toFixed() / 10**27;
-    return(liquidityRate);
-}
  async function getEarnings(_token) {
-   let assetAddress = _token.aTokenAddress;
-   let assetName = _token.id;
-
-   let options = {
-     contractAddress: assetAddress,
-     functionName: "scaledBalanceOf",
-     abi: abis.aTokenABI,
-     params: {
-       user: selectedAccount,
-     },
-   };
-    let earningsArray = await (Moralis.executeFunction(options));
-    let userScaled = new BigNumber((earningsArray._hex));
-    if (assetAddress === WBTC.aTokenAddress)
-    userScaled = userScaled / 10**8;
-  else if (assetAddress === WETH.aTokenAddress)
-    userScaled = userScaled / 10**18;
-  else if(assetAddress === DAI.aTokenAddress)
-    userScaled = userScaled / 10**18;
-    userScaled = userScaled.toFixed(18)
-    console.log(userScaled +"   supposed to be sum of all deposits before any added interest.  Currently inaccurate") // supposed to be sum of all deposits before any added interest.  Currently inaccurate
-    let liquidityRate = await getLiquidityRate(assetAddress);
-    earnings = userScaled * liquidityRate;
-   document.getElementById(`earnings-${assetName}`).innerHTML = earnings;  //(scaledBalanceOf / tokenDecimals) * (liquidityIndex/ 10^27)
+    let currentATokens = await (getDepositedValue(_token));
+    console.log(currentATokens)
+    //get totalDeposits from localStorage
+    //curentATokens - totalDeposits = live interest earned
   }
-
 
 async function ERC20Faucet(_token, _amount) {
       let options = {
@@ -527,7 +494,7 @@ async function fetchAccountData() {
   getDepositedValue(DAI);
   getRates(DAI);  
   getEarnings(DAI);
-  
+
   
     async function updateBalanceERC20(_token){
       let contractAddress = _token.contractAddress;
