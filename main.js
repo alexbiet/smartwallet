@@ -184,7 +184,7 @@ async function getDepositedValue(_token) {
   };
   let subGraph = await Moralis.executeFunction(options);
   let returnVal = subGraph.currentATokenBalance / 10 ** decimals;
-  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal.toFixed(3);
+  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal;
   return returnVal;
 
   }
@@ -479,23 +479,38 @@ async function fetchAccountData() {
   document.getElementById("eth-balance").innerHTML = balanceShort;
   //updateBalanceERC20
   getPrice(WETH);
-  getDepositedValue(WETH);
+
   getRates(WETH);
   getEarnings(WETH);
 
   updateBalanceERC20(WBTC);
   getPrice(WBTC);
-  getDepositedValue(WBTC);
+
   getRates(WBTC);
   getEarnings(WBTC);
   
   updateBalanceERC20(DAI);
   getPrice(DAI);
-  getDepositedValue(DAI);
   getRates(DAI);  
+
   getEarnings(DAI);
 
-  
+  getDepositedValue(WETH);
+  getDepositedValue(WBTC);
+  getDepositedValue(DAI);
+
+  updateUI();
+
+  async function updateUI() {
+    console.log("something")
+    getDepositedValue(WETH);
+    getDepositedValue(WBTC);
+    getDepositedValue(DAI);
+    setTimeout(await updateUI, 2000)
+  };
+
+
+
     async function updateBalanceERC20(_token){
       let contractAddress = _token.contractAddress;
       const options = {
