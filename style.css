@@ -32,3 +32,22 @@ body {
   margin-bottom: 10px;
 }
 /*// tempCSS FINISH//*/
+
+
+
+.blink {
+  animation: blink-animation 1s steps(5, start) 1s;
+  -webkit-animation: blink-animation 1s steps(5, start) 1s;
+}
+@keyframes blink-animation {
+  to {
+    color: green;
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    color: green;
+    visibility: hidden;
+  }
+}
