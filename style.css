@@ -5,7 +5,7 @@ body {
 .b-tab {
     display: none;
   }
-  
+
   .b-tab.active {
     display: block;
   }
@@ -14,7 +14,7 @@ body {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  
+
   a.nav-link.active {
     color: #ff8400 !important;
     font-weight: bold;
@@ -31,28 +31,6 @@ body {
   padding: 10px;
   margin-bottom: 10px;
 }
-/*// tempCSS FINISH//*/
-
-
-
-.blink {
-  animation: blink-animation 0.4s steps(10, start) 0.5s;
-  -webkit-animation: blink-animation 0.4s steps(10, start) 0.5s;
-}
-@keyframes blink-animation {
-  to {
-    color: green;
-    visibility: hidden;
-  }
-}
-@-webkit-keyframes blink-animation {
-  to {
-    color: green;
-    visibility: hidden;
-  }
-}
-
-
 
 .bottom-20 {
   bottom: 20px !important;
