@@ -36,8 +36,8 @@ body {
 
 
 .blink {
-  animation: blink-animation 1s steps(5, start) 1s;
-  -webkit-animation: blink-animation 1s steps(5, start) 1s;
+  animation: blink-animation 0.4s steps(10, start) 0.5s;
+  -webkit-animation: blink-animation 0.4s steps(10, start) 0.5s;
 }
 @keyframes blink-animation {
   to {
