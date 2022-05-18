@@ -1,10 +1,10 @@
 /** Connect to Moralis server */
-const serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
-const appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
+let serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
+let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
 //MARK TEMPORARY OVERIDE
-// serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
-// appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
+ serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
+ appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
 
 
 const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, returns aWETH to user
@@ -192,22 +192,37 @@ async function getRates(_asset, _assetName){
     price = formatter.format(Math.abs((price._hex) / 100000000));
     document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
  }
+async function getLiquidityRate(_asset) {
+  let options = {
+    contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
+    functionName: "getUserReserveData",
+    abi: abis.AaveProtocolDataProvider,
+    params: {
+      asset: _asset,
+      user: selectedAccount,
+      },
+    };
+    let reserveData = await Moralis.executeFunction(options)
+    let liquidityRate = new BigNumber(reserveData["liquidityRate"]._hex).toFixed() / 10**27;
+    return(liquidityRate);
+}
+ async function getEarnings() {
+   let options = {
+     contractAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326", //_aAssetContractAddress
+     functionName: "scaledBalanceOf",
+     abi: abis.aTokenABI,
+     params: {
+       user: selectedAccount,
+     },
+   };
 
-//  async function getEarnings() {    //1445748375,4264613452sdsdsdsdsds
-//   console.log(4264613452 / 10**8  + "    VALUEEsdsdsdsdsdsdEE         " + 1445748375 / 10**8)
-//    let options = {
-//      contractAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326", //_aAssetContractAddress
-//      functionName: "getScaledUserBalanceAndSupply",
-//      abi: abis.aTokenABI,
-//      params: {
-//        user: "0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a",
-//      },
-//    };
-//    let earnings = (await Moralis.executeFunction(options))
-//    return earnings;
-  
-//  }
-
+    let earningsArray = await (Moralis.executeFunction(options));
+    let userScaled = new BigNumber((earningsArray._hex) / 10**8).toFixed();
+    console.log(userScaled)
+    let liquidityRate = await getLiquidityRate(WBTC);
+    earnings = userScaled * liquidityRate;
+   document.getElementById(`earnings-WBTC`).innerHTML = earnings;  //(scaledBalanceOf / tokenDecimals) * (liquidityIndex/ 10^27)
+  }
 async function ERC20Faucet(_token, _amount) {
       let options = {
         contractAddress: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
@@ -473,9 +488,9 @@ async function fetchAccountData() {
   getDepositedValue(DAI, Object.keys({DAI})[0]);
   getRates(DAI, Object.keys({DAI})[0]);  
 
-  // console.log(getEarnings());
-  // document.getElementById(`earnings-ETH`).innerHTML = `${await getEarnings()}`;
   
+  getLiquidityRate(WBTC)
+  getEarnings();
     async function updateBalanceERC20(_contractAddress){
     const options = {
       chain: "rinkeby",
