@@ -11,6 +11,9 @@ const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms E
 const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
 const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
 const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
+const aTokWETH = "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4";
+const aTokWBTC = "0xeC1d8303b8fa33afB59012Fc3b49458B57883326";
+const aTokDAI = "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0";
 
 
 Moralis.start({ serverUrl, appId });
@@ -192,13 +195,19 @@ async function getRates(_asset, _assetName){
     price = formatter.format(Math.abs((price._hex) / 100000000));
     document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
  }
-async function getLiquidityRate(_asset) {
+async function getLiquidityRate(_assetAddress) {
+  if (_assetAddress === aTokWBTC)
+    tokenContract = WBTC;
+  else if (_assetAddress === aTokWETH)
+    tokenContract = aWETH;
+  else if(_assetAddress === aTokDAI)
+    tokenContract = DAI;
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
     abi: abis.AaveProtocolDataProvider,
     params: {
-      asset: _asset,
+      asset: tokenContract,
       user: selectedAccount,
       },
     };
@@ -206,9 +215,9 @@ async function getLiquidityRate(_asset) {
     let liquidityRate = new BigNumber(reserveData["liquidityRate"]._hex).toFixed() / 10**27;
     return(liquidityRate);
 }
- async function getEarnings() {
+ async function getEarnings(_assetAddress, _asset) {
    let options = {
-     contractAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326", //_aAssetContractAddress
+     contractAddress: _assetAddress,
      functionName: "scaledBalanceOf",
      abi: abis.aTokenABI,
      params: {
@@ -217,12 +226,21 @@ async function getLiquidityRate(_asset) {
    };
 
     let earningsArray = await (Moralis.executeFunction(options));
-    let userScaled = new BigNumber((earningsArray._hex) / 10**8).toFixed();
-    console.log(userScaled)
-    let liquidityRate = await getLiquidityRate(WBTC);
+    let userScaled = new BigNumber((earningsArray._hex));
+    if (_assetAddress === aTokWBTC)
+    userScaled = userScaled / 10**8;
+  else if (_assetAddress === aTokWETH)
+    userScaled = userScaled / 10**18;
+  else if(_assetAddress === aTokDAI)
+    userScaled = userScaled / 10**18;
+    userScaled = userScaled.toFixed(18)
+    console.log(userScaled +"   supposed to be sum of all deposits before any added interest.  Currently inaccurate") // supposed to be sum of all deposits before any added interest.  Currently inaccurate
+    let liquidityRate = await getLiquidityRate(_assetAddress);
     earnings = userScaled * liquidityRate;
-   document.getElementById(`earnings-WBTC`).innerHTML = earnings;  //(scaledBalanceOf / tokenDecimals) * (liquidityIndex/ 10^27)
+   document.getElementById(`earnings-${_asset}`).innerHTML = earnings;  //(scaledBalanceOf / tokenDecimals) * (liquidityIndex/ 10^27)
   }
+
+
 async function ERC20Faucet(_token, _amount) {
       let options = {
         contractAddress: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
@@ -479,18 +497,18 @@ async function fetchAccountData() {
   getPrice(aWETH, Object.keys({aWETH})[0]);
   getDepositedValue(aWETH, Object.keys({aWETH})[0]);
   getRates(aWETH, Object.keys({aWETH})[0]);
+  getEarnings(aTokWETH, Object.keys({aTokWETH})[0]);
 
   getPrice(WBTC, Object.keys({WBTC})[0]);
   getDepositedValue(WBTC, Object.keys({WBTC})[0]);
   getRates(WBTC, Object.keys({WBTC})[0]);
+  getEarnings(aTokWBTC, Object.keys({aTokWBTC})[0]);
 
   getPrice(DAI, Object.keys({DAI})[0]);
   getDepositedValue(DAI, Object.keys({DAI})[0]);
   getRates(DAI, Object.keys({DAI})[0]);  
-
+  getEarnings(aTokDAI, Object.keys({aTokDAI})[0]);
   
-  getLiquidityRate(WBTC)
-  getEarnings();
     async function updateBalanceERC20(_contractAddress){
     const options = {
       chain: "rinkeby",
