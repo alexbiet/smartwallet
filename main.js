@@ -3,19 +3,32 @@ let serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 
 //MARK TEMPORARY OVERIDE
- serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
- appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
+serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
+appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
 
-
-const ETH = "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe"; //Gateway transforms ETH to staked ETH, returns aWETH to user
-const aWETH = "0xd74047010D77c5901df5b0f9ca518aED56C85e8D"; //must be approved to withdraw supplied ETH
-const WBTC = "0x124F70a8a3246F177b0067F435f5691Ee4e467DD";
-const DAI = "0x4aAded56bd7c69861E8654719195fCA9C670EB45";
-const aTokWETH = "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4";
-const aTokWBTC = "0xeC1d8303b8fa33afB59012Fc3b49458B57883326";
-const aTokDAI = "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0";
-
-
+// const ETH = {
+//     id: "ETH",
+//     contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe", //WETHGateway
+//     aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",  //WETHaToken
+//   }
+const WETH = {
+    id: "WETH",
+    contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+    decimals: 18, 
+    aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
+  }
+const WBTC = {
+    id:"WBTC",
+    contractAddress: "0x124F70a8a3246F177b0067F435f5691Ee4e467DD",
+    decimals: 8, 
+    aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
+  }
+const DAI = {
+  id: "DAI",
+  contractAddress: "0x4aAded56bd7c69861E8654719195fCA9C670EB45",
+  decimals: 18, 
+  aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
+}
 Moralis.start({ serverUrl, appId });
 
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
@@ -38,7 +51,7 @@ async function donate(val) {
 }
 
 document.getElementById("btn-donate").onclick = function () {
-  var donationValue =  document.getElementById("donation-value").value;
+  let donationValue =  document.getElementById("donation-value").value;
   donate(donationValue);
 }
 
@@ -156,7 +169,7 @@ async function getDepositedValue(_asset, _assetName) {
   };
   let subGraph = await Moralis.executeFunction(options);
   let returnVal;
-  if(_assetName === "aWETH"){
+  if(_assetName === WETH.id){
   returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, 18); //balance, decimals
   } else {
   returnVal = await Moralis.Units.FromWei(subGraph.currentATokenBalance, subGraph.currentATokenBalance["_hex"].length-2); //balance, decimals
@@ -165,7 +178,7 @@ async function getDepositedValue(_asset, _assetName) {
   document.getElementById(`deposited-${_assetName}`).innerHTML = returnVal;
   }
 //NumberFormatter//
-var formatter = new Intl.NumberFormat('en-US', {
+let formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',});
 async function getRates(_asset, _assetName){
@@ -196,12 +209,12 @@ async function getRates(_asset, _assetName){
     document.getElementById(`price-${_assetName}`).innerHTML = `${price}`;
  }
 async function getLiquidityRate(_assetAddress) {
-  if (_assetAddress === aTokWBTC)
-    tokenContract = WBTC;
-  else if (_assetAddress === aTokWETH)
-    tokenContract = aWETH;
-  else if(_assetAddress === aTokDAI)
-    tokenContract = DAI;
+  if (_assetAddress === WBTC.aTokenAddress)
+    tokenContract = WBTC.contractAddress;
+  else if (_assetAddress === WETH.aTokenAddress)
+    tokenContract = WETH.contractAddress;
+  else if(_assetAddress === DAI.aTokenAddress)
+    tokenContract = DAI.contractAddress;
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
@@ -224,14 +237,13 @@ async function getLiquidityRate(_assetAddress) {
        user: selectedAccount,
      },
    };
-
     let earningsArray = await (Moralis.executeFunction(options));
     let userScaled = new BigNumber((earningsArray._hex));
-    if (_assetAddress === aTokWBTC)
+    if (_assetAddress === WBTC.aTokenAddress)
     userScaled = userScaled / 10**8;
-  else if (_assetAddress === aTokWETH)
+  else if (_assetAddress === WETH.aTokenAddress)
     userScaled = userScaled / 10**18;
-  else if(_assetAddress === aTokDAI)
+  else if(_assetAddress === DAI.aTokenAddress)
     userScaled = userScaled / 10**18;
     userScaled = userScaled.toFixed(18)
     console.log(userScaled +"   supposed to be sum of all deposits before any added interest.  Currently inaccurate") // supposed to be sum of all deposits before any added interest.  Currently inaccurate
@@ -268,40 +280,40 @@ async function ERC20Faucet(_token, _amount) {
 /////    ERC20 WETH     ///
 //////////////////////////
 document.getElementById("btn-approveaWETH").onclick = function() {
-  var amountValue =  document.getElementById("amount-ETH").value;
-  approveERC20(aWETH, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
+  let amountValue =  document.getElementById("amount-ETH").value;
+  approveERC20(WETH.contractAddress, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyETH").onclick = function() {
-  var amountValue =  document.getElementById("amount-ETH").value;
+  let amountValue =  document.getElementById("amount-ETH").value;
   supplyETH(Moralis.Units.ETH(amountValue));};
 document.getElementById("btn-withdrawETH").onclick = function() {
-  var amountValue =  document.getElementById("amount-ETH").value;
+  let amountValue =  document.getElementById("amount-ETH").value;
   withdrawETH(Moralis.Units.ETH(amountValue));};
 
   //////////////////////////
 /////    ERC20 WBTC     ///
 //////////////////////////
 document.getElementById("btn-approveWBTC").onclick = function() {
-  var amountValue =  document.getElementById("amount-WBTC").value;
-  approveERC20(WBTC, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
+  let amountValue =  document.getElementById("amount-WBTC").value;
+  approveERC20(WBTC.contractAddress, Moralis.Units.Token(amountValue, "8"), getPoolContractAddress());};
 document.getElementById("btn-supplyWBTC").onclick = function() {
-  var amountValue =  document.getElementById("amount-WBTC").value;
-  supplyERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
+  let amountValue =  document.getElementById("amount-WBTC").value;
+  supplyERC20(WBTC.contractAddress, Moralis.Units.Token(amountValue, "8"));};
 document.getElementById("btn-withdrawWBTC").onclick = function() {
-  var amountValue =  document.getElementById("amount-WBTC").value;
-  withdrawERC20(WBTC, Moralis.Units.Token(amountValue, "8"));};
+  let amountValue =  document.getElementById("amount-WBTC").value;
+  withdrawERC20(WBTC.contractAddress, Moralis.Units.Token(amountValue, "8"));};
 
   //////////////////////////
 /////    ERC20 DAI     ///
 //////////////////////////
 document.getElementById("btn-approveDAI").onclick = function() {
-  var amountValue =  document.getElementById("amount-DAI").value;
-  approveERC20(DAI, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
+  let amountValue =  document.getElementById("amount-DAI").value;
+  approveERC20(DAI.contractAddress, Moralis.Units.Token(amountValue, "18"), getPoolContractAddress());};
 document.getElementById("btn-supplyDAI").onclick = function() {
-  var amountValue =  document.getElementById("amount-DAI").value;
-  supplyERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
+  let amountValue =  document.getElementById("amount-DAI").value;
+  supplyERC20(DAI.contractAddress, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-withdrawDAI").onclick = function() {
-  var amountValue =  document.getElementById("amount-DAI").value;
-  withdrawERC20(DAI, Moralis.Units.Token(amountValue, "18"));};
+  let amountValue =  document.getElementById("amount-DAI").value;
+  withdrawERC20(DAI.contractAddress, Moralis.Units.Token(amountValue, "18"));};
 document.getElementById("btn-getPool").onclick= function() {
 
   }
@@ -309,8 +321,8 @@ document.getElementById("btn-getPool").onclick= function() {
 //////////////////////////
 /////    FAUCETS     /////
 //////////////////////////
-document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet(WBTC, Moralis.Units.Token("10", "8"));}; //10WBTC
-document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI, Moralis.Units.Token("10000", "18")); //10000 DAI
+document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet(WBTC.contractAddress, Moralis.Units.Token("10", "8"));}; //10WBTC
+document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI.contractAddress, Moralis.Units.Token("10000", "18")); //10000 DAI
 }
 
 // -----------------------
@@ -369,9 +381,9 @@ function launchTransak(_walletAddress, _cryptoAsset) {
 
 function Tabs() {
 
-  var bindAll = function() {
+  let bindAll = function() {
 
-    var getActiveDataTab;
+    let getActiveDataTab;
 
     if(sessionStorage.getItem('activeDataTab') === null) {
       sessionStorage.setItem('activeDataTab', 'view-1');
@@ -391,26 +403,26 @@ function Tabs() {
       $("#" + getActiveDataTab).addClass('active');
     }
 
-    var menuElements = document.querySelectorAll('[data-tab]');
-    for(var i = 0; i < menuElements.length ; i++) {
+    let menuElements = document.querySelectorAll('[data-tab]');
+    for(let i = 0; i < menuElements.length ; i++) {
       menuElements[i].addEventListener('click', change, false);
     }
 
   }
 
-  var clear = function() {
-    var menuElements = document.querySelectorAll('[data-tab]');
-    for(var i = 0; i < menuElements.length ; i++) {
+  let clear = function() {
+    let menuElements = document.querySelectorAll('[data-tab]');
+    for(let i = 0; i < menuElements.length ; i++) {
       menuElements[i].classList.remove('active');
-      var id = menuElements[i].getAttribute('data-tab');
+      let id = menuElements[i].getAttribute('data-tab');
       document.getElementById(id).classList.remove('active');
     }
   }
 
-  var change = function(e) {
+  let change = function(e) {
     clear();
     e.target.classList.add('active');
-    var id = e.currentTarget.getAttribute('data-tab');
+    let id = e.currentTarget.getAttribute('data-tab');
     sessionStorage.setItem('activeDataTab', id);
     document.getElementById(id).classList.add('active');
   }
@@ -418,7 +430,7 @@ function Tabs() {
   bindAll();
 }
 
-var connectTabs = new Tabs();
+let connectTabs = new Tabs();
 
 
 ////////////////
@@ -459,8 +471,6 @@ function init() {
 async function fetchAccountData() {
 
   //const web3 = new Web3(provider);
-
-
   console.log("Web3 instance is", web3);
 
   const chainId = await web3.eth.getChainId();
@@ -487,27 +497,28 @@ async function fetchAccountData() {
   ///USER BALANCES///
   ///////////////////
   //update native ETH Balance
-  var balanceShort = new BigNumber(selectedAccountBalance);
+  let balanceShort = new BigNumber(selectedAccountBalance);
   balanceShort = balanceShort.shiftedBy(-18).toFixed(3);
   document.getElementById("eth-balance").innerHTML = balanceShort;
   //updateBalanceERC20
-  updateBalanceERC20(WBTC);
-  updateBalanceERC20(DAI);
+  updateBalanceERC20(WBTC.contractAddress);
 
-  getPrice(aWETH, Object.keys({aWETH})[0]);
-  getDepositedValue(aWETH, Object.keys({aWETH})[0]);
-  getRates(aWETH, Object.keys({aWETH})[0]);
-  getEarnings(aTokWETH, Object.keys({aTokWETH})[0]);
+  getPrice(WETH.contractAddress, WETH.id);
+  getDepositedValue(WETH.contractAddress, WETH.id);
+  getRates(WETH.contractAddress,  WETH.id);
+  getEarnings(WETH.aTokenAddress,  WETH.id);
 
-  getPrice(WBTC, Object.keys({WBTC})[0]);
-  getDepositedValue(WBTC, Object.keys({WBTC})[0]);
-  getRates(WBTC, Object.keys({WBTC})[0]);
-  getEarnings(aTokWBTC, Object.keys({aTokWBTC})[0]);
-
-  getPrice(DAI, Object.keys({DAI})[0]);
-  getDepositedValue(DAI, Object.keys({DAI})[0]);
-  getRates(DAI, Object.keys({DAI})[0]);  
-  getEarnings(aTokDAI, Object.keys({aTokDAI})[0]);
+  getPrice(WBTC.contractAddress, WBTC.id);
+  getDepositedValue(WBTC.contractAddress, WBTC.id);
+  getRates(WBTC.contractAddress, WBTC.id);
+  getEarnings(WBTC.aTokenAddress, WBTC.id);
+  
+  updateBalanceERC20(DAI.contractAddress);
+  getPrice(DAI.contractAddress, DAI.id);
+  getDepositedValue(DAI.contractAddress, DAI.id);
+  getRates(DAI.contractAddress, DAI.id);  
+  getEarnings(DAI.aTokenAddress, DAI.id);
+  
   
     async function updateBalanceERC20(_contractAddress){
     const options = {
@@ -604,13 +615,11 @@ window.addEventListener('load', async () => {
 });
 
 
-
-
 ///////////////////////////
 /// Bootstrap Tooltips ///
 /////////////////////////
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
