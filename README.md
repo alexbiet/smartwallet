@@ -7,20 +7,19 @@
 
 ## Run
 
-Run with simple HTTP server.
+Run as HTTP server.
 
 <br>
 <br>
 
 ## Description
 
-Smart Wallet provides access to the most popular and secure DeFi Yield instruments. Manage your DeFi instruments with an easy to use dashboard and learn how DeFi yields work.
+Smart Wallet provides an easy way to manage your DeFi yield instruments and helps you learn more about how DeFi yields work using "learn mode" (testnet).
 
 Features:
-- Wallet Connect
-- DeFi Yields on Aave V3 for ETH, WBTC, DAI.
-- Access Ethereum (mainnet, rinkeby) and Polygon (mainnet, mumbai)
-- Learn how DeFi yields work
+- Lending Options on Aave V3 for ETH, WBTC, DAI and more
+- Chains: Polygon, Rinkeby and Mumbai
+- Learn mode (testnet)
 
 <br>
 
@@ -31,10 +30,10 @@ Features:
 
 ## Tech
 
-- Vanilla JS (no React, no Vue, no BS)
+- Aave V3 Smart Contracts
+- Transak
+- Spheron and Filecoin (IPFS)
 - WalletConnect
+- Vanilla JS (no React, no Vue, no BS)
 - Web3.js
 - Moralis
-- Transak
-- Aave V3 API
-- Spheron (IPFS/Filecoin) Deployment & Hosting
