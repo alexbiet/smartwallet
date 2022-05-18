@@ -17,94 +17,64 @@
     </head>
 
     <body>
-
-      <header class="p-3 bg-dark text-white">
+      <header class="p-3">
         <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
-              <b>Smart Wallet</b>
-              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start justify-content-between">
+            <a href="/" class="d-flex flex-row align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <img src="./images/logo.png" class="bi me-2" alt="Smart Wallet" style="max-width: 120px;">
             </a>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" data-tab="view-1" class="nav-link px-2 text-white">Aave Yield</a></li>
-              <li><a href="#" data-tab="view-2" class="nav-link px-2 text-white">Buy Crypto</a></li>
-              <li><a href="#" data-tab="view-3" class="nav-link px-2 text-white">Donate</a></li>
-            </ul>
-
-            <div class="text-end">
-              <!-- <button class="btn btn-warning" id="btn-login">Metamask Connect</button>
-              <button class="btn btn-outline-light me-2" id="btn-logout">Logout</button> -->
-
+            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              &nbsp;
+            </div>
+            <div class="text-end justify-content-between">
               <div id="not-connected">
-                <button class="btn btn-warning" id="btn-connect">
-                  Connect Wallet
-                </button>
+                <button class="btn btn-warning" id="btn-connect">Connect Wallet</button>
               </div>
 
               <div id="connected" style="display: none">
-
-
                 <div id="network" style="display:inline-block;vertical-align:middle;">
                   <small>
-
-                  <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
-
-                  <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
-                  <br>
-                  <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
-
-                </small>
+                    <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
+                    <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
+                    <br>
+                    <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
+                  </small>
                 </div>
                 <span> &nbsp; </span>
-                <button class="btn btn-outline-light" id="btn-disconnect">
-                  Disconnect
-                </button>
-
+                <button class="btn btn-outline-light" id="btn-disconnect">Disconnect</button>
               </div>
             </div>
+
           </div>
         </div>
       </header>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
 
-            <br>
+    <div class="position-absolute bottom-20 end-20">
+    <button type="button" class="btn btn-primary btn-lg btn-smart-wallet-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <i class="bi bi-info-square-fill"></i>
+    </button>
+    </div>
 
-            <!-- AAVE YIELD -->
-            <div id="view-1" class="b-tab">
-        
-              <p>Dev tool: <button class="btn btn-primary" id="btn-getPool">getAavePool</button></p>
 
-            </div>
-
-            <!-- BUY CRYPTO (TRANSAK) -->
-            <div id="view-2" class="b-tab">
-              <!-- <iframe height="625" title="Transak On/Off Ramp Widget"
-                  src="https://staging-global.transak.com?apiKey=7fc30c92-ef84-4d9d-b411-c2e12fe02677&cryptoCurrencyCode=DAI"
-                  frameborder="no" allowtransparency="true" allowfullscreen=""
-                  style="display: block; width: 100%; max-height: 625px; max-width: 500px;">
-              </iframe> -->
-            </div>
-
-            <!-- DONATE -->
-            <div id="view-3" class="b-tab ">
-              <div class="input-group">
-                <input type="text" id="donation-value" class="form-control" placeholder="e.g. 0.01" aria-label="Donation" aria-describedby="button-addon2">
-                <span class="input-group-text">MATIC</span>
-                <button class="btn btn-primary" type="button" id="btn-donate">Donate</button>
-              </div>
-            </div>
-
-            <br>
-          </div>
-        </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div class="container">
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -152,18 +122,16 @@
 
               <hr>
 
-              <div class="row justify-content-center">
+              <div class="row justify-content-center" style="min-height:120px">
                 <div class="col text-end" style="padding-right:0;">
                   <p><strong>APY:</strong></p>
                   <p><strong>Your Supply:</strong></p>
-                  <p><strong>Your Earnings:</strong></p>
                 </div>
                 <div class="col text-start" style="padding-left:8px;">
 
                   <!-- ETH - APY, SUPPLY & EARNINGS -->
                   <p><span id="interest-WETH">-%</span></p>
                   <p><span id="deposited-WETH">0.00</span> ETH</p>
-                  <p><span id="earnings-WETH">0.0000000</span> ETH</p>
                 </div>
               </div>
 
@@ -227,18 +195,16 @@
 
                 <hr>
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center"  style="min-height:120px">
                   <div class="col text-end" style="padding-right:0;">
                     <p><strong>APY:</strong></p>
                     <p><strong>Your Supply:</strong></p>
-                    <p><strong>Your Earnings:</strong></p>
                   </div>
                   <div class="col text-start" style="padding-left:8px;">
 
                     <!-- WBTC - APY, SUPPLY & EARNINGS -->
                     <p><span id="interest-WBTC">-%</span></p>
                     <p><span id="deposited-WBTC">0.00</span> WBTC</p>
-                    <p><span id="earnings-WBTC">0.0000000</span> WBTC</p>
                   </div>
                 </div>
 
@@ -302,18 +268,16 @@
 
                   <hr>
 
-                  <div class="row justify-content-center">
+                  <div class="row justify-content-center" style="min-height:120px">
                     <div class="col text-end" style="padding-right:0;">
                       <p><strong>APY:</strong></p>
                       <p><strong>Your Supply:</strong></p>
-                      <p><strong>Your Earnings:</strong></p>
                     </div>
 
                     <!-- DAI - APY, SUPPLY & EARNINGS -->
                     <div class="col text-start" style="padding-left:8px;">
                       <p><span id="interest-DAI">-%</span></p>
                       <p><span id="deposited-DAI">0.00</span> DAI</p>
-                      <p><span id="earnings-DAI">0.0000000</span> DAI</p>
                     </div>
                   </div>
 

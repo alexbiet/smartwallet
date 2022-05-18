@@ -49,23 +49,20 @@ const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 // Polygon Mumbai Donation //
 // --------------------------
 
-async function donate(val) {
-  let options = {
-    contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
-    functionName: "newDonation",
-    abi: abis.donate,
-    params: {
-      note: "Thanks for your work",
-    },
-    msgValue: web3.utils.toWei(val, "ether"),
-  };
-  await Moralis.executeFunction(options);
-}
+// async function donate(val) {
+//   let options = {
+//     contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
+//     functionName: "newDonation",
+//     abi: abis.donate,
+//     params: {
+//       note: "Thanks for your work",
+//     },
+//     msgValue: web3.utils.toWei(val, "ether"),
+//   };
+//   await Moralis.executeFunction(options);
+// }
 
-document.getElementById("btn-donate").onclick = function () {
-  let donationValue =  document.getElementById("donation-value").value;
-  donate(donationValue);
-}
+
 
 // --------------------------//
 // Aave Rinkeby Functions    //
@@ -294,9 +291,7 @@ document.getElementById("btn-supplyDAI").onclick = function() {
 document.getElementById("btn-withdrawDAI").onclick = function() {
   let amountValue =  document.getElementById("amount-DAI").value;
   withdrawERC20(DAI.contractAddress, Moralis.Units.Token(amountValue, "18"));};
-document.getElementById("btn-getPool").onclick= function() {
 
-  }
 
 //////////////////////////
 /////    FAUCETS     /////
@@ -612,4 +607,17 @@ window.addEventListener('load', async () => {
 let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+
+
+///////////////////////////
+/// Bootstrap Modal    ///
+/////////////////////////
+
+var myModal = document.getElementById('exampleModal')
+var myInput = document.getElementById('exampleInput')
+
+myModal.addEventListener('shown.bs.modal', function () {
+  // myInput.focus();
 })
