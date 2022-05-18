@@ -508,7 +508,10 @@ async function fetchAccountData() {
   balanceShort = balanceShort.shiftedBy(-18).toFixed(3);
   document.getElementById("eth-balance").innerHTML = balanceShort;
 
-
+if(network === "mainnet") {
+  document.getElementById("native-symbol").innerHTML = "MATIC";
+  document.getElementById("native-asset").innerHTML = "MATIC";
+}
 
   //updateBalanceERC20
   // getPrice(WETH);
