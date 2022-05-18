@@ -170,9 +170,11 @@ async function withdrawETH(_amount) {
 }
 //getValueDeposited on Aave
 async function getDepositedValue(_token) {
+  
   let assetAddress = _token.contractAddress;
   let assetName = _token.id;
   let decimals = _token.decimals;
+  document.getElementById(`deposited-${assetName}`).classList.remove("blink");
   let options = {
     contractAddress: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
     functionName: "getUserReserveData",
@@ -183,8 +185,9 @@ async function getDepositedValue(_token) {
       },
   };
   let subGraph = await Moralis.executeFunction(options);
-  let returnVal = subGraph.currentATokenBalance / 10 ** decimals;
-  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal;
+  let returnVal = subGraph.currentATokenBalance;
+  document.getElementById(`deposited-${assetName}`).innerHTML = returnVal  / 10 ** decimals;
+  document.getElementById(`deposited-${assetName}`).classList.add("blink");
   return returnVal;
 
   }
@@ -501,7 +504,7 @@ async function fetchAccountData() {
     getDepositedValue(WETH);
     getDepositedValue(WBTC);
     getDepositedValue(DAI);
-    setTimeout(await updateUI, 2000);
+    setTimeout(await updateUI, 20000);
   };
 
 
