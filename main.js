@@ -11,24 +11,50 @@ let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 //     contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe", //WETHGateway
 //     aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",  //WETHaToken
 //   }
-const WETH = {
-    id: "WETH",
-    contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+
+const db = {
+   rinkeby: {
+     WETH: {
+      id: "WETH",
+      contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+      decimals: 18, 
+      aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
+    },
+    WBTC: {
+      id:"WBTC",
+      contractAddress: "0x124F70a8a3246F177b0067F435f5691Ee4e467DD",
+      decimals: 8, 
+      aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
+    },
+    DAI: {
+    id: "DAI",
+    contractAddress: "0x4aAded56bd7c69861E8654719195fCA9C670EB45",
     decimals: 18, 
-    aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
+    aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
   }
-const WBTC = {
-    id:"WBTC",
-    contractAddress: "0x124F70a8a3246F177b0067F435f5691Ee4e467DD",
-    decimals: 8, 
-    aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
+    },
+  mainnet: {
+    WETH: {
+     id: "WETH",
+     contractAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+     decimals: 18, 
+     aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
+   },
+   WBTC: {
+     id:"WBTC",
+     contractAddress: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+     decimals: 8, 
+     aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
+   },
+   DAI: {
+   id: "DAI",
+   contractAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+   decimals: 18, 
+   aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
+ }
   }
-const DAI = {
-  id: "DAI",
-  contractAddress: "0x4aAded56bd7c69861E8654719195fCA9C670EB45",
-  decimals: 18, 
-  aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
 }
+
 Moralis.start({ serverUrl, appId });
 
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
@@ -74,7 +100,7 @@ document.getElementById("btn-donate").onclick = function () {
 //Gets the current pool contract address (address sometimes changes, ABI doesn't)
 async function getPoolContractAddress() {
 const options = {
-  chain: "rinkeby",
+  chain: chainData["network"],
   address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
   function_name: "getPool",
   abi: abis.poolAddressProvider,
@@ -87,7 +113,7 @@ const options = {
 //Gets priceOracle contract Address
 async function getPriceOracle() {
   const options = {
-    chain: "rinkeby",
+    chain: chainData["network"],
     address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
     function_name: "getPriceOracle",
     abi: abis.poolAddressProvider,
@@ -187,7 +213,6 @@ async function getDepositedValue(_token) {
   let subGraph = await Moralis.executeFunction(options);
   let returnVal = subGraph.currentATokenBalance;
   document.getElementById(`deposited-${assetName}`).innerHTML = returnVal  / 10 ** decimals;
-  document.getElementById(`deposited-${assetName}`).classList.add("blink");
   return returnVal;
 
   }
@@ -226,12 +251,14 @@ async function getRates(_token){
     price = formatter.format(Math.abs((price._hex) / 100000000));
     document.getElementById(`price-${assetName}`).innerHTML = `${price}`;
  }
- async function getEarnings(_token) {
-    let currentATokens = await (getDepositedValue(_token));
-    console.log(currentATokens)
-    //get totalDeposits from localStorage
-    //curentATokens - totalDeposits = live interest earned
-  }
+
+
+//  async function getEarnings(_token) {
+//     let currentATokens = await (getDepositedValue(_token));
+//     console.log(currentATokens)
+//     //get totalDeposits from localStorage
+//     //curentATokens - totalDeposits = live interest earned
+//   }
 
 async function ERC20Faucet(_token, _amount) {
       let options = {
@@ -446,8 +473,6 @@ function init() {
 
 }
 
-
-
 async function fetchAccountData() {
 
   //const web3 = new Web3(provider);
@@ -455,6 +480,8 @@ async function fetchAccountData() {
 
   const chainId = await web3.eth.getChainId();
   const chainData = evmChains.getChain(chainId);
+  let network = chainData["network"];
+  console.log(network);
   document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
 
   const accounts = await web3.eth.getAccounts();
@@ -480,49 +507,74 @@ async function fetchAccountData() {
   let balanceShort = new BigNumber(selectedAccountBalance);
   balanceShort = balanceShort.shiftedBy(-18).toFixed(3);
   document.getElementById("eth-balance").innerHTML = balanceShort;
+
+
+
   //updateBalanceERC20
-  getPrice(WETH);
+  // getPrice(WETH);
+  // getPrice(DAI);
+  // getPrice(WBTC);
 
-  getRates(WETH);
-  getEarnings(WETH);
+  // getRates(WETH);
+  // getRates(DAI); 
+  // getRates(WBTC);
 
-  updateBalanceERC20(WBTC);
-  getPrice(WBTC);
+  // updateBalanceERC20(WBTC);
+   getERC20Balance(db[network].WBTC)
+   getERC20Balance(db[network].DAI)
+ 
+  // // getEarnings(WBTC);
+  // // getEarnings(WETH);
+  // // getEarnings(DAI);
 
-  getRates(WBTC);
-  getEarnings(WBTC);
+  // getDepositedValue(WETH);
+  // getDepositedValue(WBTC);
+  // getDepositedValue(DAI);
+
   
-  updateBalanceERC20(DAI);
-  getPrice(DAI);
-  getRates(DAI);  
 
-  getEarnings(DAI);
-
-  updateUI();
-  async function updateUI() {
-    console.log("something")
-    getDepositedValue(WETH);
-    getDepositedValue(WBTC);
-    getDepositedValue(DAI);
-    setTimeout(await updateUI, 20000);
-  };
-
-
-
-    async function updateBalanceERC20(_token){
-      let contractAddress = _token.contractAddress;
-      const options = {
-        chain: "rinkeby",
-        address: selectedAccount,
-    };
-      let ERC20Balances = await Moralis.Web3API.account.getTokenBalances(options);
-      ERC20Balances.forEach(element => {
-        if (element.token_address === contractAddress.toLowerCase()){
-          let balance = parseFloat((Moralis.Units.FromWei(element.balance, element.decimals))).toFixed(3);
-          document.getElementById(`balance-${element.symbol}`).innerHTML = balance;
-        }
-      });
+  // updateUI();
+  // async function updateUI() {
+  //   console.log("something")
+  //   getDepositedValue(WETH);
+  //   getDepositedValue(WBTC);
+  //   getDepositedValue(DAI);
+  //   setTimeout(await updateUI, 5000);
+  // };
+  
+  async function getERC20Balance(_token) {
+    let contractAddress = db[network][_token.id].contractAddress;
+    let decimals = db[network][_token.id].decimals;
+    let id = db[network][_token.id].id;
+    const options = {
+      contractAddress: contractAddress,
+      functionName: "balanceOf",
+      abi: abis.aTokenABI,
+      params: {
+        user: selectedAccount,
+      }
     }
+    let balance = await Moralis.executeFunction(options);
+    document.getElementById(`balance-${id}`).innerHTML = (balance / 10** decimals).toFixed(6);
+  
+  }
+
+
+// async function updateBalanceERC20(_token){
+//   let contractAddress = db[network][_token.id].contractAddress;
+//   const options = {
+//     chain: network,
+//     address: selectedAccount,
+// };
+//   let ERC20Balances = await Moralis.Web3API.account.getTokenBalances(options);
+//   ERC20Balances.forEach(element => {
+//     if (element.token_address === contractAddress.toLowerCase()){
+//       let balance = parseFloat((Moralis.Units.FromWei(element.balance, element.decimals))).toFixed(3);
+//       console.log(balance)
+//       document.getElementById(`balance-${element.symbol}`).innerHTML = balance;
+//     }
+//   });
+// }
 
 }
 async function refreshAccountData() {
