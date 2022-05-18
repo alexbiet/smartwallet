@@ -495,18 +495,13 @@ async function fetchAccountData() {
 
   getEarnings(DAI);
 
-  getDepositedValue(WETH);
-  getDepositedValue(WBTC);
-  getDepositedValue(DAI);
-
   updateUI();
-
   async function updateUI() {
     console.log("something")
     getDepositedValue(WETH);
     getDepositedValue(WBTC);
     getDepositedValue(DAI);
-    setTimeout(await updateUI, 2000)
+    setTimeout(await updateUI, 2000);
   };
 
 
