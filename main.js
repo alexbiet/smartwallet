@@ -1,113 +1,16 @@
 /** Connect to Moralis server */
 let serverUrl = "https://wiv8xlhz3p4n.usemoralis.com:2053/server";
 let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
-
 //MARK TEMPORARY OVERIDE
 //serverUrl = "https://vvkwmpxspsnn.usemoralis.com:2053/server";
 //appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
-
-// const ETH = {
-//     id: "ETH",
-//     contractAddress: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe", //WETHGateway
-//     aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",  //WETHaToken
-//   }
-
-const db = {
-   rinkeby: {
-     ETH: {
-      id: "WETH",
-      contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
-      decimals: 18, 
-      aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
-    },
-    WBTC: {
-      id:"WBTC",
-      contractAddress: "0x124F70a8a3246F177b0067F435f5691Ee4e467DD",
-      decimals: 8, 
-      aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
- 
-    },
-    DAI: {
-    id: "DAI",
-    contractAddress: "0x4aAded56bd7c69861E8654719195fCA9C670EB45",
-    decimals: 18, 
-    aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
-  },
-    Contracts: {
-      AaveOracle: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
-      WETHGateway: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
-      PoolAddressProvider: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
-      ProtocolDataProvider: "0xBAB2E7afF5acea53a43aEeBa2BA6298D8056DcE5",
-    }
-    },
-  mainnet: {
-    ETH: {
-      id: "MATIC",
-      decimals: 18,
-      contractAddress: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-
-    },
-    WETH: {
-     id: "WETH",
-     contractAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-     decimals: 18, 
-     aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
-   },
-   WBTC: {
-     id:"WBTC",
-     contractAddress: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
-     decimals: 8, 
-     aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
-   },
-   DAI: {
-   id: "DAI",
-   contractAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
-   decimals: 18, 
-   aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
- },
-  Contracts: {
-    AaveOracle: "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
-    WETHGateway: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
-    PoolAddressProvider: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
-    ProtocolDataProvider: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
-
-  }
-  }
-}
-
 Moralis.start({ serverUrl, appId });
 
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
-async function ERC20Faucet(_token, _amount) {
-      let options = {
-        contractAddress: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
-        functionName: "mint",
-        abi: abis.ERC20Faucet,
-        params: {
-          _token: _token,
-          _amount: _amount,
-         },
-      };
-
-      Moralis.executeFunction(options);
-      }
-
-//FetchABI WIP/////////////
-// function getRinkebyABI(_contractAddress){
-//   $.getJSON(`https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=${_contractAddress}&apikey=AG1IR692DPYC6M7VPNMEUCXV27N85NEANM`, function(json){
-//       return json["result"]
-//     }).done(function(data) {
-//       getPoolContractAddress(JSON.parse(data.result))
-//     });
-//   }
-
-  
-
 // -----------------------
 // Transak              //
 // -----------------------
-
 function launchTransak(_walletAddress, _cryptoAsset) {
   let transak = new TransakSDK.default({
     apiKey: '7fc30c92-ef84-4d9d-b411-c2e12fe02677',  // Your API Key
@@ -131,29 +34,22 @@ function launchTransak(_walletAddress, _cryptoAsset) {
     .on(transak.ALL_EVENTS, (data) => {
       console.log(data)
     });
-
   // This will trigger when the user marks payment is made.
   transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
     console.log(orderData);
     transak.close();
   });
 }
-
 // function transakOpen(_walletAddress, _cryptoAsset) {
-
 //   let bb = launchTransak(_walletAddress, _cryptoAsset);
-
 //   console.log(bb);
 //   console.log(1231029498938409234);
 //   this.open();
-
 // }
 // // window.onload = function() {
   // launchTransak(selectedAccount);
   // console.log(await selectedAccount);
 // }
-
-
 
 // -----------------------
 // TABS NAV             //
@@ -206,12 +102,10 @@ function Tabs() {
     sessionStorage.setItem('activeDataTab', id);
     document.getElementById(id).classList.add('active');
   }
-
   bindAll();
 }
 
 let connectTabs = new Tabs();
-
 
 ////////////////
 ///Web3 Modal///
@@ -243,7 +137,8 @@ function init() {
   });
 
   //console.log("Web3Modal instance is", web3Modal);
-
+  
+  
 }
 
 async function fetchAccountData() {
@@ -262,8 +157,16 @@ async function fetchAccountData() {
   const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
   const selectedEthBalance = web3.utils.fromWei(selectedAccountBalance, "ether");
   const humanFriendlyBalance = parseFloat(selectedEthBalance).toFixed(4);
-  const selectedBalanceSymbol = chainData.name.split(" ").at(-1) == "Mumbai" ? "MATIC" : "ETH";
+  let selectedBalanceSymbol = "ETH";
+  if(network === "rinkeby"){
+    selectedBalanceSymbol = "ETH";
+  }else {
+    selectedBalanceSymbol = chainData["nativeCurrency"].symbol;
+  }
 
+
+
+  
   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,6) + "..." + selectedAccount.slice(-4);
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
@@ -272,32 +175,27 @@ async function fetchAccountData() {
   document.querySelector("#connected").style.display = "inline-block";
   
     //update native ETH Balance
+  let nativeAsset = chainData["nativeCurrency"].symbol;
+  if(nativeAsset === "RIN")
+    nativeAsset = "ETH";
   let nativeBalance = selectedAccountBalance / 10**18;
   let nativePrice = await getPrice("ETH");
 
-if(network === "mainnet") {
-  document.getElementById("native-symbol").innerHTML = "MATIC";
-  document.getElementById("native-asset").innerHTML = "MATIC";
-  document.getElementById("native-price").innerHTML = `1 MATIC = <span id="price-ETH">${nativePrice}</span>`;
-  document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> MATIC`;
-  document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> MATIC`;
+
+  document.getElementById("native-symbol").innerHTML = `${nativeAsset}`;
+  document.getElementById("native-asset").innerHTML = `${nativeAsset}`;
+  document.getElementById("native-price").innerHTML = `1 ${nativeAsset} = <span id="price-ETH">${nativePrice}</span>`;
+  document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ${nativeAsset}`;
+  document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
   document.getElementById("native-img").src = "images/matic.svg";
 
-} else if (network === "rinkeby") {
-  document.getElementById("native-symbol").innerHTML = "ETH";
-  document.getElementById("native-asset").innerHTML = "ETH";
-  document.getElementById("native-price").innerHTML = `1 ETH = <span id="price-ETH">${nativePrice}</span>`;
-  document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ETH`;
-  document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ETH`;
-  document.getElementById("native-img").src = "images/ETH.svg";
-}
 
-  getERC20Balance("WBTC")
-  getERC20Balance("DAI")
+   getERC20Balance("WBTC")
+   getERC20Balance("DAI")
    getPrice("DAI");
    getPrice("WBTC");
-
    getPrice("ETH");
+
    getRates("ETH");
    getRates("DAI"); 
    getRates("WBTC");
@@ -350,8 +248,8 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
 //////////////////////////
 /////    FAUCETS     /////
 //////////////////////////
-document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet(WBTC.contractAddress, Moralis.Units.Token("10", "8"));}; //10WBTC
-document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI.contractAddress, Moralis.Units.Token("10000", "18")); //10000 DAI
+document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet("WBTC", Moralis.Units.Token("10", "8"));}; //10WBTC
+document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet("DAI", Moralis.Units.Token("10000", "18")); //10000 DAI
 }
   // updateUI();  refreshes every 2000ms
   // async function updateUI() {
@@ -391,7 +289,7 @@ document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet(DAI.contra
      }};
  
      let price = await Moralis.executeFunction(options);
-     
+
        //NumberFormatter//
 let formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -437,6 +335,7 @@ async function getDepositedValue(_token) {
   let assetAddress = db[network][_token].contractAddress;
   let assetName = db[network][_token].id;
   let decimals = db[network][_token].decimals;
+  
   let options = {
     contractAddress: db[network].Contracts.ProtocolDataProvider,
     functionName: "getUserReserveData",
@@ -449,6 +348,7 @@ async function getDepositedValue(_token) {
   let subGraph = await Moralis.executeFunction(options);
   let returnVal = subGraph.currentATokenBalance;
   document.getElementById(`deposited-${_token}`).innerHTML = returnVal  / 10 ** decimals;
+  
   return returnVal;
 
   }
@@ -473,15 +373,20 @@ async function getRates(_token){
   let spender = await getPoolContractAddress();
   let tokenContract = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
-  let amount = _amount * 10**decimals;
-  amount = amount.toString();
+  console.log(decimals)
+  let amount = _amount;
+  if (decimals === 8) {
+     amount = amount * 10**8;
+ } else {
+     amount = web3.utils.toWei(_amount);
+ }
   let options = {
     contractAddress: tokenContract,
     functionName: "approve",
     abi: abis.approve,
     params: {
       _spender: spender,
-      _value:   amount,
+      _value: amount,
     }
   };
   Moralis.executeFunction(options);
@@ -490,9 +395,13 @@ async function getRates(_token){
 async function supplyERC20(_token, _amount){
   let tokenAddress = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
-  let amount = _amount * 10**decimals;
-  amount = amount.toString();
-
+  console.log(decimals)
+  let amount = _amount;
+  if (decimals === 8) {
+     amount = amount * 10**8;
+ } else {
+     amount = web3.utils.toWei(_amount);
+ }
   let supplyOptions = {
     contractAddress: await getPoolContractAddress(),
     functionName: "supply",
@@ -510,9 +419,12 @@ async function supplyERC20(_token, _amount){
   let tokenAddress = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
   console.log(decimals)
-  let amount = _amount * 10**decimals;
-  console.log(amount)
-
+  let amount = _amount;
+  if (decimals === 8) {
+     amount = amount * 10**8;
+ } else {
+     amount = web3.utils.toWei(_amount);
+ }
   let supplyOptions = {
     contractAddress: await getPoolContractAddress(),
     functionName: "withdraw",
@@ -552,13 +464,31 @@ async function withdrawETH(_amount) {
       abi: abis.WETHGateway,
       params: {
         pool: await getPoolContractAddress(),
-        amount: amount,
+        amount: amount.toString(),
         to: selectedAccount,
        },
     };
 
   Moralis.executeFunction(options);
 }
+
+async function ERC20Faucet(_token, _amount) {
+  contractAddress = db[network].Contracts.ERC20Faucet;
+  console.log(contractAddress)
+  tokenAddress = db[network][_token].contractAddress;
+
+      let options = {
+        contractAddress: contractAddress,
+        functionName: "mint",
+        abi: abis.ERC20Faucet,
+        params: {
+          _token: tokenAddress,
+          _amount: _amount,
+         },
+      };
+
+      Moralis.executeFunction(options);
+      }
 
 }
 async function refreshAccountData() {
@@ -606,7 +536,103 @@ async function onConnect() {
 
   await refreshAccountData();
 }
-
+/////////////////////////
+//////Switch Networks//////
+//or ADD nonexisting RPC///
+////////////////////////////
+const switchNetworkPolygon = async () => {
+  try {
+    await web3.currentProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x89" }],
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      try {
+        await web3.currentProvider.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: "0x89",
+              chainName: "Polygon",
+              rpcUrls: ["https://polygon-rpc.com"],
+              nativeCurrency: {
+                name: "MATIC",
+                symbol: "MATIC",
+                decimals: 18,
+              },
+              blockExplorerUrls: ["https://polygonscan.com"],
+            },
+          ],
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  }
+}
+const switchNetworkMumbai = async () => {
+  try {
+    await web3.currentProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x13881" }],
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      try {
+        await web3.currentProvider.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: "0x13881",
+              chainName: "Mumbai",
+              rpcUrls: ["https://rpc-mumbai.matic.today"],
+              nativeCurrency: {
+                name: "Matic",
+                symbol: "Matic",
+                decimals: 18,
+              },
+              blockExplorerUrls: ["https://explorer-mumbai.maticvigil.com"],
+            },
+          ],
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  }
+}
+const switchNetworkRinkeby = async () => {
+  try {
+    await web3.currentProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x4" }],
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      try {
+        await web3.currentProvider.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: "0x4",
+              chainName: "Rinkeby",
+              rpcUrls: ["https://rinkeby.infura.io/v3/"],
+              nativeCurrency: {
+                name: "ETH",
+                symbol: "ETH",
+                decimals: 18,
+              },
+              blockExplorerUrls: ["https://rinkeby.etherscan.io"],
+            },
+          ],
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  }
+}
 
 async function onDisconnect() {
 
@@ -638,6 +664,9 @@ window.addEventListener('load', async () => {
   document.querySelector("#btn-buyWBTC").addEventListener("click", function () {launchTransak(selectedAccount, "WBTC")});
   document.querySelector("#btn-buyDAI").addEventListener("click", function () {launchTransak(selectedAccount, "DAI")});
 
+  document.querySelector("#radio-rinkeby").addEventListener("click", function () {switchNetworkRinkeby();});
+  document.querySelector("#radio-mumbai").addEventListener("click", function () {switchNetworkMumbai();});
+  document.querySelector("#radio-polygon").addEventListener("click", function () {switchNetworkPolygon();});
 });
 
 
