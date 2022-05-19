@@ -51,6 +51,7 @@ function launchTransak(_walletAddress, _cryptoAsset) {
   // console.log(await selectedAccount);
 // }
 
+
 // -----------------------
 // TABS NAV             //
 // -----------------------
@@ -695,8 +696,8 @@ let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 /// Bootstrap Modal    ///
 /////////////////////////
 
-var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('exampleInput')
+var myModal = document.getElementById('welcomeInfoModal');
+var myInput = document.getElementById('welcomeInfoInput');
 
 myModal.addEventListener('shown.bs.modal', function () {
   // myInput.focus();
@@ -717,4 +718,21 @@ var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'
 
 var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'), {
   trigger: 'focus'
+})
+
+
+///////////////////////////
+/// Light / Dark Mode  ///
+/////////////////////////
+
+$('.switch').click(()=>{
+  // $([".light [class*='-light']", ".dark [class*='-dark']"]).each((i,ele)=>{
+  //     $(ele).toggleClass('bg-light bg-dark')
+  //     $(ele).toggleClass('text-light text-dark')
+  //     $(ele).toggleClass('navbar-light navbar-dark')
+  // })
+  // toggle body class selector
+  $('body').toggleClass('bg-light bg-dark');
+
+  $('#modeButton').toggleClass('bi-sun bi-moon');
 })

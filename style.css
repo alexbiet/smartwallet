@@ -58,3 +58,44 @@ body {
 hr {
   color: #bbb;
 }
+
+
+
+
+
+.gradient-box {
+  display: flex;
+  width: 90%;
+  margin: auto;
+  /* max-width: 22em; */
+  position: relative;
+  /* padding: 30% 2em; */
+  box-sizing: border-box;
+  color: #FFF;
+  background: #000;
+  background-clip: padding-box;
+  border: solid 2px transparent;
+  border-radius: 1em;
+}
+
+.gradient-box:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -2px;
+  border-radius: inherit;
+  /* background: linear-gradient(to right, red, orange); */
+  background: linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);;
+}
+
+/* 
+background-image: linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);
+border: 1px solid #FFFFFF;
+box-shadow: inset 2px 2px 6px 0 rgba(0,0,0,0.30); */
+
+/* html { height: 100%; display: flex; }
+body { margin: auto; } */
