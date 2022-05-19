@@ -17,47 +17,50 @@
     </head>
 
     <body>
-      <header class="p-3">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start justify-content-between">
-            <a href="/" class="d-flex flex-row align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+      <header class="container p-3">
+        <div class="row align-items-center">
+
+          <div class="col">
+            <a href="/" class="mb-2 mb-lg-0 text-decoration-none">
               <img src="./images/logo.png" class="bi me-2" alt="Smart Wallet" style="max-width: 120px;">
             </a>
-
-            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
-              </div>
-            </div>
-
-            <div class="text-end justify-content-center">
-              <div id="not-connected">
-                <button class="btn btn-warning" id="btn-connect">Connect Wallet</button>
-              </div>
-
-              <div id="connected" style="display:none">
-                <div id="network" style="display:inline-block;vertical-align:middle;">
-                  <small>
-                    <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
-                    <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
-                    <br>
-                    <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
-                  </small>
-                </div>
-                <span> &nbsp; </span>
-                <button class="btn btn-outline-dark" id="btn-disconnect">Disconnect</button>
-              </div>
-            </div>
-
           </div>
+
+          <div class="col">
+            <div class="btn-group" role="group" aria-label="Chain">
+              <input type="radio" class="btn-check" name="chain" id="rinkeby" autocomplete="off" checked>
+              <label class="btn btn-outline-primary" for="rinkeby"><b>Rinkeby</b><br><small>(learn mode)</small></label>
+
+              <input type="radio" class="btn-check" name="chain" id="mumbai" autocomplete="off">
+              <label class="btn btn-outline-primary" for="mumbai"><b>Mumbai</b><br><small>(learn mode)</small></label>
+
+              <input type="radio" class="btn-check" name="chain" id="polygon" autocomplete="off">
+              <label class="btn btn-outline-primary" for="polygon"><b>Polygon</b><br><small class="text-danger">(mainnet)</small></label>
+            </div>
+          </div>
+
+          <div class="col-auto">
+            <div id="not-connected">
+              <button class="btn btn-warning btn-lg" id="btn-connect">Connect Wallet</button>
+            </div>
+
+            <div id="connected" style="display:none">
+              <div id="network" style="display:inline-block;vertical-align:middle;text-align:right;">
+                <small>
+                  <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
+                  <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
+                  <br>
+                  <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
+                </small>
+              </div>
+              <span> &nbsp; </span>
+              <button class="btn btn-outline-dark" id="btn-disconnect">Disconnect</button>
+            </div>
+          </div>
+
         </div>
+        <br>
+        <br>
       </header>
 
 
@@ -70,18 +73,27 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        ...<br>
+        <b>Transak Staging</b><br>
+        SSN: 000000001<br>
+        VISA<br>
+        4111111111111111<br>
+        Exp.10/23 - CCV:123<br>
+        USD<br>
+        Bank details<br>
+        Test UPI Id: 88xxxxxx18@upi<br>
+        Validate the bank account: 000000
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer text-center justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -148,7 +160,7 @@
 
               <p>
                 <div class="input-group">
-                  <span class="input-group-text">ETH</span>
+                  <span class="input-group-text"><small><b>ETH</b></small></span>
 
                   <!-- ETH - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                   <input id="amount-ETH" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -157,8 +169,7 @@
                   <button id="btn-withdrawETH" class="btn btn-danger btn-sm" style="padding-right:12px;padding-left:12px;" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Withdraw"><i class="bi bi-dash-circle"></i></button>
                 </div>
               </p>
-
-              <a href="javascript:void(0);" class="card-link">Learn more</a>
+              <a tabindex="0" class="card-link popover-dismiss-1" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?">How does it work?</a>
             </div>
           </div>
           </div>
@@ -221,7 +232,7 @@
 
                 <p>
                   <div class="input-group">
-                    <span class="input-group-text">WBTC</span>
+                    <span class="input-group-text"><small><b>WBTC</b></small></span>
 
                     <!-- WBTC - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                     <input id="amount-WBTC" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -231,7 +242,7 @@
                   </div>
                 </p>
 
-                <a href="#" class="card-link">Learn more</a>
+                <a tabindex="0" class="card-link popover-dismiss-2" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?">How does it work?</a>
               </div>
             </div>
             </div>
@@ -294,7 +305,7 @@
 
                   <p>
                     <div class="input-group">
-                      <span class="input-group-text">DAI</span>
+                      <span class="input-group-text"><small><b>DAI</b></small></span>
 
                       <!-- DAI - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                       <input id="amount-DAI" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -304,7 +315,7 @@
                     </div>
                   </p>
 
-                  <a href="javascript:void(0);" class="card-link">Learn more</a>
+                  <a tabindex="3" class="card-link popover-dismiss-3" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?">How does it work?</a>
                 </div>
               </div>
               </div>

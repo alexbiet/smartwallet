@@ -328,6 +328,7 @@ function launchTransak(_walletAddress, _cryptoAsset) {
     walletAddress: _walletAddress, // Your customer's wallet address
     themeColor: 'azure', // App theme color
     hideMenu: true,
+    network: 'polygon', 
     fiatCurrency: '', // Limit fiat selection eg 'USD'
     email: '', // Your customer's email address
     redirectURL: ''
@@ -698,4 +699,21 @@ var myInput = document.getElementById('exampleInput')
 
 myModal.addEventListener('shown.bs.modal', function () {
   // myInput.focus();
+})
+
+
+///////////////////////////
+/// Bootstrap Popover  ///
+/////////////////////////
+
+var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
+  trigger: 'focus'
+})
+
+var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'), {
+  trigger: 'focus'
+})
+
+var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'), {
+  trigger: 'focus'
 })

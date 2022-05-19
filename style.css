@@ -44,5 +44,17 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 100%;
-  box-shadow: #b9b9b9 0 10px 10px;
+  box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
+}
+
+.card {
+  border-radius: 1.5rem;
+  box-shadow: rgb(0 0 0 / 10%) 0 10px 20px;
+  border:0;
+  /* background: rgb(255,255,255);
+  background: linear-gradient(145deg, rgba(235,235,235,1) 0%, rgba(255,255,255,1) 100%); */
+}
+
+hr {
+  color: #bbb;
 }
