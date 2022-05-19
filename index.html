@@ -52,7 +52,7 @@
                   </small>
                 </div>
                 <span> &nbsp; </span>
-                <button class="btn btn-outline-light" id="btn-disconnect">Disconnect</button>
+                <button class="btn btn-outline-dark" id="btn-disconnect">Disconnect</button>
               </div>
             </div>
 
@@ -97,7 +97,7 @@
             <div class="card-body" style="padding-bottom:0;">
               <div class="row align-items-center">
                 <div class="col" style="max-width:52px;margin-right:10px;">
-                  <img class="pull-left" style="display:inline-block;width:48px;" src="images/eth.svg" alt="Ethereum">
+                  <img id="native-img" class="pull-left" style="display:inline-block;width:48px;" src="images/eth.svg" alt="Ethereum">
                 </div>
                 <div class="col">
                     <h3 class="card-title" id="native-symbol"style="margin-bottom:0;">ETH</h3>
@@ -122,7 +122,7 @@
                 <div class="col text-start" style="padding-left:8px;">
 
                   <!-- ETH - BALANCE -->
-                  <p><span id="eth-balance">0.00</span id="native-supply"> ETH</p>
+                  <p id="native-balance"><span id="eth-balance">0.00</span> ETH</p>
                 </div>
               </div>
 
@@ -142,7 +142,7 @@
 
                   <!-- ETH - APY, SUPPLY & EARNINGS -->
                   <p><span id="interest-WETH">-%</span></p>
-                  <p><span id="deposited-WETH">0.00</span> ETH</p>
+                  <p id="native-supply"><span id="deposited-WETH">0.00</span> ETH</p>
                 </div>
               </div>
 

@@ -25,13 +25,19 @@ const db = {
       contractAddress: "0x124F70a8a3246F177b0067F435f5691Ee4e467DD",
       decimals: 8, 
       aTokenAddress: "0xeC1d8303b8fa33afB59012Fc3b49458B57883326",
+ 
     },
     DAI: {
     id: "DAI",
     contractAddress: "0x4aAded56bd7c69861E8654719195fCA9C670EB45",
     decimals: 18, 
     aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
-  }
+  },
+    Contracts: {
+      AaveOracle: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
+      WETHGateway: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
+      PoolAddressProvider: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
+    }
     },
   mainnet: {
     WETH: {
@@ -51,7 +57,13 @@ const db = {
    contractAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
    decimals: 18, 
    aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
- }
+ },
+  Contracts: {
+    AaveOracle: "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
+    WETHGateway: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
+    PoolAddressProvider: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
+
+  }
   }
 }
 
@@ -98,7 +110,7 @@ const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 async function getPoolContractAddress() {
 const options = {
   chain: chainData["network"],
-  address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
+  address: db[network].Contracts.PoolAddressProvider,
   function_name: "getPool",
   abi: abis.poolAddressProvider,
   params: { },
@@ -107,20 +119,7 @@ const options = {
  //console.log("current PoolAddress: " + lendingPoolAddress)
  return lendingPoolAddress;
 }
-//Gets priceOracle contract Address
-async function getPriceOracle() {
-  const options = {
-    chain: chainData["network"],
-    address: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C",
-    function_name: "getPriceOracle",
-    abi: abis.poolAddressProvider,
-    params: { },
-  };
-   const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
-   //console.log("current PriceOracleAddress: " + priceOracleAddress)
-   return priceOracleAddress;
-   
-  }
+
 async function approveERC20(_tokenAddress, _amount){
   let spender = await getPoolContractAddress();
   let approveOptions = {
@@ -234,21 +233,7 @@ async function getRates(_token){
 
  }
  
- async function getPrice(_token){
-   let assetAddress = _token.contractAddress;
-   let assetName = _token.id;
-  let options = {
-    contractAddress: await getPriceOracle(),
-    functionName: "getAssetPrice",
-    abi: abis.AaveOracle,
-    params: {
-      asset: assetAddress,
-    }};
-    let price = await Moralis.executeFunction(options);
-    price = formatter.format(Math.abs((price._hex) / 100000000));
-    document.getElementById(`price-${assetName}`).innerHTML = `${price}`;
- }
-
+ 
 
 //  async function getEarnings(_token) {
 //     let currentATokens = await (getDepositedValue(_token));
@@ -477,7 +462,8 @@ async function fetchAccountData() {
   const chainData = evmChains.getChain(chainId);
   let network = chainData["network"];
   console.log(network);
-  document.querySelector("#network-name").textContent = chainData.name.split(" ").at(-1);
+
+  document.querySelector("#network-name").textContent = chainData.name;
 
   const accounts = await web3.eth.getAccounts();
 
@@ -494,32 +480,37 @@ async function fetchAccountData() {
   // Display fully loaded UI for wallet data
   document.querySelector("#not-connected").style.display = "none";
   document.querySelector("#connected").style.display = "inline-block";
-
-  ///////////////////
-  ///USER BALANCES///
-  ///////////////////
-  //update native ETH Balance
-  let balanceShort = new BigNumber(selectedAccountBalance);
-  balanceShort = balanceShort.shiftedBy(-18).toFixed(3);
-  document.getElementById("eth-balance").innerHTML = balanceShort;
+  
+    //update native ETH Balance
+  let nativeBalance = selectedAccountBalance / 10**18;
+  let nativePrice = await getPrice(db[network].WETH);
 
 if(network === "mainnet") {
   document.getElementById("native-symbol").innerHTML = "MATIC";
   document.getElementById("native-asset").innerHTML = "MATIC";
+  document.getElementById("native-price").innerHTML = `1 MATIC = <span id="price-WETH">${nativePrice}</span>`;
+  document.getElementById("native-balance").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> MATIC`;
+  document.getElementById("native-supply").innerHTML = `<span id="deposited-WETH">0.00</span> MATIC`;
+  document.getElementById("native-img").src = "images/matic.svg";
+
+} else if (network === "rinkeby") {
+  document.getElementById("native-symbol").innerHTML = "ETH";
+  document.getElementById("native-asset").innerHTML = "ETH";
+  document.getElementById("native-price").innerHTML = `1 ETH = <span id="price-WETH">${nativePrice}</span>`;
+  document.getElementById("native-balance").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ETH`;
+  document.getElementById("native-supply").innerHTML = `<span id="deposited-WETH">0.00</span> ETH`;
+  document.getElementById("native-img").src = "images/ETH.svg";
 }
 
-  //updateBalanceERC20
-  // getPrice(WETH);
-  // getPrice(DAI);
-  // getPrice(WBTC);
+  getERC20Balance(db[network].WBTC)
+  getERC20Balance(db[network].DAI)
+   getPrice(db[network].DAI);
+   getPrice(db[network].WBTC);
 
   // getRates(WETH);
   // getRates(DAI); 
   // getRates(WBTC);
 
-  // updateBalanceERC20(WBTC);
-   getERC20Balance(db[network].WBTC)
-   getERC20Balance(db[network].DAI)
  
   // // getEarnings(WBTC);
   // // getEarnings(WETH);
@@ -556,6 +547,38 @@ if(network === "mainnet") {
     document.getElementById(`balance-${id}`).innerHTML = (balance / 10** decimals).toFixed(6);
   
   }
+
+  async function getPrice(_token){
+    let assetAddress = db[network][_token.id].contractAddress;
+   let options = {
+     contractAddress: await getPriceOracle(),
+     functionName: "getAssetPrice",
+     abi: abis.AaveOracle,
+     params: {
+       asset: assetAddress,
+     }};
+     let price = await Moralis.executeFunction(options);
+     price = formatter.format(Math.abs((price._hex) / 100000000));
+     document.getElementById(`price-${[_token.id]}`).innerHTML = `${price}`;
+     console.log(price);
+     return price;
+  }
+
+  //Gets priceOracle contract Address
+async function getPriceOracle() {
+  const options = {
+    chain: chainData["network"],
+    address: db[network].Contracts.PoolAddressProvider,
+    function_name: "getPriceOracle",
+    abi: abis.poolAddressProvider,
+    params: { },
+  };
+   const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
+   //console.log("current PriceOracleAddress: " + priceOracleAddress)
+   return priceOracleAddress;
+   
+  }
+ 
 
 
 // async function updateBalanceERC20(_token){
