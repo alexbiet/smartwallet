@@ -40,9 +40,15 @@ const db = {
     }
     },
   mainnet: {
+    MATIC: {
+      id: "MATIC",
+      decimals: 18,
+      contractAddress: "0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a",
+
+    },
     WETH: {
      id: "WETH",
-     contractAddress: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+     contractAddress: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
      decimals: 18, 
      aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
    },
@@ -109,7 +115,7 @@ const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 //Gets the current pool contract address (address sometimes changes, ABI doesn't)
 async function getPoolContractAddress() {
 const options = {
-  chain: chainData["network"],
+  chain: network,
   address: db[network].Contracts.PoolAddressProvider,
   function_name: "getPool",
   abi: abis.poolAddressProvider,
@@ -484,9 +490,10 @@ async function fetchAccountData() {
   
     //update native ETH Balance
   let nativeBalance = selectedAccountBalance / 10**18;
-  let nativePrice = await getPrice(db[network].WETH);
+  
 
 if(network === "mainnet") {
+  let nativePrice = await getPrice(db[network].MATIC);
   document.getElementById("native-symbol").innerHTML = "MATIC";
   document.getElementById("native-asset").innerHTML = "MATIC";
   document.getElementById("native-price").innerHTML = `1 MATIC = <span id="price-WETH">${nativePrice}</span>`;
@@ -495,6 +502,7 @@ if(network === "mainnet") {
   document.getElementById("native-img").src = "images/matic.svg";
 
 } else if (network === "rinkeby") {
+  let nativePrice = await getPrice(db[network].WETH);
   document.getElementById("native-symbol").innerHTML = "ETH";
   document.getElementById("native-asset").innerHTML = "ETH";
   document.getElementById("native-price").innerHTML = `1 ETH = <span id="price-WETH">${nativePrice}</span>`;
@@ -550,6 +558,7 @@ if(network === "mainnet") {
   }
 
   async function getPrice(_token){
+    console.log(db[network][_token.id].contractAddress)
     let assetAddress = db[network][_token.id].contractAddress;
    let options = {
      contractAddress: await getPriceOracle(),
@@ -558,6 +567,7 @@ if(network === "mainnet") {
      params: {
        asset: assetAddress,
      }};
+ 
      let price = await Moralis.executeFunction(options);
      price = formatter.format(Math.abs((price._hex) / 100000000));
      document.getElementById(`price-${[_token.id]}`).innerHTML = `${price}`;
@@ -567,15 +577,17 @@ if(network === "mainnet") {
 
   //Gets priceOracle contract Address
 async function getPriceOracle() {
+  console.log(db[network].Contracts.PoolAddressProvider)
   const options = {
-    chain: chainData["network"],
-    address: db[network].Contracts.PoolAddressProvider,
-    function_name: "getPriceOracle",
-    abi: abis.poolAddressProvider,
+    chain: network,
+    contractAddress: db[network].Contracts.PoolAddressProvider,
+    functionName: "getPriceOracle",
+    abi: abis.polygonPoolAddressProvider,
     params: { },
   };
-   const priceOracleAddress = await Moralis.Web3API.native.runContractFunction(options);
-   //console.log("current PriceOracleAddress: " + priceOracleAddress)
+
+   const priceOracleAddress = await Moralis.executeFunction(options);
+   console.log("current PriceOracleAddress: " + priceOracleAddress)
    return priceOracleAddress;
    
   }
