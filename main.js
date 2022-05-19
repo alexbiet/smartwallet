@@ -144,12 +144,10 @@ function init() {
 async function fetchAccountData() {
 
   //const web3 = new Web3(provider);
-
-
   const chainId = await web3.eth.getChainId();
   const chainData = evmChains.getChain(chainId);
   let network = chainData["network"];
-  console.log("Web3 instance is", web3, "Network is: " + network);
+  //console.log("Web3 instance is", web3, "Network is: " + network);
   document.querySelector("#network-name").textContent = chainData.name;
 
   const accounts = await web3.eth.getAccounts();
@@ -163,47 +161,48 @@ async function fetchAccountData() {
   }else {
     selectedBalanceSymbol = chainData["nativeCurrency"].symbol;
   }
-
-
-
-  
   document.querySelector("#selected-account").textContent = selectedAccount.substring(0,6) + "..." + selectedAccount.slice(-4);
   document.querySelector("#selected-account-balance").textContent = humanFriendlyBalance + " " + selectedBalanceSymbol;
 
   // Display fully loaded UI for wallet data
   document.querySelector("#not-connected").style.display = "none";
   document.querySelector("#connected").style.display = "inline-block";
+
+  updateUiData();
+  async function updateUiData() {
+
+      //update native ETH Balance
+    let nativeAsset = chainData["nativeCurrency"].symbol;
+    console.log(nativeAsset);
+
+    if(nativeAsset === "RIN"){
+      nativeAsset = "ETH";
+    }
+    
+    let nativeBalance = selectedAccountBalance / 10**18;
+    let nativePrice = await getPrice("ETH");
+
+    document.getElementById("native-img").src = `images/${nativeAsset}.svg`;
+    document.getElementById("native-symbol").innerHTML = `${nativeAsset}`;
+    document.getElementById("native-asset").innerHTML = `${nativeAsset}`;
+    document.getElementById("native-price").innerHTML = `1 ${nativeAsset} = <span id="price-ETH">${nativePrice}</span>`;
+    document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ${nativeAsset}`;
+    document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
   
-    //update native ETH Balance
-  let nativeAsset = chainData["nativeCurrency"].symbol;
-  if(nativeAsset === "RIN")
-    nativeAsset = "ETH";
-  let nativeBalance = selectedAccountBalance / 10**18;
-  let nativePrice = await getPrice("ETH");
-
-
-  document.getElementById("native-symbol").innerHTML = `${nativeAsset}`;
-  document.getElementById("native-asset").innerHTML = `${nativeAsset}`;
-  document.getElementById("native-price").innerHTML = `1 ${nativeAsset} = <span id="price-ETH">${nativePrice}</span>`;
-  document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ${nativeAsset}`;
-  document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
-  document.getElementById("native-img").src = "images/matic.svg";
-
-
-   getERC20Balance("WBTC")
-   getERC20Balance("DAI")
-   getPrice("DAI");
-   getPrice("WBTC");
-   getPrice("ETH");
-
-   getRates("ETH");
-   getRates("DAI"); 
-   getRates("WBTC");
-
-   getDepositedValue("ETH");
-   getDepositedValue("WBTC");
-   getDepositedValue("DAI");
-
+     getERC20Balance("WBTC")
+     getERC20Balance("DAI")
+     getPrice("DAI");
+     getPrice("WBTC");
+     getPrice("ETH");
+  
+     getRates("ETH");
+     getRates("DAI"); 
+     getRates("WBTC");
+  
+     getDepositedValue("ETH");
+     getDepositedValue("WBTC");
+     getDepositedValue("DAI");
+  }
   
 //////////////////////////
 /////    ERC20 WETH     ///
@@ -248,8 +247,8 @@ document.getElementById("btn-withdrawDAI").onclick = function() {
 //////////////////////////
 /////    FAUCETS     /////
 //////////////////////////
-document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet("WBTC", Moralis.Units.Token("10", "8"));}; //10WBTC
-document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet("DAI", Moralis.Units.Token("10000", "18")); //10000 DAI
+document.getElementById("btn-faucetWBTC").onclick = () => {ERC20Faucet("WBTC", "10");}; //10WBTC
+document.getElementById("btn-faucetDAI").onclick = () => {ERC20Faucet("DAI", "10000"); //10000 DAI
 }
   // updateUI();  refreshes every 2000ms
   // async function updateUI() {
@@ -377,6 +376,7 @@ async function getRates(_token){
   let amount = _amount;
   if (decimals === 8) {
      amount = amount * 10**8;
+     amount = amount.toFixed();
  } else {
      amount = web3.utils.toWei(_amount);
  }
@@ -399,6 +399,7 @@ async function supplyERC20(_token, _amount){
   let amount = _amount;
   if (decimals === 8) {
      amount = amount * 10**8;
+     amount = amount.toFixed();
  } else {
      amount = web3.utils.toWei(_amount);
  }
@@ -422,6 +423,7 @@ async function supplyERC20(_token, _amount){
   let amount = _amount;
   if (decimals === 8) {
      amount = amount * 10**8;
+     amount = amount.toFixed();
  } else {
      amount = web3.utils.toWei(_amount);
  }
@@ -473,6 +475,14 @@ async function withdrawETH(_amount) {
 }
 
 async function ERC20Faucet(_token, _amount) {
+  let decimals = db[network][_token].decimals;
+  let amount = _amount;
+  if (decimals === 8) {
+     amount = amount * 10**8;
+     amount = amount.toFixed();
+ } else {
+     amount = web3.utils.toWei(_amount);
+ }
   contractAddress = db[network].Contracts.ERC20Faucet;
   console.log(contractAddress)
   tokenAddress = db[network][_token].contractAddress;
@@ -483,7 +493,7 @@ async function ERC20Faucet(_token, _amount) {
         abi: abis.ERC20Faucet,
         params: {
           _token: tokenAddress,
-          _amount: _amount,
+          _amount: amount,
          },
       };
 
