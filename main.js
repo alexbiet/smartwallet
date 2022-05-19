@@ -528,7 +528,7 @@ async function onConnect() {
     console.log("Could not get a wallet connection", e);
     return;
   }
-
+//Mar4kcmne
   // Subscribe to accounts change
   provider.on("accountsChanged", (accounts) => {
     fetchAccountData();
