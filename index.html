@@ -17,47 +17,50 @@
     </head>
 
     <body>
-      <header class="p-3">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start justify-content-between">
-            <a href="/" class="d-flex flex-row align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+      <header class="container p-3">
+        <div class="row align-items-center">
+
+          <div class="col">
+            <a href="/" class="mb-2 mb-lg-0 text-decoration-none">
               <img src="./images/logo.png" class="bi me-2" alt="Smart Wallet" style="max-width: 120px;">
             </a>
-
-            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
-              </div>
-            </div>
-
-            <div class="text-end justify-content-center">
-              <div id="not-connected">
-                <button class="btn btn-warning" id="btn-connect">Connect Wallet</button>
-              </div>
-
-              <div id="connected" style="display:none">
-                <div id="network" style="display:inline-block;vertical-align:middle;">
-                  <small>
-                    <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
-                    <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
-                    <br>
-                    <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
-                  </small>
-                </div>
-                <span> &nbsp; </span>
-                <button class="btn btn-outline-light" id="btn-disconnect">Disconnect</button>
-              </div>
-            </div>
-
           </div>
+
+          <div class="col">
+            <div class="btn-group" role="group" aria-label="Chain">
+              <input type="radio" class="btn-check" name="chain" id="rinkeby" autocomplete="off" checked>
+              <label class="btn btn-outline-primary" for="rinkeby"><b>Rinkeby</b><br><small>(learn mode)</small></label>
+
+              <input type="radio" class="btn-check" name="chain" id="mumbai" autocomplete="off">
+              <label class="btn btn-outline-primary" for="mumbai"><b>Mumbai</b><br><small>(learn mode)</small></label>
+
+              <input type="radio" class="btn-check" name="chain" id="polygon" autocomplete="off">
+              <label class="btn btn-outline-primary" for="polygon"><b>Polygon</b><br><small class="text-danger">(mainnet)</small></label>
+            </div>
+          </div>
+
+          <div class="col-auto">
+            <div id="not-connected">
+              <button class="btn btn-warning btn-lg" id="btn-connect">Connect Wallet</button>
+            </div>
+
+            <div id="connected" style="display:none">
+              <div id="network" style="display:inline-block;vertical-align:middle;text-align:right;">
+                <small>
+                  <span><strong>Wallet:</strong> (<span id="selected-account"></span>)</span>
+                  <span> - </span> <strong><span id="selected-account-balance"></span></strong></span>
+                  <br>
+                  <span><strong><span class="badge bg-warning text-dark" id="network-name"></span></strong></span>
+                </small>
+              </div>
+              <span> &nbsp; </span>
+              <button class="btn btn-outline-dark" id="btn-disconnect">Disconnect</button>
+            </div>
+          </div>
+
         </div>
+        <br>
+        <br>
       </header>
 
 
@@ -79,9 +82,9 @@
       <div class="modal-body">
         ...
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer text-center justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
