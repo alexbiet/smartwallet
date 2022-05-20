@@ -191,6 +191,28 @@ async function fetchAccountData() {
     document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ${nativeAsset}`;
     document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
   
+ /*
+   document.getElementById("card-container").innerHTML = "";
+    Object.keys(db[network]).forEach(function(key) {
+      token = db[network][key]
+      if(key != "Contracts"){
+        console.log(' ' + key + ": " + token.contractAddress)
+        document.getElementById("card-container").innerHTML += `<t-card tokenName="${token.name}" tokenTicker="${token.id}"></t-card>`;
+
+      }
+
+    });
+
+    Object.keys(db[network]).forEach(function(key) {
+      token = db[network][key]
+      if(key != "Contracts"){
+        getPrice(token.id);  
+        getRates(token.id);
+        getDepositedValue(token.id);
+      }
+
+    })
+*/
      getERC20Balance("WBTC")
      getERC20Balance("DAI")
      getPrice("DAI");
