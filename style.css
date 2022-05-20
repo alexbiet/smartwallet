@@ -58,8 +58,7 @@ body {
   border-radius: 1.5rem;
   box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
   border:0;
-  background: rgb(255,255,255);
-  background: linear-gradient(145deg, rgba(235,235,235,1) 0%, rgba(255,255,255,1) 100%);
+  background-color: #fff;
 }
 
 hr {
@@ -93,7 +92,7 @@ hr {
 
 .gradient-box {
   display: flex;
-  width: 90%;
+  width: 95%;
   margin: auto;
   /* max-width: 22em; */
   position: relative;
@@ -144,5 +143,12 @@ hr {
 .bg-dark .input-group-text {
   color: #999999;
   background-color: #181818;
-  border: 1px solid #ced4da;
+  border: 1px solid #3f3f3f;
+}
+
+.bg-dark .form-control {
+  color: #fff;
+  background-color: #000;
+  background-clip: padding-box;
+  border: 1px solid #3f3f3f;
 }
