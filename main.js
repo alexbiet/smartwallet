@@ -164,6 +164,29 @@ async function fetchAccountData() {
   //console.log("Web3 instance is", web3, "Network is: " + network);
   document.querySelector("#network-name").textContent = chainData.name;
 
+
+  // Display Selected Network with Persistance
+  document.getElementById("rinkeby").checked = false;
+  document.getElementById("mumbai").checked = false;
+  document.getElementById("polygon").checked = false;
+
+  console.log(network);
+
+  switch(network) {
+    case "rinkeby" :
+      document.getElementById("rinkeby").checked = true;
+    break;
+
+    case "testnet" :
+      document.getElementById("mumbai").checked = true;
+    break;
+
+    case "mainnet" :
+      document.getElementById("polygon").checked = true;
+    break;
+  }
+
+
   const accounts = await web3.eth.getAccounts();
   selectedAccount = accounts[0];
   const selectedAccountBalance = await web3.eth.getBalance(accounts[0]);
@@ -579,6 +602,7 @@ const switchNetworkPolygon = async () => {
             },
           ],
         });
+
       } catch (error) {
         alert(error.message);
       }
