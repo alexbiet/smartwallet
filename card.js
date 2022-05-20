@@ -74,7 +74,7 @@ class Card extends HTMLElement {
     
                                 <p>
                                 <div class="input-group">
-                                    <span class="input-group-text"><small><b>WBTC</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
+                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
     
                                     <!-- - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                                     <input id="amount-${this.tokenTicker}" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -145,7 +145,7 @@ class Card extends HTMLElement {
     
                                 <p>
                                 <div class="input-group">
-                                    <span class="input-group-text"><small><b>WBTC</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
+                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
     
                                     <!-- - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                                     <input id="amount-${this.tokenTicker}" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
