@@ -1,11 +1,10 @@
 const db = {
     rinkeby: {
       ETH: {
-       id: "WETH",
-       name: "Wrapped ETH",
+       id: "ETH",
+       name: "ETH",
        contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
        decimals: 18, 
-       aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4",
      },
      WBTC: {
        id:"WBTC",
@@ -22,6 +21,12 @@ const db = {
      decimals: 18, 
      aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
    },
+    USDC: {
+      id: "USDC",
+      name: "USDC",
+      contractAddress: "0xb18d016cDD2d9439A19f15633005A6b2cd6Aa774",
+      decimals: 18,
+    },
      Contracts: {
        AaveOracle: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
        WETHGateway: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
