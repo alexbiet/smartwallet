@@ -545,7 +545,6 @@ async function onConnect() {
   provider.on("networkChanged", (networkId) => {
     fetchAccountData();
   });
-
   await refreshAccountData();
 }
 /////////////////////////
