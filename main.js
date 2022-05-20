@@ -709,15 +709,36 @@ myModal.addEventListener('shown.bs.modal', function () {
 /////////////////////////
 
 var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
-  trigger: 'focus'
+  trigger: 'focus',
+  html: true,
+  // title: 'Supply to Aave V3 Lending Pool',
+  content: [
+  '<p>Supply to Aave V3 Lending Pool</p>',
+  '<p><span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i> Approve</span> - test</p>',
+  '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - test</p>',
+  '<p><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - test</p>'].join(''),
 })
 
 var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'), {
-  trigger: 'focus'
+  trigger: 'focus',
+  html: true,
+  // title: 'Title 2',
+  content: [
+  '<h3>lalalla</h3>',
+  '<div>BLALALAL</div>'].join(''),
 })
 
+
+
+
+
 var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'), {
-  trigger: 'focus'
+  trigger: 'focus',
+  html: true,
+  // title: 'Title 3',
+  content: [
+  '<h3>lalalla</h3>',
+  '<div>BLALALAL</div>'].join(''),
 })
 
 

@@ -40,16 +40,23 @@ body {
   right: 20px !important;
 }
 
-.btn-smart-wallet-info {
+.start-20 {
+  left: 20px !important;
+}
+
+.btn-float {
   width: 60px;
   height: 60px;
-  border-radius: 100%;
+  border-radius: 100% !important;
   box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
+  padding: 5px 18px;
+  /* position: fixed !important; */
+  z-index: 9999999;
 }
 
 .card {
   border-radius: 1.5rem;
-  box-shadow: rgb(0 0 0 / 10%) 0 10px 20px;
+  box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
   border:0;
   /* background: rgb(255,255,255);
   background: linear-gradient(145deg, rgba(235,235,235,1) 0%, rgba(255,255,255,1) 100%); */
@@ -59,9 +66,30 @@ hr {
   color: #bbb;
 }
 
+.badge, .input-group-text, .btn, .btn-group-sm>.btn, .btn-sm {
+  border-radius: 0.8rem;
+}
 
+.popover {
+  border:0;
+  border-radius: 0.8rem;
+  box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
+}
 
+.popover-header {
+  background-color: #f0f0f0;
+  border-bottom: 0;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+}
 
+.popover-arrow::before,.popover-arrow::after {
+  border-width: 0;
+}
+
+.btn-group-sm>.btn, .btn-sm {
+  padding: 0.25rem 1rem;
+}
 
 .gradient-box {
   display: flex;
