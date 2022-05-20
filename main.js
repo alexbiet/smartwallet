@@ -138,6 +138,19 @@ function init() {
   });
 
   //console.log("Web3Modal instance is", web3Modal);
+
+  if(localStorage.getItem("smart-wallet-theme")) {
+    if (localStorage.getItem("smart-wallet-theme") == "light") {
+        $('body').removeClass('bg-dark');
+        $("#modeButton i").removeClass().toggleClass('bi bi-moon');
+        document.getElementById("wallet-logo").src = 'images/logo-light.png';
+    } else {
+      $('body').addClass('bg-dark');
+      $("#modeButton i").removeClass().toggleClass('bi bi-sun');
+      localStorage.setItem("smart-wallet-theme", "dark");
+      document.getElementById("wallet-logo").src = 'images/logo-dark.png';
+    }
+  }
   
   
 }
@@ -733,19 +746,21 @@ myModal.addEventListener('shown.bs.modal', function () {
 var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
   trigger: 'focus',
   html: true,
-  // title: 'Title 2',
+  // title: 'Title 1',
   content: [
-  '<h3>1</h3>',
-  '<div>BLALALAL</div>'].join(''),
+  '<p><b>Learn Mode (Testnet)</b> - Use Rinkeby or Mumbai to get faucet crypto and interact risk-free with Aave V3.</p>',
+  '<p class="mb-0"><b>Polygon Mainnet</b> - Buy real crypto assets via Transak and supply the Aave V3 lending pools to earn APY.</p>'].join(''),
 })
 
 var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'), {
   trigger: 'focus',
   html: true,
-  // title: 'Title 3',
+  // title: 'Title 2',
   content: [
-  '<h3>2</h3>',
-  '<div>BLALALAL</div>'].join(''),
+    '<p><b>Balance</b> - The amount of this crypto asset available inside your connected wallet.</p>',
+    '<p><b>Buy (mainnet)</b> - Buy an amount of this crypto asset on Polygon using Transak online payments: debit card, credit card and more.</p>',
+    '<p><b>Get Faucet (learn mode)</b> - Get an amount of this crypto asset for free on testnet (Rinkeby or Mumbai) for learning purposes.</p>',
+    '<div class="alert alert-warning mb-0"><b>Note:</b> The faucet crypto assets on Rinkeby and Mumbai testnet <u>have zero financial value</u>.</div>'].join(''),
 })
 
 var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'), {
@@ -753,17 +768,16 @@ var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'
   html: true,
   // title: 'Title 3',
   content: [
-  '<h3>3</h3>',
-  '<div>BLALALAL</div>'].join(''),
+    '<p><b>Annual Percentage Yield (APY)</b> - acts as a crypto savings account similar to an annual percentage rate (APR) bank account.</p>',
+    '<p class="mb-0">You may supply (deposit) your crypto asset and receive a fixed rate of return over a specific period of time.</p>'].join(''),
 })
 
 var popover4 = new bootstrap.Popover(document.querySelector('.popover-dismiss-4'), {
   trigger: 'focus',
   html: true,
-  // title: 'Title 3',
+  // title: 'Title 4',
   content: [
-  '<h3>4</h3>',
-  '<div>BLALALAL</div>'].join(''),
+    '<p class="mb-0"><b>Supply (Deposit)</b> - The amount of the crypto asset you supply to the Aave V3 lending pool and culmulated real-time APY earnings.</p>'].join(''),
 })
 
 var popover5 = new bootstrap.Popover(document.querySelector('.popover-dismiss-5'), {
@@ -771,10 +785,10 @@ var popover5 = new bootstrap.Popover(document.querySelector('.popover-dismiss-5'
   html: true,
   // title: 'Supply to Aave V3 Lending Pool',
   content: [
-  '<p>Supply to Aave V3 Lending Pool</p>',
-  '<p><span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i> Approve</span> - test</p>',
-  '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - test</p>',
-  '<p><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - test</p>'].join(''),
+    '<p><b>Aave V3 Lending - Supply & Withdraw</b></p>',
+    '<p><span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i> Approve</span> - Type the amount of crypto you want to approve for Aave V3 lending pool and press "<span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i></span>".</p>',
+    '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - Type the amount of crypto within the approved range you want to supply (deposit) to the Aave V3 lending pool and press "<span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i></span>"</p>',
+    '<p class="mb-0"><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - Type the amount of crypto you want to withdraw from your supply on the Aave V3 lending pool and press "<span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i></span>".</p>'].join(''),
 })
 
 
@@ -794,8 +808,10 @@ $('.switch').click(()=>{
 
   if($('body').hasClass('bg-dark')) {
     document.getElementById("wallet-logo").src = 'images/logo-dark.png';
+    localStorage.setItem("smart-wallet-theme", "dark");
   } else {
     document.getElementById("wallet-logo").src = 'images/logo-light.png';
+    localStorage.setItem("smart-wallet-theme", "light");
   }
-  
+
 })
