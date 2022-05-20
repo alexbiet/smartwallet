@@ -170,6 +170,7 @@ async function fetchAccountData() {
   document.querySelector("#connected").style.display = "inline-block";
 
   updateUiData();
+
   async function updateUiData() {
 
       //update native ETH Balance
