@@ -39,13 +39,13 @@ class Card extends HTMLElement {
                         </div>
                         <div class="card-body text-center" style="padding-top:0;">
 
-                            <div class="row justify-content-center">
-                            <div class="col text-end" style="padding-right:0;">
+                            <div class="justify-content-center d-flex">
+                            <div class="col text-end flex-fill" style="padding-right:0;">
                                 <p><strong>Your Balance:</strong></p>
                             </div>
-                            <div class="col text-start" style="padding-left:8px;">
+                            <div class="col text-start flex-fill" style="padding-left:8px;">
                                 <!-- BALANCE -->
-                                <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker}</p>
+                                <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-2 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                             </div>
                             </div>
 
@@ -56,22 +56,22 @@ class Card extends HTMLElement {
 
                             <hr>
 
-                            <div class="row justify-content-center"  style="min-height:120px">
-                            <div class="col text-end" style="padding-right:0;">
+                            <div class="justify-content-center d-flex"  style="min-height:120px">
+                            <div class="col text-end flex-fill" style="padding-right:0;">
                                 <p><strong>APY:</strong></p>
                                 <p><strong>Your Supply:</strong></p>
                             </div>
-                            <div class="col text-start" style="padding-left:8px;">
+                            <div class="col text-start flex-fill" style="padding-left:8px;">
 
                                 <!-- APY, SUPPLY & EARNINGS -->
-                                <p><span id="interest-${this.tokenTicker}">-%</span></p>
-                                <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker}</p>
+                                <p><span id="interest-${this.tokenTicker}">-%</span> <a tabindex="0" class="card-link popover-dismiss-3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                             </div>
                             </div>
 
                             <p>
                             <div class="input-group">
-                                <span class="input-group-text"><small><b>WBTC</b></small></span>
+                                <span class="input-group-text"><small><b>WBTC</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
 
                                 <!-- - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                                 <input id="amount-${this.tokenTicker}" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -81,7 +81,7 @@ class Card extends HTMLElement {
                             </div>
                             </p>
 
-                            <a tabindex="0" class="card-link popover-dismiss-2 text-decoration-none" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="bi bi-info-circle"></i> How does it work?</a>
+                            
                         </div>
                         </div>
                         </div>

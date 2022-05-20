@@ -711,34 +711,48 @@ myModal.addEventListener('shown.bs.modal', function () {
 var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
   trigger: 'focus',
   html: true,
-  // title: 'Supply to Aave V3 Lending Pool',
+  // title: 'Title 2',
   content: [
-  '<p>Supply to Aave V3 Lending Pool</p>',
-  '<p><span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i> Approve</span> - test</p>',
-  '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - test</p>',
-  '<p><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - test</p>'].join(''),
+  '<h3>1</h3>',
+  '<div>BLALALAL</div>'].join(''),
 })
 
 var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'), {
   trigger: 'focus',
   html: true,
-  // title: 'Title 2',
+  // title: 'Title 3',
   content: [
-  '<h3>lalalla</h3>',
+  '<h3>2</h3>',
   '<div>BLALALAL</div>'].join(''),
 })
-
-
-
-
 
 var popover3 = new bootstrap.Popover(document.querySelector('.popover-dismiss-3'), {
   trigger: 'focus',
   html: true,
   // title: 'Title 3',
   content: [
-  '<h3>lalalla</h3>',
+  '<h3>3</h3>',
   '<div>BLALALAL</div>'].join(''),
+})
+
+var popover4 = new bootstrap.Popover(document.querySelector('.popover-dismiss-4'), {
+  trigger: 'focus',
+  html: true,
+  // title: 'Title 3',
+  content: [
+  '<h3>4</h3>',
+  '<div>BLALALAL</div>'].join(''),
+})
+
+var popover5 = new bootstrap.Popover(document.querySelector('.popover-dismiss-5'), {
+  trigger: 'focus',
+  html: true,
+  // title: 'Supply to Aave V3 Lending Pool',
+  content: [
+  '<p>Supply to Aave V3 Lending Pool</p>',
+  '<p><span class="badge rounded-pill bg-warning text-dark"><i class="bi bi-check-circle"></i> Approve</span> - test</p>',
+  '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - test</p>',
+  '<p><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - test</p>'].join(''),
 })
 
 
@@ -750,10 +764,16 @@ $('.switch').click(()=>{
   // $([".light [class*='-light']", ".dark [class*='-dark']"]).each((i,ele)=>{
   //     $(ele).toggleClass('bg-light bg-dark')
   //     $(ele).toggleClass('text-light text-dark')
-  //     $(ele).toggleClass('navbar-light navbar-dark')
+  //     $(ele).toggleClass('btn-outline-light btn-outline-dark')
   // })
   // toggle body class selector
-  $('body').toggleClass('bg-light bg-dark');
+  $('body').toggleClass('bg-dark');
+  $('#modeButton i').toggleClass('bi-moon bi-sun'); 
 
-  $('#modeButton').toggleClass('bi-sun bi-moon');
+  if($('body').hasClass('bg-dark')) {
+    document.getElementById("wallet-logo").src = 'images/logo-dark.png';
+  } else {
+    document.getElementById("wallet-logo").src = 'images/logo-light.png';
+  }
+  
 })

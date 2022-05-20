@@ -33,11 +33,12 @@
         <div class="row align-items-center justify-content-sm-end">
           <div class="col col-sm-6 col-md">
             <a href="/" class="mb-2 mb-lg-0 text-decoration-none">
-              <img src="./images/logo-dark.png" class="bi me-2" alt="Smart Wallet" style="max-width: 120px;">
+              <img src="./images/logo-light.png" class="bi me-2" id="wallet-logo" alt="Smart Wallet" style="max-width: 120px;">
             </a>
           </div>
 
           <div class="col col-sm-6 col-md">
+            <a tabindex="0" class="card-link popover-dismiss-1 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a> &nbsp; 
             <div class="btn-group" role="group" aria-label="Chain">
               <input type="radio" class="btn-check" name="chain" id="rinkeby" autocomplete="off" checked>
               <label id="radio-rinkeby"class="btn btn-sm btn-outline-primary" for="rinkeby"><b>Rinkeby</b><br><small>(learn mode)</small></label>
@@ -48,7 +49,6 @@
               <input type="radio" class="btn-check" name="chain" id="polygon" autocomplete="off">
               <label id="radio-polygon"class="btn btn-sm btn-outline-primary" for="polygon"><b>Polygon</b><br><small class="text-danger">(mainnet)</small></label>
             </div>
-            <a tabindex="0" class="card-link popover-dismiss-3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a>
           </div>
 
           <div class="col-auto">
@@ -79,9 +79,12 @@
       <div class="container">
         <div class="row row-cols-1 row-cols-md-3 g-4">
 
-         <t-card tokenName="Ethereum" tokenTicker="ETH"></t-card>
+          <t-card tokenName="Ethereum" tokenTicker="ETH"></t-card>
           <t-card tokenName="Wrapped BTC" tokenTicker="WBTC"></t-card>
           <t-card tokenName="DAI" tokenTicker="DAI"></t-card>
+
+
+          <!-- Weird Bug - Keep This! (display:none;) -->
           <div class="col" style="display:none;">
             <div class="card gradient-box">
 
@@ -113,7 +116,7 @@
                 <div class="col text-start flex-fill" style="padding-left:8px;">
 
                   <!-- ETH - BALANCE -->
-                  <p id="balance-ETH"><span id="eth-balance">0.00</span> ETH</p>
+                  <p id="balance-ETH"><span id="eth-balance">0.00</span> ETH <a tabindex="0" class="card-link popover-dismiss-2 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                 </div>
               </div>
 
@@ -132,8 +135,8 @@
                 <div class="col text-start flex-fill" style="padding-left:8px;">
 
                   <!-- ETH - APY, SUPPLY & EARNINGS -->
-                  <p><span id="interest-ETH">-%</span></p>
-                  <p id="native-supply"><span id="deposited-ETH">0.00</span> ETH</p>
+                  <p><span id="interest-ETH">-% <a tabindex="0" class="card-link popover-dismiss-3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span></p>
+                  <p id="native-supply"><span id="deposited-ETH">0.00</span> ETH <a tabindex="0" class="card-link popover-dismiss-4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                 </div>
               </div>
 
@@ -148,7 +151,7 @@
                   <button id="btn-withdrawETH" class="btn btn-danger btn-sm" style="padding-right:12px;padding-left:12px;" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Withdraw"><i class="bi bi-dash-circle"></i></button>
                 </div>
               </p>
-              <a tabindex="0" class="card-link popover-dismiss-1 text-decoration-none" role="button"><i class="bi bi-info-circle"></i> How does it work?</a>
+              <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a>
             </div>
           </div>
           </div>
@@ -160,7 +163,7 @@
 
       <div class="position-absolute bottom-20 start-20">
         <button type="button" id="modeButton" class="btn btn-primary btn-lg btn-float switch">
-          <i class="bi bi-sun"></i>
+          <i class="bi bi-moon"></i>
         </button>
       </div>
       
@@ -191,10 +194,11 @@
               </ul>
             
               <br><br>
-              <p><b>TRANSAK STAGING:</b><br>
+              <p><small>
+                <b>TRANSAK STAGING:</b><br>
                 <b>KYC SSN:</b> 000000001 - VISA (USD) - 4111111111111111 - <b>Exp:</b> 10/23 - <b>CCV:</b> 123<br>
                 <b>Test UPI ID:</b> 88xxxxxx18@upi - <b>Validate bank account:</b> 000000
-              </p>
+              </small></p>
               
         
             </div>
