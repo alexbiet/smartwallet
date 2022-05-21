@@ -170,7 +170,6 @@ async function fetchAccountData() {
   document.getElementById("mumbai").checked = false;
   document.getElementById("polygon").checked = false;
 
-  console.log(network);
 
   switch(network) {
     case "rinkeby" :
@@ -215,6 +214,7 @@ async function fetchAccountData() {
 
 generateCards(["WBTC","DAI"]);
 async function generateCards(_tokenArray) {
+
   let nativeAsset = chainData["nativeCurrency"].symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = selectedAccountBalance / 10**18;
@@ -246,45 +246,46 @@ async function generateCards(_tokenArray) {
         window.open(
           "https://mumbaifaucet.com/", "_blank");
     })}
-   document.getElementById(`btn-approve${nativeAsset}`).onclick = function() {
-    let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
+    document.getElementById(`btn-approve${nativeAsset}`).onclick = function() {
+     let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
     approveERC20(`${tokenId}`, amountValue);};
-  // document.getElementById(`btn-supply${tokenId}`).onclick = function() {
-  //   let amountValue =  document.getElementById(`amount-${tokenId}`).value;
-  //   supplyERC20(`${tokenId}`, amountValue);};
-  // document.getElementById(`btn-withdraw${tokenId}`).onclick = function() {
-  //   let amountValue =  document.getElementById(`amount-${tokenId}`).value;
-  //   withdrawERC20(`${tokenId}`, amountValue);};
-  
+
+   document.getElementById(`btn-supply${nativeAsset}`).onclick = function() {
+     let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
+     supplyETH(amountValue);};
+   document.getElementById(`btn-withdraw${nativeAsset}`).onclick = function() {
+     let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
+     withdrawETH(amountValue);};
+
+    
   //add onClicks
   for(let i = 0; i < _tokenArray.length; i++){
-  _token = _tokenArray[i];
-  tokenId = db[network][_token].id;
+  let token = _tokenArray[i];
+  let tokenId = db[network][token].id;
   document.getElementById(`btn-approve${tokenId}`).onclick = function() {
     let amountValue =  document.getElementById(`amount-${tokenId}`).value;
     approveERC20(`${tokenId}`, amountValue);};
+   
   document.getElementById(`btn-supply${tokenId}`).onclick = function() {
     let amountValue =  document.getElementById(`amount-${tokenId}`).value;
     supplyERC20(`${tokenId}`, amountValue);};
+
   document.getElementById(`btn-withdraw${tokenId}`).onclick = function() {
     let amountValue =  document.getElementById(`amount-${tokenId}`).value;
     withdrawERC20(`${tokenId}`, amountValue);};
-  updateCard(_token);
-    if(network ==="mainnet"){
-      document.querySelector(`#btn-buy${tokenId}`).addEventListener("click", function () {launchTransak(selectedAccount, `${tokenId}`)});
-    } else {
-      document.getElementById(`btn-faucet${tokenId}`).onclick = () => {ERC20Faucet(`${tokenId}`, `10000`)}; //10000{tokenId}
-    }
-  }
   
+  document.getElementById(`btn-faucet${tokenId}`).onclick = function() {
+    ERC20Faucet(`${tokenId}`, "10");};
+  
+   
+    
+    getPrice(token);
+    getERC20Balance(token);
+    getRates(token);
+    getDepositedValue(token);
+  }
 }
 
-async function updateCard(_tokenName){
-  getPrice(_tokenName);
-  getERC20Balance(_tokenName);
-  getRates(_tokenName);
-  getDepositedValue(_tokenName);
-}
   
   async function getERC20Balance(_token) {
     let contractAddress = db[network][_token].contractAddress;
@@ -396,8 +397,6 @@ async function getRates(_token){
     } else {
       document.getElementById(`interest-${_token}`).innerHTML = `${depositAPY.toFixed(2)}%`;
     }
-
-
  }
  
  async function approveERC20(_token, _amount){
@@ -446,6 +445,7 @@ async function supplyERC20(_token, _amount){
     };
     Moralis.executeFunction(supplyOptions);
  }
+
  async function withdrawERC20(_token, _amount){
   let tokenAddress = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
