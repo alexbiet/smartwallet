@@ -152,6 +152,7 @@ function init() {
     }
   }
   
+  $('[data-toggle="popover"]').popover()
   
 }
 
@@ -283,6 +284,26 @@ async function generateCards(_tokenArray) {
     getERC20Balance(token);
     getRates(token);
     getDepositedValue(token);
+  
+  fillOutPopover('popover2');
+  fillOutPopover('popover3');
+  fillOutPopover('popover4');
+  fillOutPopover('popover5');
+
+}
+}
+
+function fillOutPopover(name) {
+  var id = '.' + name;
+  console.log(id)
+  var cont = popovertexts[name]
+  var nodes = document.querySelectorAll(id)
+  for (let i= 0; i< nodes.length; i++){
+    var pop = new bootstrap.Popover(nodes[i], {
+      trigger: 'focus',
+      html: true,
+      content: cont
+    })
   }
 }
 
@@ -731,16 +752,14 @@ myModal.addEventListener('shown.bs.modal', function () {
 /// Bootstrap Popover  ///
 /////////////////////////
 
-// var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
-//   trigger: 'focus',
-//   html: true,
-//   // title: 'Title 1',
-//   content: [
-//   '<p><b>Learn Mode (Testnet)</b> - Use Rinkeby or Mumbai to get faucet crypto and interact risk-free with Aave V3.</p>',
-//   '<p class="mb-0"><b>Polygon Mainnet</b> - Buy real crypto assets via Transak and supply the Aave V3 lending pools to earn APY.</p>'].join(''),
-// })
+var popover1 = new bootstrap.Popover(document.querySelector('.popover-dismiss-1'), {
+  trigger: 'focus',
+  html: true,
+  // title: 'Title 1',
+  content: popovertexts.popover1
+})
 
-// var popover2 = new bootstrap.Popover(document.querySelector('.popover-dismiss-2'), {
+// var popover2 = new bootstrap.Popover(document.querySelectorAll('.popover-dismiss-2'), {
 //   trigger: 'focus',
 //   html: true,
 //   // title: 'Title 2',
@@ -778,7 +797,6 @@ myModal.addEventListener('shown.bs.modal', function () {
 //     '<p><span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i> Supply</span> - Type the amount of crypto within the approved range you want to supply (deposit) to the Aave V3 lending pool and press "<span class="badge rounded-pill bg-success"><i class="bi bi-plus-circle"></i></span>"</p>',
 //     '<p class="mb-0"><span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i> Withdraw</span> - Type the amount of crypto you want to withdraw from your supply on the Aave V3 lending pool and press "<span class="badge rounded-pill bg-danger"><i class="bi bi-dash-circle"></i></span>".</p>'].join(''),
 // })
-
 
 ///////////////////////////
 /// Light / Dark Mode  ///

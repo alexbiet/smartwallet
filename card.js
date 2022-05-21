@@ -48,7 +48,7 @@ class Card extends HTMLElement {
                                 </div>
                                 <div class="col text-start flex-fill" style="padding-left:8px;">
                                     <!-- BALANCE -->
-                                    <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-2 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover2 text-decoration-none" data-trigger="focus" data-toggle="popover" role="button" data-content=${popovertexts.popoverTests} ><i class="bi bi-info-circle"></i></a></p>
                                 </div>
                                 </div>
     
@@ -67,14 +67,14 @@ class Card extends HTMLElement {
                                 <div class="col text-start flex-fill" style="padding-left:8px;">
     
                                     <!-- APY, SUPPLY & EARNINGS -->
-                                    <p><span id="interest-${this.tokenTicker}">-%</span> <a tabindex="0" class="card-link popover-dismiss-3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
-                                    <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="interest-${this.tokenTicker}">-%</span> <a tabindex="0" class="card-link popover3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                                 </div>
                                 </div>
     
                                 <p>
                                 <div class="input-group">
-                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
+                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
     
                                     <!-- - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                                     <input id="amount-${this.tokenTicker}" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
@@ -121,7 +121,7 @@ class Card extends HTMLElement {
                                 </div>
                                 <div class="col text-start flex-fill" style="padding-left:8px;">
                                     <!-- BALANCE -->
-                                    <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-2 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="balance-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover2 text-decoration-none"  role="button" data-toggle="popover" data-trigger="focus" data-content=${popovertexts.popoverTests} ><i class="bi bi-info-circle"></i></a></p>
                                 </div>
                                 </div>
     
@@ -138,14 +138,14 @@ class Card extends HTMLElement {
                                 <div class="col text-start flex-fill" style="padding-left:8px;">
     
                                     <!-- APY, SUPPLY & EARNINGS -->
-                                    <p><span id="interest-${this.tokenTicker}">-%</span> <a tabindex="0" class="card-link popover-dismiss-3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
-                                    <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover-dismiss-4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="interest-${this.tokenTicker}">-%</span> <a tabindex="0" class="card-link popover3 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
+                                    <p><span id="deposited-${this.tokenTicker}">0.00</span> ${this.tokenTicker} <a tabindex="0" class="card-link popover4 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></p>
                                 </div>
                                 </div>
     
                                 <p>
                                 <div class="input-group">
-                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover-dismiss-5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
+                                    <span class="input-group-text"><small><b>${this.tokenTicker}</b></small> &nbsp; <a tabindex="0" class="card-link popover5 text-decoration-none" role="button"><i class="bi bi-info-circle"></i></a></span>
     
                                     <!-- - AMOUNT, APPROVE, SUPPLY & WITHDRAW -->
                                     <input id="amount-${this.tokenTicker}" type="text" class="form-control" placeholder="Amount" aria-label="Amount">
