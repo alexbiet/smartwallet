@@ -289,7 +289,11 @@ async function generateCards(_tokenArray) {
   fillOutPopover('popover3');
   fillOutPopover('popover4');
   fillOutPopover('popover5');
-
+  
+  let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
 }
 }
 
@@ -729,10 +733,7 @@ window.addEventListener('load', async () => {
 /// Bootstrap Tooltips ///
 /////////////////////////
 
-let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+
 
 
 
