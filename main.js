@@ -214,7 +214,6 @@ async function fetchAccountData() {
     // document.getElementById("balance-ETH").innerHTML = `<span id="eth-balance">${nativeBalance.toFixed(4)}</span> ${nativeAsset}`;
     // document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
 
-
 generateCards(["WBTC", "DAI","AAVE","LINK","USDC"]);
 async function generateCards(_tokenArray) {
   let nativeAsset = chainData["nativeCurrency"].symbol;
