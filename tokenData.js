@@ -2,10 +2,11 @@ const db = {
     rinkeby: {
       ETH: {
        id: "ETH",
-       name: "ETH",
-       contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D",
+       name: "ETH",       
        decimals: 18, 
-     },
+       contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D", //
+       aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4", //aEthWETH 
+          },
      WBTC: {
        id:"WBTC",
        name: "Wrapped BTC",
@@ -35,12 +36,14 @@ const db = {
        ERC20Faucet: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
      }
      },
+
    mainnet: {
      ETH: {
        id: "MATIC",
        name: "MATIC",
        decimals: 18,
-       contractAddress: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+       contractAddress: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", //WrappedMATIC
+       aTokenAddress:  "0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97", //aPolWMATIC
  
      },
      WETH: {
@@ -64,7 +67,7 @@ const db = {
     decimals: 18, 
     aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
   },
-  USDC: {
+    USDC: {
     id: "USDC",
     name: "USDC",
     contractAddress: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -72,7 +75,7 @@ const db = {
   },
    Contracts: {
      AaveOracle: "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
-     WETHGateway: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
+     WETHGateway: "0x9bdb5fcc80a49640c7872ac089cc0e00a98451b6",
      PoolAddressProvider: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb",
      ProtocolDataProvider: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
  
@@ -84,6 +87,7 @@ const db = {
        name: "MATIC",
        decimals: 18,
        contractAddress: "0xb685400156cF3CBE8725958DeAA61436727A30c3",
+       aTokenAddress: "0x89a6AE840b3F8f489418933A220315eeA36d11fF", 
  
      },
      WETH: {

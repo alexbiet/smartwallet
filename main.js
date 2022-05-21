@@ -213,7 +213,7 @@ async function fetchAccountData() {
     // document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
 
 
-generateCards(["WBTC","DAI"]);
+generateCards(["WBTC","DAI","USDC"]);
 async function generateCards(_tokenArray) {
 
   let nativeAsset = chainData["nativeCurrency"].symbol;
@@ -250,7 +250,7 @@ async function generateCards(_tokenArray) {
     })}
     document.getElementById(`btn-approve${nativeAsset}`).onclick = function() {
      let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
-    approveERC20(`${tokenId}`, amountValue);};
+    approveERC20("ETH", amountValue);};
 
    document.getElementById(`btn-supply${nativeAsset}`).onclick = function() {
      let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
@@ -421,17 +421,21 @@ async function getRates(_token){
     let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
     let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
     if(_token === "ETH"){
-      return depositAPY;
+      return depositAPY.toFixed(2);
     } else {
       document.getElementById(`interest-${_token}`).innerHTML = `${depositAPY.toFixed(2)}%`;
     }
  }
  
  async function approveERC20(_token, _amount){
+  let amount = _amount;
   let spender = await getPoolContractAddress();
   let tokenContract = db[network][_token].contractAddress;
+  if(_token === "ETH") {
+    spender = db[network].Contracts.WETHGateway;
+    tokenContract = db[network][_token].aTokenAddress;
+  }
   let decimals = db[network][_token].decimals;
-  let amount = _amount;
   if (decimals === 18) {
     amount = web3.utils.toWei(_amount);
     
@@ -455,11 +459,12 @@ async function supplyERC20(_token, _amount){
   let tokenAddress = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
   let amount = _amount;
-  if (decimals === 8) {
-     amount = amount * 10**8;
-     amount = amount.toFixed();
+  if (decimals === 18) {
+    amount = web3.utils.toWei(_amount);
  } else {
-     amount = web3.utils.toWei(_amount);
+  amount = amount * 10**decimals;
+  amount = amount.toFixed();
+   
  }
   let supplyOptions = {
     contractAddress: await getPoolContractAddress(),
@@ -479,11 +484,11 @@ async function supplyERC20(_token, _amount){
   let tokenAddress = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
   let amount = _amount;
-  if (decimals === 8) {
-     amount = amount * 10**8;
-     amount = amount.toFixed();
+  if (decimals === 18) {
+    amount = web3.utils.toWei(_amount);
  } else {
-     amount = web3.utils.toWei(_amount);
+  amount = amount * 10**decimals;
+  amount = amount.toFixed();
  }
   let supplyOptions = {
     contractAddress: await getPoolContractAddress(),
@@ -535,11 +540,14 @@ async function withdrawETH(_amount) {
 async function ERC20Faucet(_token, _amount) {
   let decimals = db[network][_token].decimals;
   let amount = _amount;
-  if (decimals === 8) {
-     amount = amount * 10**8;
-     amount = amount.toFixed();
- } else {
-     amount = web3.utils.toWei(_amount);
+  if (decimals === 18) {
+    amount = web3.utils.toWei((_amount*100).toFixed()); // faucet 1000 of token
+ } else if (decimals === 6){
+  amount = amount * 100 *10**decimals;  // faucet 1000 of token
+ }
+ else {
+  amount = amount *10 * 10**decimals;  // faucet 100 of token (WBTC)
+  amount = amount.toFixed();
  }
   contractAddress = db[network].Contracts.ERC20Faucet;
   tokenAddress = db[network][_token].contractAddress;
