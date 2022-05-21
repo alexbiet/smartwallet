@@ -20,7 +20,7 @@ class Card extends HTMLElement {
         if(this.network === "mainnet"){
         this.innerHTML = `
         <div class="col">
-        <div class="card gradient-box">
+        <div class="card">
                 <div class="card-body" style="padding-bottom:0;">
                                 <div class="row align-items-center">
                                 <div class="col" style="max-width:52px;margin-right:10px;">
@@ -93,7 +93,7 @@ class Card extends HTMLElement {
       } else {
         this.innerHTML = `
         <div class="col">
-        <div class="card gradient-box">
+        <div class="card">
                 <div class="card-body" style="padding-bottom:0;">
                                 <div class="row align-items-center">
                                 <div class="col" style="max-width:52px;margin-right:10px;">

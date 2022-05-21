@@ -54,12 +54,89 @@ body {
   z-index: 9999999;
 }
 
+
+@property --rotate {
+  syntax: "<angle>";
+  initial-value: 132deg;
+  inherits: false;
+}
+
+:root {
+  --card-height: 65vh;
+  --card-width: calc(var(--card-height) / 1.5);
+}
+
 .card {
   border-radius: 1.5rem;
   box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
   border:0;
   background-color: #fff;
+  display: flex;
+  width: 95%;
+  margin: auto;
+  /* max-width: 22em; */
+  position: relative;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  border: solid 2px transparent;
+  border-radius: 1em;
+  cursor: pointer;
+  transition: all 1s ease-in-out;
 }
+
+.card:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -2px;
+  border-radius: inherit;
+  background-image: linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);
+  animation: none;
+}
+
+.card::after {
+  position: absolute;
+  content: "";
+  top: calc(var(--card-height) / 6);
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.card:hover:before {
+  background-image: linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);
+  animation: spin 2.5s linear infinite;
+} 
+
+.card:hover:after {
+  transform: scale(0.8);
+  filter: blur(calc(var(--card-height) / 6));
+  background-image: linear-gradient(
+    var(--rotate)
+    , #5ddcff, #3c67e3 43%, #4e00c2);
+    opacity: 1;
+  transition: opacity .5s;
+  animation: spin 2.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    --rotate: 0deg;
+  }
+  100% {
+    --rotate: 360deg;
+  }
+}
+
+
+
 
 hr {
   color: #bbb;
@@ -98,32 +175,7 @@ hr {
   padding: 0.25rem 1rem;
 }
 
-.gradient-box {
-  display: flex;
-  width: 95%;
-  margin: auto;
-  /* max-width: 22em; */
-  position: relative;
-  /* padding: 30% 2em; */
-  box-sizing: border-box;
-  background-clip: padding-box;
-  border: solid 2px transparent;
-  border-radius: 1em;
-}
 
-.gradient-box:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  margin: -2px;
-  border-radius: inherit;
-  /* background: linear-gradient(to right, red, orange); */
-  background: linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(225deg, #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);;
-}
 
 .bg-dark {
   background-color: #151515 !important;
@@ -142,7 +194,7 @@ hr {
 .bg-dark .btn-group .btn-outline-primary:unchecked {
   background-color: #000;
 }
-.bg-dark .gradient-box {
+.bg-dark .card {
   background: #000;
   background-clip: padding-box;
   color: #FFF;
