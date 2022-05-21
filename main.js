@@ -218,6 +218,8 @@ async function generateCards(_tokenArray) {
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = selectedAccountBalance / 10**18;
   let nativePrice = await getPrice("ETH");
+  let depositedValue = await getDepositedValue("ETH");
+  let nativeRate = await getRates("ETH");
   const containerEl = document.getElementById("card-container");
  
   let tempContainer = `<t-card network="${network}" tokenName="${nativeAsset}" tokenTicker="${nativeAsset}"></t-card>`;
@@ -225,16 +227,33 @@ async function generateCards(_tokenArray) {
     _token = _tokenArray[i];
     tokenId = db[network][_token].id;
      tokenName = db[network][_token].name;
-       tempContainer += `<t-card network="${network}" tokenName="${tokenName}" tokenTicker="${tokenId}"></t-card>`
+     tempContainer += `<t-card network="${network}" tokenName="${tokenName}" tokenTicker="${tokenId}"></t-card>`
   }  
   containerEl.innerHTML = tempContainer;
   document.getElementById(`price-${nativeAsset}`).innerHTML = nativePrice;
-   //document.getElementById("native-symbol").innerHTML = `${nativeAsset}`;
-  // document.getElementById("native-asset").innerHTML = `${nativeAsset}`;
    document.getElementById(`balance-${nativeAsset}`).innerHTML = nativeBalance.toFixed(4);
-  //document.getElementById(`deposited-${nativeAsset}`).innerHTML = getDepositedValue(nativeAsset);
-  // document.getElementById(`interest-${nativeAsset}`).innerHTML = getRates("ETH")
-  // document.querySelector("#btn-buyETH").addEventListener("click", function () {launchTransak(selectedAccount, "ETH")}); 
+   document.getElementById(`deposited-${nativeAsset}`).innerHTML = depositedValue;
+   document.getElementById(`interest-${nativeAsset}`).innerHTML = nativeRate + "%";
+    if(network === "mainnet"){
+    document.querySelector(`#btn-buy${nativeAsset}`).addEventListener("click", function () {launchTransak(selectedAccount, nativeAsset)}); 
+  } else if(network === "rinkeby") {
+   document.querySelector(`#btn-faucet${nativeAsset}`).addEventListener("click", function () {
+       window.open(
+         "https://rinkebyfaucet.com/", "_blank");
+   })} else if(network === "testnet") {
+    document.querySelector(`#btn-faucet${nativeAsset}`).addEventListener("click", function () {
+        window.open(
+          "https://mumbaifaucet.com/", "_blank");
+    })}
+   document.getElementById(`btn-approve${nativeAsset}`).onclick = function() {
+    let amountValue =  document.getElementById(`amount-${nativeAsset}`).value;
+    approveERC20(`${tokenId}`, amountValue);};
+  // document.getElementById(`btn-supply${tokenId}`).onclick = function() {
+  //   let amountValue =  document.getElementById(`amount-${tokenId}`).value;
+  //   supplyERC20(`${tokenId}`, amountValue);};
+  // document.getElementById(`btn-withdraw${tokenId}`).onclick = function() {
+  //   let amountValue =  document.getElementById(`amount-${tokenId}`).value;
+  //   withdrawERC20(`${tokenId}`, amountValue);};
   
   //add onClicks
   for(let i = 0; i < _tokenArray.length; i++){
@@ -253,7 +272,7 @@ async function generateCards(_tokenArray) {
     if(network ==="mainnet"){
       document.querySelector(`#btn-buy${tokenId}`).addEventListener("click", function () {launchTransak(selectedAccount, `${tokenId}`)});
     } else {
-      document.getElementById(`btn-faucet${tokenId}`).onclick = () => {ERC20Faucet(`${tokenId}`, `10000`)}; //10000 ${tokenId}
+      document.getElementById(`btn-faucet${tokenId}`).onclick = () => {ERC20Faucet(`${tokenId}`, `10000`)}; //10000{tokenId}
     }
   }
   
@@ -352,8 +371,11 @@ async function getDepositedValue(_token) {
   };
   let subGraph = await Moralis.executeFunction(options);
   let returnVal = subGraph.currentATokenBalance;
-  document.getElementById(`deposited-${_token}`).innerHTML = returnVal  / 10 ** decimals;
-  return returnVal;
+  if(_token === "ETH")
+  return returnVal / 10 ** decimals;
+  else {
+    document.getElementById(`deposited-${_token}`).innerHTML = returnVal  / 10 ** decimals;
+  }
   }
 
 async function getRates(_token){
@@ -368,7 +390,12 @@ async function getRates(_token){
     let subGraph = await Moralis.executeFunction(options);
     let depositAPR = await (subGraph.currentLiquidityRate) / (10**27);
     let depositAPY = (((1 + (depositAPR / 31536000)) ** 31536000) - 1).toFixed(4) * 100; //secondsPerYearHardcoded
-    document.getElementById(`interest-${_token}`).innerHTML = `${depositAPY.toFixed(2)}%`;
+    if(_token === "ETH"){
+      return depositAPY;
+    } else {
+      document.getElementById(`interest-${_token}`).innerHTML = `${depositAPY.toFixed(2)}%`;
+    }
+
 
  }
  
