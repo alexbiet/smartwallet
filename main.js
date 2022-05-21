@@ -170,7 +170,6 @@ async function fetchAccountData() {
   document.getElementById("mumbai").checked = false;
   document.getElementById("polygon").checked = false;
 
-  console.log(network);
 
   switch(network) {
     case "rinkeby" :
