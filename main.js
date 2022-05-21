@@ -299,7 +299,6 @@ async function generateCards(_tokenArray) {
 
 function fillOutPopover(name) {
   var id = '.' + name;
-  console.log(id)
   var cont = popovertexts[name]
   var nodes = document.querySelectorAll(id)
   for (let i= 0; i< nodes.length; i++){
