@@ -6,6 +6,7 @@ let appId = "jvb22Emu3AzXUN1A9W6SOPNPGkPoCW4tnh5WGwhI";
 //appId = "MUEMJ6Nck6DWuhKWVhhJJjsCCfyzTSJviAQ2xZkq";
 Moralis.start({ serverUrl, appId });
 
+
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 // -----------------------
@@ -153,8 +154,9 @@ function init() {
   }
   
   $('[data-toggle="popover"]').popover()
-  
+
 }
+
 
 async function fetchAccountData() {
 
@@ -450,7 +452,9 @@ async function getRates(_token){
       _value: amount,
     }
   };
-  Moralis.executeFunction(options);
+  const transaction = await Moralis.executeFunction(options);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
 }
 
 async function supplyERC20(_token, _amount){
@@ -475,7 +479,11 @@ async function supplyERC20(_token, _amount){
       referralCode: 0,
     }
     };
-    Moralis.executeFunction(supplyOptions);
+
+    const transaction = await Moralis.executeFunction(supplyOptions);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+
  }
 
  async function withdrawERC20(_token, _amount){
@@ -498,8 +506,12 @@ async function supplyERC20(_token, _amount){
       to: selectedAccount,
     }
     };
-    Moralis.executeFunction(supplyOptions);
+    const transaction = await Moralis.executeFunction(supplyOptions);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+
  }
+
 
  //DEPOSIT Native Token (not WETH)
 async function supplyETH(_amount) {
@@ -516,7 +528,10 @@ async function supplyETH(_amount) {
      },
       msgValue: amount,
   };
-  Moralis.executeFunction(options);
+  const transaction = await Moralis.executeFunction(options);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+
   }
 //WITHDRAW Native Token (not WETH)
 async function withdrawETH(_amount) {
@@ -532,7 +547,10 @@ async function withdrawETH(_amount) {
        },
     };
 
-  Moralis.executeFunction(options);
+    const transaction = await Moralis.executeFunction(options);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+
 }
 
 async function ERC20Faucet(_token, _amount) {
@@ -560,7 +578,9 @@ async function ERC20Faucet(_token, _amount) {
          },
       };
 
-      Moralis.executeFunction(options);
+        const transaction = await Moralis.executeFunction(options);
+    await transaction.wait();
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
       }
 
 }
@@ -591,6 +611,8 @@ async function onConnect() {
     console.log("Could not get a wallet connection", e);
     return;
   }
+
+
 //Mar4kcmne
   // Subscribe to accounts change
   provider.on("accountsChanged", (accounts) => {
