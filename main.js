@@ -213,9 +213,8 @@ async function fetchAccountData() {
     // document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
 
 
-generateCards(["WBTC","DAI","USDC"]);
+generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
 async function generateCards(_tokenArray) {
-
   let nativeAsset = chainData["nativeCurrency"].symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = selectedAccountBalance / 10**18;
@@ -224,10 +223,9 @@ async function generateCards(_tokenArray) {
   let nativeRate = await getRates("ETH");
   const containerEl = document.getElementById("card-container");
  
-  let tempContainer = `<t-card network="${network}" tokenName="${nativeAsset}" tokenTicker="${nativeAsset}"></t-card>`;
+  let tempContainer = `<t-card network="${network}" tokenName="${db[network]["ETH"].name}" tokenTicker="${nativeAsset}"></t-card>`;
   for(let i = 0; i < _tokenArray.length; i++){
     _token = _tokenArray[i];
-    console.log(db[network][_token].id)
     tokenId = db[network][_token].id;
      tokenName = db[network][_token].name;
      tempContainer += `<t-card network="${network}" tokenName="${tokenName}" tokenTicker="${tokenId}"></t-card>`

@@ -2,7 +2,7 @@ const db = {
     rinkeby: {
       ETH: {
        id: "ETH",
-       name: "ETH",       
+       name: "Ethereum",       
        decimals: 18, 
        contractAddress: "0xd74047010D77c5901df5b0f9ca518aED56C85e8D", //
        aTokenAddress: "0x608D11E704baFb68CfEB154bF7Fd641120e33aD4", //aEthWETH 
@@ -27,6 +27,18 @@ const db = {
       name: "USDC",
       contractAddress: "0xb18d016cDD2d9439A19f15633005A6b2cd6Aa774",
       decimals: 6,
+    },
+    AAVE: {
+      id: "AAVE",
+      name: "AAVE",
+      contractAddress: "0x100aB78E5A565a94f2a191714A7a1B727268eFFb",
+      decimals: 18,
+    },
+    LINK: {
+      id: "LINK",
+      name: "ChainLink",
+      decimals: 18,
+      contractAddress: "0x237f409fBD10E30e237d63d9050Ae302e339028E",
     },
      Contracts: {
        AaveOracle: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
@@ -73,6 +85,18 @@ const db = {
     contractAddress: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
     decimals: 6,
   },
+  AAVE: {
+    id: "AAVE",
+    name: "AAVE",
+    contractAddress: "0x100aB78E5A565a94f2a191714A7a1B727268eFFb",
+    decimals: 18,
+  },
+  LINK: {
+    id: "LINK",
+    name: "ChainLink",
+    decimals: 18,
+    contractAddress: "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39",
+  },
    Contracts: {
      AaveOracle: "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
      WETHGateway: "0x9bdb5fcc80a49640c7872ac089cc0e00a98451b6",
@@ -110,12 +134,24 @@ const db = {
     contractAddress: "0x9A753f0F7886C9fbF63cF59D0D4423C5eFaCE95B",
     decimals: 18, 
     aTokenAddress: "0xDD4f3Ee61466C4158D394d57f3D4C397E91fBc51",
-  },
+    },
     USDC: {
       id: "USDC",
       name: "USDC",
       contractAddress: "0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2",
       decimals: 6,
+    },
+    AAVE: {
+      id: "AAVE",
+      name: "AAVE",
+      contractAddress: "0xD9E7e5dd6e122dDE11244e14A60f38AbA93097f2",
+      decimals: 18,
+    },
+    LINK: {
+      id: "LINK",
+      name: "ChainLink",
+      decimals: 18,
+      contractAddress: "0xD9E7e5dd6e122dDE11244e14A60f38AbA93097f2",
     },
    Contracts: {
      AaveOracle: "0x520D14AE678b41067f029Ad770E2870F85E76588",
