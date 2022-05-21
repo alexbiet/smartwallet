@@ -213,7 +213,7 @@ async function fetchAccountData() {
     // document.getElementById("native-supply").innerHTML = `<span id="deposited-ETH">0.00</span> ${nativeAsset}`;
 
 
-generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+generateCards(["WBTC", "DAI","AAVE","LINK","USDC"]);
 async function generateCards(_tokenArray) {
   let nativeAsset = chainData["nativeCurrency"].symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}

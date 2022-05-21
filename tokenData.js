@@ -88,7 +88,7 @@ const db = {
   AAVE: {
     id: "AAVE",
     name: "AAVE",
-    contractAddress: "0x100aB78E5A565a94f2a191714A7a1B727268eFFb",
+    contractAddress: "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
     decimals: 18,
   },
   LINK: {
@@ -144,7 +144,7 @@ const db = {
     AAVE: {
       id: "AAVE",
       name: "AAVE",
-      contractAddress: "0xD9E7e5dd6e122dDE11244e14A60f38AbA93097f2",
+      contractAddress: "0x0AB1917A0cf92cdcf7F7b637EaC3A46BBBE41409",
       decimals: 18,
     },
     LINK: {
