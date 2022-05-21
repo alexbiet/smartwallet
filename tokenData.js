@@ -25,7 +25,7 @@ const db = {
       id: "USDC",
       name: "USDC",
       contractAddress: "0xb18d016cDD2d9439A19f15633005A6b2cd6Aa774",
-      decimals: 18,
+      decimals: 6,
     },
      Contracts: {
        AaveOracle: "0xA323726989db5708B19EAd4A494dDe09F3cEcc69",
@@ -64,6 +64,12 @@ const db = {
     decimals: 18, 
     aTokenAddress: "0x49866611AA7Dc30130Ac6A0DF29217D16FD87bc0",
   },
+  USDC: {
+    id: "USDC",
+    name: "USDC",
+    contractAddress: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    decimals: 6,
+  },
    Contracts: {
      AaveOracle: "0xb023e699F5a33916Ea823A16485e259257cA8Bd1",
      WETHGateway: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
@@ -101,6 +107,12 @@ const db = {
     decimals: 18, 
     aTokenAddress: "0xDD4f3Ee61466C4158D394d57f3D4C397E91fBc51",
   },
+    USDC: {
+      id: "USDC",
+      name: "USDC",
+      contractAddress: "0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2",
+      decimals: 6,
+    },
    Contracts: {
      AaveOracle: "0x520D14AE678b41067f029Ad770E2870F85E76588",
      WETHGateway: "0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17", //

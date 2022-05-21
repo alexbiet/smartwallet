@@ -227,6 +227,7 @@ async function generateCards(_tokenArray) {
   let tempContainer = `<t-card network="${network}" tokenName="${nativeAsset}" tokenTicker="${nativeAsset}"></t-card>`;
   for(let i = 0; i < _tokenArray.length; i++){
     _token = _tokenArray[i];
+    console.log(db[network][_token].id)
     tokenId = db[network][_token].id;
      tokenName = db[network][_token].name;
      tempContainer += `<t-card network="${network}" tokenName="${tokenName}" tokenTicker="${tokenId}"></t-card>`
@@ -274,9 +275,12 @@ async function generateCards(_tokenArray) {
   document.getElementById(`btn-withdraw${tokenId}`).onclick = function() {
     let amountValue =  document.getElementById(`amount-${tokenId}`).value;
     withdrawERC20(`${tokenId}`, amountValue);};
-  
-  document.getElementById(`btn-faucet${tokenId}`).onclick = function() {
+    if(network === "mainnet"){
+  document.querySelector(`#btn-buy${tokenId}`).addEventListener("click", function () {launchTransak(selectedAccount, tokenId)}); 
+    } else {
+      document.getElementById(`btn-faucet${tokenId}`).onclick = function() {
     ERC20Faucet(`${tokenId}`, "10");};
+    }
   
    
     
@@ -428,11 +432,12 @@ async function getRates(_token){
   let tokenContract = db[network][_token].contractAddress;
   let decimals = db[network][_token].decimals;
   let amount = _amount;
-  if (decimals === 8) {
-     amount = amount * 10**8;
-     amount = amount.toFixed();
+  if (decimals === 18) {
+    amount = web3.utils.toWei(_amount);
+    
  } else {
-     amount = web3.utils.toWei(_amount);
+      amount = amount * 10**decimals;
+     amount = amount.toFixed();
  }
   let options = {
     contractAddress: tokenContract,
