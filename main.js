@@ -685,7 +685,7 @@ const switchNetworkMumbai = async () => {
             {
               chainId: "0x13881",
               chainName: "Mumbai",
-              rpcUrls: ["https://rpc-mumbai.matic.today"],
+              rpcUrls: ["https://polygon-mumbai.g.alchemy.com/v2/SqfaXTHKq6BcbY6g2ZaQ2OtxwjbsW1Wk"],
               nativeCurrency: {
                 name: "Matic",
                 symbol: "Matic",
