@@ -269,3 +269,101 @@ hr {
 .bg-dark .modal-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.bg-dark #wallet-intro p {
+  color: #999;
+} 
+
+.bg-dark #wallet-intro h2 {
+  color: #fff;
+} 
+
+.bg-dark .web3modal-modal-card {
+  background-color: #000;
+}
+
+
+.bg-dark .web3modal-provider-container {
+  background-color: #000;
+}
+
+.bg-dark .web3modal-provider-container:hover {
+  background-color: #222;
+}
+
+.bg-dark .web3modal-provider-name {
+  color: #fff;
+}
+
+.bg-dark .web3modal-provider-description {
+  color: #999;
+}
+
+
+
+.btn-connect {
+  border-radius: 1.5rem;
+  box-shadow: rgb(0 0 0 / 30%) 0 10px 20px;
+  border:0;
+  background-color: #000;
+  color:#efefef;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  width: 200px;
+  height: 70px;
+  margin: auto;
+  position: relative;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  border: solid 2px transparent;
+  border-radius: 1em;
+  cursor: pointer;
+  transition: all 3s ease-in-out;
+}
+
+.btn-connect:hover {
+  color:#fff;
+}
+
+.btn-connect:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -2px;
+  border-radius: inherit;
+  background-image: linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);
+  animation: none;
+}
+
+.btn-connect::after {
+  position: absolute;
+  content: "";
+  top: 10px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.btn-connect:hover:before {
+  background-image: linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%), linear-gradient(var(--rotate), #E02020 0%, #FA6400 17%, #F7B500 33%, #6DD400 50%, #0091FF 67%, #6236FF 83%, #B620E0 100%);
+  animation: spin 2.5s linear infinite;
+} 
+
+.btn-connect:hover:after {
+  transform: scale(0.8);
+  filter: blur(40px);
+  background-image: linear-gradient(
+    var(--rotate)
+    , #5ddcff, #3c67e3 43%, #4e00c2);
+    opacity: 1;
+  transition: opacity .5s;
+  animation: spin 2.5s linear infinite;
+}
