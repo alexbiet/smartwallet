@@ -744,6 +744,7 @@ async function onDisconnect() {
     provider = null;
   }
   localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
+  await web3Modal.clearCachedProvider();
   selectedAccount = null;
 
   document.querySelector("#not-connected").style.display = "block";
