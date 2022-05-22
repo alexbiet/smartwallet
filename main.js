@@ -217,6 +217,7 @@ async function fetchAccountData() {
 
 generateCards(["WBTC", "DAI","AAVE","LINK","USDC"]);
 async function generateCards(_tokenArray) {
+  document.querySelector("#card-container").style.removeProperty('display');
   let nativeAsset = chainData["nativeCurrency"].symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = selectedAccountBalance / 10**18;
@@ -751,7 +752,6 @@ async function onDisconnect() {
   document.querySelector("#wallet-navigation").style.display = "none";
   document.querySelector("#wallet-intro").style.display = "block";
   document.querySelector("#card-container").style.display = "none";
-
 }
 
 
