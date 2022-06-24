@@ -1,4 +1,4 @@
-# ETHGLOBAL HACKATHON Spring 2022 - Smart Wallet
+# Smart Wallet
 
 <img src="./images/smart-wallet-header.png" alt="Smart Wallet Logo" width="300"/>
 
