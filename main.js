@@ -124,6 +124,25 @@ let selectedAccount;
 function init() {
 
   const providerOptions = {
+    
+    // 'custom-uauth': {
+    //   // The UI Assets
+    //  // display: UAuthWeb3Modal.display,
+  
+    //   // The Connector
+    //  // connector: UAuthWeb3Modal.connector,
+  
+    //   // The SPA libary
+    //   package: UAuthSPA,
+  
+    //   // The SPA libary options
+    //   options: {
+    //     clientID: '8b8e4ba6-eb55-4f9f-b08a-b610e92bf033',
+    //     redirectUri: 'http://localhost',
+    //     scope: 'openid wallet',
+    //   },
+    // },
+  
     walletconnect: {
       package: WalletConnectProvider,
       options: {
