@@ -33,7 +33,5 @@ Features:
 - Aave V3 Smart Contracts
 - Transak
 - Spheron and Filecoin (IPFS)
-- WalletConnect
-- Vanilla JS (no React, no Vue, no BS)
-- Web3.js
-- Moralis
+- Vanilla JS
+- Ethers.js

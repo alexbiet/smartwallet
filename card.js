@@ -10,14 +10,13 @@ class Card extends HTMLElement {
     connectedCallback() {
       this.tokenName = this.getAttribute("tokenName");
       this.tokenTicker = this.getAttribute("tokenTicker");
-      this.network = this.getAttribute("network");
-  
+      this.network = this.getAttribute("network");  
       this.render();
     }
   
 
   render() {
-        if(this.network === "mainnet"){
+        if(this.network === "polygon"){
         this.innerHTML = `
         <div class="col">
         <div class="card">
