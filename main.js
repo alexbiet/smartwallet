@@ -6,7 +6,7 @@ window.addEventListener('load', async () => {
   document.querySelector("#radio-mumbai").addEventListener("click", function () { switchNetworkMumbai(); });
   document.querySelector("#radio-polygon").addEventListener("click", function () { switchNetworkPolygon(); });
 
-
+  
   try {
     if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
         fetchAccountData();
@@ -33,7 +33,7 @@ window.addEventListener('load', async () => {
   }
   
   $('[data-toggle="popover"]').popover()
-  document.querySelector("#wallet-navigation").style.display = "none";
+  // document.querySelector("#wallet-navigation").style.display = "none";
 
 });
 
@@ -43,9 +43,9 @@ function onDisconnect() {
   document.querySelector("#not-connected").style.display = "block";
   document.querySelector("#connected").style.display = "none";
 
-  document.querySelector("#wallet-navigation").style.display = "none";
-  document.querySelector("#wallet-intro").style.display = "block";
-  document.querySelector("#card-container").style.display = "none";
+  // document.querySelector("#wallet-navigation").style.display = "none";
+  // document.querySelector("#wallet-intro").style.display = "block";
+  // document.querySelector("#card-container").style.display = "none";
 }
 
 
@@ -74,9 +74,9 @@ async function fetchAccountData() {
         document.getElementById("connected").style.display = "block";
 
 
-        document.querySelector("#wallet-navigation").style.display = "block";
-        document.querySelector("#wallet-intro").style.display = "none";
-        document.querySelector("#card-container").style.display = "block";
+        // document.querySelector("#wallet-navigation").style.display = "block";
+        // document.querySelector("#wallet-intro").style.display = "none";
+        // document.querySelector("#card-container").style.display = "block";
 
 
         localStorage.setItem("CACHED_PROVIDER", "TRUE");
