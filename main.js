@@ -164,12 +164,13 @@ async function generateCards(_tokenArray) {
   document.querySelector("#card-container").style.removeProperty('display');
   let nativeAsset = symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
-  let nativeBalance = formatedBalance; // WIP
+  let nativeBalance = "0.00";
+  if(formatedBalance) nativeBalance = formatedBalance; // WIP
   let nativePrice;
   let depositedValue;
   let nativeRate;
   !useRPC ? 
-  nativePrice = await getPrice("ETH") : nativePrice = 1500;
+  nativePrice = await getPrice("ETH") : nativePrice = "$1,500.00";
   !useRPC ? 
   depositedValue = await getDepositedValue("ETH") : depositedValue = 0
   !useRPC ? 
