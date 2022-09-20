@@ -1,14 +1,19 @@
+let useRPC = true;
 window.addEventListener('load', async () => {
-  document.getElementById("btn-connect").addEventListener("click", fetchAccountData);
+  document.getElementById("btn-connect").addEventListener("click", () => { useRPC = false; fetchAccountData()});
   document.getElementById("btn-disconnect").addEventListener("click", onDisconnect);
 
   document.querySelector("#radio-rinkeby").addEventListener("click", function () { switchNetworkRinkeby(); });
   document.querySelector("#radio-mumbai").addEventListener("click", function () { switchNetworkMumbai(); });
   document.querySelector("#radio-polygon").addEventListener("click", function () { switchNetworkPolygon(); });
 
-  
+
   try {
     if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
+        useRPC = false;
+        fetchAccountData();
+      } else {
+        useRPC = true;
         fetchAccountData();
       };
   } catch (error) {
@@ -54,24 +59,44 @@ async function fetchAccountData() {
   let signer;
   let account;
   let formatedBalance;
- 
+  let balance;
+  
+  let chain = "Rinkeby Testnet";
+  let network = "rinkeby";
+  let symbol = "ETH";
     try {
-        provider = new ethers.providers.Web3Provider(ethereum);
-        signer = provider.getSigner()
-        account = await provider.send("eth_requestAccounts").then( accounts => {
-          return accounts[0];});
-        let balance = await provider.getBalance(account);
+        if(!useRPC){
+          provider = new ethers.providers.Web3Provider(ethereum);
+          signer = provider.getSigner()
+          account = await provider.send("eth_requestAccounts").then( accounts => {
+            return accounts[0];});
+            balance = await provider.getBalance(account);
         formatedBalance = ethers.BigNumber.from(balance);
         formatedBalance = balance.mod(1e14);
         formatedBalance = ethers.utils.formatEther(balance.sub(formatedBalance));
-        
-        //updateHTMLElements network/balances/button
         document.getElementById("selected-account").innerHTML = `${account.substring(0,6) + "..." + account.slice(-4)}`;
         document.getElementById("account-balance").innerHTML = `${formatedBalance} ${chainIdMap[ethereum.networkVersion].symbol}`;
         document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
 
         document.getElementById("not-connected").style.display = "none";
         document.getElementById("connected").style.display = "block";
+        localStorage.setItem("CACHED_PROVIDER", "TRUE");
+
+        let chain = chainIdMap[Number(ethereum.chainId)].name;
+        let network = chainIdMap[Number(ethereum.chainId)].name.split(' ')[0].toLowerCase();
+        let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+        } else {
+          provider = new ethers.providers.AlchemyProvider(
+            4,
+            "vd1ojdJ9UmyBbiKOxpWVnGhDpoFVVxBY"
+          );
+  
+        }
+ 
+        
+        
+        //updateHTMLElements network/balances/button
+ 
 
 
         // document.querySelector("#wallet-navigation").style.display = "block";
@@ -79,7 +104,7 @@ async function fetchAccountData() {
         // document.querySelector("#card-container").style.display = "block";
 
 
-        localStorage.setItem("CACHED_PROVIDER", "TRUE");
+  
     } catch (error) {
         console.log("Error connecting to metamask account:\n", error)
       }
@@ -97,9 +122,8 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
-  let chain = chainIdMap[Number(ethereum.chainId)].name;
-  let network = chainIdMap[Number(ethereum.chainId)].name.split(' ')[0].toLowerCase();
-  let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+
+  
 
 
   // Display Selected Network with Persistance
@@ -125,12 +149,15 @@ async function fetchAccountData() {
 
 generateCards(["WBTC", "DAI","AAVE","LINK","USDC"]);
 async function generateCards(_tokenArray) {
+  
   document.querySelector("#card-container").style.removeProperty('display');
   let nativeAsset = symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = formatedBalance; // WIP
   let nativePrice = await getPrice("ETH");
-  let depositedValue = await getDepositedValue("ETH");
+  let depositedValue = 0;
+  !useRPC ? 
+  depositedValue = await getDepositedValue("ETH") : depositedValue = 0
   let nativeRate = await getRates("ETH");
   const containerEl = document.getElementById("card-container");
  
