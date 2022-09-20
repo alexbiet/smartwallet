@@ -53,6 +53,15 @@ function onDisconnect() {
   // document.querySelector("#card-container").style.display = "none";
 }
 
+let chain;
+let network;
+let symbol;
+if(useRPC) {
+  chain = "Rinkeby Testnet";
+  network = "rinkeby";
+  symbol = "ETH";
+}
+
 
 async function fetchAccountData() {
   let provider;
@@ -61,9 +70,13 @@ async function fetchAccountData() {
   let formatedBalance;
   let balance;
   
-  let chain = "Rinkeby Testnet";
-  let network = "rinkeby";
-  let symbol = "ETH";
+
+  if(!useRPC) {
+    chain = chainIdMap[Number(ethereum.chainId)].name;
+    network = chainIdMap[Number(ethereum.chainId)].name.split(' ')[0].toLowerCase();
+    symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+  }
+
     try {
         if(!useRPC){
           provider = new ethers.providers.Web3Provider(ethereum);
@@ -82,9 +95,7 @@ async function fetchAccountData() {
         document.getElementById("connected").style.display = "block";
         localStorage.setItem("CACHED_PROVIDER", "TRUE");
 
-        let chain = chainIdMap[Number(ethereum.chainId)].name;
-        let network = chainIdMap[Number(ethereum.chainId)].name.split(' ')[0].toLowerCase();
-        let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+
         } else {
           provider = new ethers.providers.AlchemyProvider(
             4,
@@ -154,13 +165,18 @@ async function generateCards(_tokenArray) {
   let nativeAsset = symbol;
   if(nativeAsset === "RIN"){ nativeAsset = "ETH";}
   let nativeBalance = formatedBalance; // WIP
-  let nativePrice = await getPrice("ETH");
-  let depositedValue = 0;
+  let nativePrice;
+  let depositedValue;
+  let nativeRate;
+  !useRPC ? 
+  nativePrice = await getPrice("ETH") : nativePrice = 1500;
   !useRPC ? 
   depositedValue = await getDepositedValue("ETH") : depositedValue = 0
-  let nativeRate = await getRates("ETH");
+  !useRPC ? 
+  nativeRate = await getRates("ETH") : nativeRate = 0;
+  
   const containerEl = document.getElementById("card-container");
- 
+  console.log(network)
   let tempContainer = `<t-card network="${network}" tokenName="${db[network]["ETH"].name}" tokenTicker="${nativeAsset}"></t-card>`;
   for(let i = 0; i < _tokenArray.length; i++){
     _token = _tokenArray[i];
