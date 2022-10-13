@@ -1,4 +1,5 @@
 let useRPC = true;
+let noWeb3 = false;
 window.addEventListener("load", async () => {
   document.getElementById("btn-connect").addEventListener("click", () => {
     useRPC = false;
@@ -37,13 +38,17 @@ window.addEventListener("load", async () => {
     }
   } catch (error) {
     console.log("Error connecting to metamask account:\n", error);
-    if (
-      window.confirm(
-        "Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io "
-      )
-    ) {
-      window.open("http://metamask.io", "_blank");
-    }
+    noWeb3 = true;
+    fetchAccountData();
+
+    // if (
+    //   //render static cards
+    //   window.confirm(
+    //     "Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io "
+    //   )
+    // )
+    //   window.open("http://metamask.io", "_blank");
+    //TODO: hardcode fetchAccountData()
   }
 
   // theme light/dark
@@ -90,6 +95,11 @@ async function fetchAccountData() {
   let account;
   let formatedBalance;
   let balance;
+  if (noWeb3) {
+    generateCards(["WBTC", "DAI", "AAVE", "LINK", "USDC"]);
+    console.log("No Web3");
+    return;
+  }
 
   if (!useRPC) {
     chain = chainIdMap[Number(ethereum.chainId)].name;

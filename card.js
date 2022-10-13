@@ -1,23 +1,22 @@
 class Card extends HTMLElement {
-    constructor() {
-      super();
-  
-      this.tokenName = "";
-      this.tokenTicker = "";
-      this.network = "";
-    }
-  
-    connectedCallback() {
-      this.tokenName = this.getAttribute("tokenName");
-      this.tokenTicker = this.getAttribute("tokenTicker");
-      this.network = this.getAttribute("network");  
-      this.render();
-    }
-  
+  constructor() {
+    super();
+
+    this.tokenName = "";
+    this.tokenTicker = "";
+    this.network = "";
+  }
+
+  connectedCallback() {
+    this.tokenName = this.getAttribute("tokenName");
+    this.tokenTicker = this.getAttribute("tokenTicker");
+    this.network = this.getAttribute("network");
+    this.render();
+  }
 
   render() {
-        if(this.network === "polygon"){
-        this.innerHTML = `
+    if (this.network === "polygon") {
+      this.innerHTML = `
         <div class="col">
         <div class="card">
                 <div class="card-body" style="padding-bottom:0;">
@@ -89,8 +88,8 @@ class Card extends HTMLElement {
                             </div>
     
                 `;
-      } else {
-        this.innerHTML = `
+    } else {
+      this.innerHTML = `
         <div class="col">
         <div class="card">
                 <div class="card-body" style="padding-bottom:0;">
@@ -160,11 +159,8 @@ class Card extends HTMLElement {
                             </div>
     
                 `;
-      }
-    
     }
-
- 
+  }
 }
 
 customElements.define("t-card", Card);
