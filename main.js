@@ -3,6 +3,7 @@ let noWeb3 = false;
 window.addEventListener("load", async () => {
   document.getElementById("btn-connect").addEventListener("click", () => {
     useRPC = false;
+    noWeb3 = false;
     fetchAccountData();
   });
   document
@@ -33,7 +34,7 @@ window.addEventListener("load", async () => {
       useRPC = false;
       fetchAccountData();
     } else {
-      useRPC = true;
+      noWeb3 = true;
       fetchAccountData();
     }
   } catch (error) {
